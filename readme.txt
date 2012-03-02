@@ -1,1 +1,3 @@
 Scratchwebs CMS is an open source Content Management System
+
+Hello World
