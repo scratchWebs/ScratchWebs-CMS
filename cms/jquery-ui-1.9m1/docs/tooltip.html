@@ -1,0 +1,491 @@
+<p>
+<ul class="UIAPIPlugin-toc">
+<li><a href="#overview">Overview</a></li>
+<li><a href="#options">Options</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#methods">Methods</a></li>
+<li><a href="#theming">Theming</a></li>
+</ul>
+<div class="UIAPIPlugin">
+  <h1>jQuery UI Tooltip</h1>
+  <div id="overview">
+    <h2 class="top-header">Overview</h2>
+    <div id="overview-main">
+        Tooltip replaces native tooltips, making them themable as well as allowing various customizations: Display other content then just the title, like inline footnotes or extra content retrieved via ajax; customize the positioning, eg. to center the tooltip above elements; add extra classes to customize the appearance, for warning or error fields.
+<br />
+</p>
+A fade animation is used to show and hide the tooltip, making the appearance a bit more organic, compared to just toggling the visiblity.
+    </div>
+    <div id="overview-dependencies">
+        <h3>Dependencies</h3>
+        <ul>
+<li>UI Core</li>
+<li>UI Widget</li>
+<li>UI Position</li>
+</ul>
+    </div>
+    <div id="overview-example">
+        <h3>Example</h3>
+        <div id="overview-example" class="example">
+<ul><li><a href="#demo"><span>Demo</span></a></li><li><a href="#source"><span>View Source</span></a></li></ul>
+<p><div id="demo" class="tabs-container" rel="300">
+Apply the widget to all elements with a title attribute.<br />
+</p>
+<pre>$(&quot;[title]&quot;).tooltip();
+</pre>
+<p></div><div id="source" class="tabs-container">
+</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;link href=&quot;http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
+  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js&quot;&gt;&lt;/script&gt;
+  
+  &lt;script&gt;
+  $(document).ready(function() {
+    $(&quot;[title]&quot;).tooltip();
+  });
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body style="font-size:62.5%;"&gt;
+  &lt;a href=&quot;#&quot; title=&quot;Anchor description&quot;&gt;Anchor text&lt;/a&gt; 
+&lt;input title=&quot;Input help&quot; /&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p></div>
+</p><p></div>
+    </div>
+  </div>
+  <div id="options">
+    <h2 class="top-header">Options</h2>
+    <ul class="options-list">
+      
+<li class="option" id="option-disabled">
+  <div class="option-header">
+    <h3 class="option-name"><a href="#option-disabled">disabled</a></h3>
+    <dl>
+      <dt class="option-type-label">Type:</dt>
+        <dd class="option-type">Boolean</dd>
+      
+      <dt class="option-default-label">Default:</dt>
+        <dd class="option-default">false</dd>
+      
+    </dl>
+  </div>
+  <div class="option-description">
+    <p>Disables (true) or enables (false) the tooltip. Can be set when initialising (first creating) the tooltip.</p>
+  </div>
+  <div class="option-examples">
+    <h4>Code examples</h4>
+    <dl class="option-examples-list">
+    
+<dt>
+  Initialize a tooltip with the <code>disabled</code> option specified.
+</dt>
+<dd>
+<pre><code>$( ".selector" ).tooltip({ disabled: true });</code></pre>
+</dd>
+
+    
+<dt>
+  Get or set the <code>disabled</code> option, after init.
+</dt>
+<dd>
+<pre><code>//getter
+var disabled = $( ".selector" ).tooltip( "option", "disabled" );
+//setter
+$( ".selector" ).tooltip( "option", "disabled", true );</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+
+<li class="option" id="option-content">
+  <div class="option-header">
+    <h3 class="option-name"><a href="#option-content">content</a></h3>
+    <dl>
+      <dt class="option-type-label">Type:</dt>
+        <dd class="option-type">Callback</dd>
+      
+      <dt class="option-default-label">Default:</dt>
+        <dd class="option-default">function that returns the title attribute</dd>
+      
+    </dl>
+  </div>
+  <div class="option-description">
+    <p>The content of the tooltip. The callback can either return the content directly, or call the first argument, passing in the content, eg. for ajax content.
+</p>
+  </div>
+  <div class="option-examples">
+    <h4>Code examples</h4>
+    <dl class="option-examples-list">
+    
+<dt>
+  Initialize a tooltip with the <code>content</code> option specified.
+</dt>
+<dd>
+<pre><code>$( ".selector" ).tooltip({ content: function(response) {
+  $.getJSON(&quot;tooltipcontent.html&quot;, response);
+} });</code></pre>
+</dd>
+
+    
+<dt>
+  Get or set the <code>content</code> option, after init.
+</dt>
+<dd>
+<pre><code>//getter
+var content = $( ".selector" ).tooltip( "option", "content" );
+//setter
+$( ".selector" ).tooltip( "option", "content", function(response) {
+  $.getJSON(&quot;tooltipcontent.html&quot;, response);
+} );</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+
+<li class="option" id="option-position">
+  <div class="option-header">
+    <h3 class="option-name"><a href="#option-position">position</a></h3>
+    <dl>
+      <dt class="option-type-label">Type:</dt>
+        <dd class="option-type">Options</dd>
+      
+      <dt class="option-default-label">Default:</dt>
+        <dd class="option-default">{ my: "left top", at: "left bottom", offset: "15 0" }</dd>
+      
+    </dl>
+  </div>
+  <div class="option-description">
+    <p>Configuration for the Position  utility, of option excluded (always configured by widget)</p>
+  </div>
+  <div class="option-examples">
+    <h4>Code examples</h4>
+    <dl class="option-examples-list">
+    
+<dt>
+  Initialize a tooltip with the <code>position</code> option specified.
+</dt>
+<dd>
+<pre><code>$( ".selector" ).tooltip({ position: {offset: "15 15"} });</code></pre>
+</dd>
+
+    
+<dt>
+  Get or set the <code>position</code> option, after init.
+</dt>
+<dd>
+<pre><code>//getter
+var position = $( ".selector" ).tooltip( "option", "position" );
+//setter
+$( ".selector" ).tooltip( "option", "position", {offset: "15 15"} );</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+    </ul>
+  </div>
+  <div id="events">
+    <h2 class="top-header">Events</h2>
+    <ul class="events-list">
+      
+<li class="event" id="event-open">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-open">open</a></h3>
+    <dl>
+      <dt class="event-type-label">Type:</dt>
+        <dd class="event-type">tooltipopen</dd>
+    </dl>
+  </div>
+  <div class="event-description">
+    <p>Triggered when the tooltip is displayed. Can be used further modify or position the widget, eg. have it follow the mouse movement.</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+    
+<dt>
+  Supply a callback function to handle the <code>open</code> event as an init option.
+</dt>
+<dd>
+<pre><code>$( &quot;.selector&quot; ).tooltip({
+   open: function(event, ui) { ... }
+});</code></pre>
+</dd>
+
+    
+<dt>
+  Bind to the <code>open</code> event by type: <code>tooltipopen</code>.
+</dt>
+<dd>
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;tooltipopen&quot;, function(event, ui) {
+  ...
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+
+<li class="event" id="event-close">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-close">close</a></h3>
+    <dl>
+      <dt class="event-type-label">Type:</dt>
+        <dd class="event-type">tooltipclose</dd>
+    </dl>
+  </div>
+  <div class="event-description">
+    <p>Triggered when the tooltip is hidden.</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+    
+<dt>
+  Supply a callback function to handle the <code>close</code> event as an init option.
+</dt>
+<dd>
+<pre><code>$( &quot;.selector&quot; ).tooltip({
+   close: function(event, ui) { ... }
+});</code></pre>
+</dd>
+
+    
+<dt>
+  Bind to the <code>close</code> event by type: <code>tooltipclose</code>.
+</dt>
+<dd>
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;tooltipclose&quot;, function(event, ui) {
+  ...
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+    </ul>
+  </div>
+  <div id="methods">
+    <h2 class="top-header">Methods</h2>
+    <ul class="methods-list">
+      
+<li class="method" id="method-destroy">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-destroy">destroy</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "destroy"
+
+
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Remove the tooltip functionality completely. This will return the element back to its pre-init state.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-disable">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-disable">disable</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "disable"
+
+
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Disable the tooltip.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-enable">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-enable">enable</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "enable"
+
+
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Enable the tooltip.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-option">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-option">option</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "option"
+
+, optionName
+
+, <span class="optional">[</span>value<span class="optional">] </span>
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Get or set any tooltip option. If no value is specified, will act as a getter.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-option">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-option">option</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "option"
+
+, options
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Set multiple tooltip options at once by providing an options object.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-widget">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-widget">widget</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "widget"
+
+
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Returns the .ui-tooltip element.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-open">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-open">open</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "open"
+
+
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Programmatically show the tooltip. Content and position depends on the related options.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-close">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-close">close</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tooltip( "close"
+
+
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Programmatically hide the tooltip.</p>
+  </div>
+</li>
+
+    </ul>
+  </div>
+  <div id="theming">
+    <h2 class="top-header">Theming</h2>
+    <p>The jQuery UI Tooltip plugin uses the jQuery UI CSS Framework to style its look and feel, including colors and background textures. We recommend using the ThemeRoller tool to create and download custom themes that are easy to build and maintain.
+</p>
+  <p>If a deeper level of customization is needed, there are widget-specific classes referenced within the jquery.ui.tooltip.css stylesheet that can be modified. These classes are highlighed in bold below.
+</p>
+    
+  <h3>Sample markup with jQuery UI CSS Framework classes</h3>
+  &lt;div class="ui-tooltip ui-widget ui-corner-all ui-widget-content" id="ui-tooltip-0"&gt;<br />
+&nbsp;&nbsp;&lt;div class="ui-tooltip-content"&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;tooltip content<br />
+&nbsp;&nbsp;&lt;/div&gt;<br />
+&lt;/div&gt;
+  <p class="theme-note">
+    <strong>
+      Note: This is a sample of markup generated by the tooltip plugin, not markup you should use to create a tooltip. The only markup needed for that is an elemenet with a title attribute.
+    </strong>
+  </p>
+
+  </div>
+</div>
+
+</p><!-- 
+Pre-expand include size: 24377 bytes
+Post-expand include size: 30433 bytes
+Template argument size: 13513 bytes
+Maximum: 2097152 bytes
+-->
+
+<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3788-1!1!0!!en!2 and timestamp 20100507135512 -->
