@@ -44,7 +44,7 @@ class swSessionObject
 	public function redirectIfNotLoggedIn()
 	{
 		if (!$this->isLoggedIn) {
-			header("location: /cms/login.php");
+			header("location: " . DOCUMENT_ROOT . "cms/login.php");
 			exit;
 		}
 	}

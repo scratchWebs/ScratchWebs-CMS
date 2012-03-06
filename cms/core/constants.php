@@ -1,5 +1,7 @@
 <?php
 
+define('DOCUMENT_ROOT','/Scratch Webs/');
+
 define('PATH_CORE', dirname(__FILE__) . '/');
 define('PATH_CONTROLS', dirname(__FILE__) . '/../controls/');
 define('PATH_CMS', dirname(__FILE__) . '/../');
