@@ -4,6 +4,7 @@ body {margin:10px; font-family:Verdana, Geneva, sans-serif; font-size:8pt;}
 #main {width:900px}
 h3{margin:0px}
 th {text-align:left}
+table{border:none; border-collapse:collapse; border-spacing:0px;width:100%}
 
 /* Status Bar at the top */
 #statusBar {width:880px; text-align:right;

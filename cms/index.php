@@ -51,7 +51,7 @@ $features = $sessionObject->features;
         </div>
         
         <ul id="userOptions" class="menu popupMenu">
-          <!-- <li><a onclick='pwdFn();'>Change password</a></li> -->
+          <li><a onclick='pwdFn();'>Change password</a></li>
            <li><a onclick='logoutFn();'>Log out</a></li> 
         </ul>
         
@@ -97,7 +97,7 @@ $features = $sessionObject->features;
         </div>
         
         <div id="passwordDialog" title="Change Password" style="font-size:12px" class="ui-dialog-content ui-widget-content">
-        	<table align="center" cellpadding="0" cellspacing="5" border="0">
+        	<table>
                 <tr><td>Old password:</td><td><input id="oldPW" type="password" /></td></tr>
                 <tr><td>New password:</td><td><input id="newPW" type="password" /></td></tr>
                 <tr><td>Confirm new:</td><td><input id="newPW2" type="password" /></td></tr>

@@ -97,7 +97,10 @@ $(document).ready(function(e)
 
 // Ajax change password //////////////////////
 function changePasswordAjax () {
-	if ($("#newPW").val() != $("#newPW2").val()) alert("ajax required to update password");
+	$.swAjax('changePass.php',{old_pass:$("#oldPW").val(),new_pass:$("#newPW").val()},function(){
+		alert(response);
+	});
+
 }
 
 function pwdFn() {
@@ -163,13 +166,14 @@ function logoutFn() {
 	// EXAMPLE...
 	// $.swAjax('serverScript.php',{param1:1,param2:'two'},function(){
 	//		Do something when the ajax call has finished
-	//	})
-	$.swAjax = function( url, data, callback, dataType ){
+	//	},[dataType],[type])
+	$.swAjax = function( url, data, callback, dataType, type ){
 		dataType = (typeof dataType == 'undefined') ? 'html' : dataType;
+		type = (typeof type == 'undefined') ? 'GET' : type;
 		$.manageAjax.add('cacheQueue',{
 			  url: url,
 			  data: data,
-			  type:'GET',
+			  type: type,
 			  dataType:dataType,
 			  success: function(response) {
 				  if (typeof(callback) == 'function') callback.call(this,response);
@@ -178,7 +182,7 @@ function logoutFn() {
 				  alert(data.statusText + ': ' + data.responseText);
 			  }
 		});
-	}
+	};
 	
 	// To refresh a control
 	// EXAMPLE...

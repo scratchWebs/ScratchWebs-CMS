@@ -56,7 +56,7 @@ function _showForm() {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?=$title?></title>
     <script src="/cms/scripts/jquery-1.6.4.min.js"></script>
-	<script language="javascript" type="text/javascript">
+	<script type="text/javascript">
 	function _testConnection() {
 		_init("&testConnection=true");
 	}

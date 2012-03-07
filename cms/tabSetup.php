@@ -10,7 +10,7 @@
 // Page Setup
 
 ?>
-<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr valign="top"><td width="165">
+<table><tr valign="top"><td width="165">
     <ul id="sortable">
 		<?
         // CREATE SORTABLE PAGE MENU

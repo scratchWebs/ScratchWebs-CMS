@@ -191,7 +191,7 @@ if (isset($sessionObject) || $sessionObject->isLoggedIn) {
                             <div id="helpDialog">
                             	<div style="margin-bottom:10px">Scratchwebs CMS version:	&nbsp;&nbsp;&nbsp;1.00</div>
                                 <div style="margin-bottom:10px; text-align:justify">If you need any help or assistance with <b>ScratchWebs CMS</b>, or have any queries or suggestions, please do not hesitate to contact us:</div>
-                                <table cellpadding="0" cellspacing="0" border="0">
+                                <table>
                                 	<tr height="28"><td width="35"><a class="emailButton" href="mailto:tomhrvy@gmail.com"></a></td><td width="120">Thomas Harvey</td><td>07816 270 860</td></tr>
                                     <tr height="28"><td><a class="emailButton" href="mailto:looshus@gmail.com"></a></td><td>Luke Davies</td><td>07776 228 173</td></tr>
                                 </table>
