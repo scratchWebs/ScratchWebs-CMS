@@ -11,7 +11,11 @@ body{text-size:8pt}
 <body>
 <div id="div_log_update">
 <h3>Showing last 50 events</h3>
+<<<<<<< HEAD
 <table class="logTable">
+=======
+<table class="logTable" style="padding:0px; border:0px">
+>>>>>>> 95123343f5557d12a77cbe438511697f946f15cb
 <tr>
     <th>Date</th>
     <th>User</th>
@@ -43,7 +47,11 @@ foreach ($logs as $log)
 
 <div id="div_stats_update">
 <h3>Last 50 Site Visit Statistics</h3>
+<<<<<<< HEAD
 <table class="logTable">
+=======
+<table class="logTable" style="padding:0px; border:0px">
+>>>>>>> 95123343f5557d12a77cbe438511697f946f15cb
 <tr>
     <th>Date</th>
     <th>Viewed Item</th>

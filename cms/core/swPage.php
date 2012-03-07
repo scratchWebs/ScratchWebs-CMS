@@ -53,7 +53,7 @@ class swPage extends dbObject
 		if (mysql_num_rows($result) !== 0) {
 			$data = mysql_fetch_array($result);
 			
-			$this->createPageFromSQLData($data);
+			$this->createPageFromSQLData($data,true,false);
 			
 			return true;
 		} else {
@@ -117,7 +117,7 @@ class swPage extends dbObject
 		
 		$result = mysql_query($sql);
 		
-		while ($data = mysql_fetch_array($result))
+		while (($data = mysql_fetch_array($result)) == true)
 		{
 			$page = new swPage();
 			$page->createPageFromSQLData($data, false, false);

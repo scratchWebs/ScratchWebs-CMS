@@ -13,6 +13,7 @@
         <input type="text" value="header.php" />
     </p>
     <h4>Change UI Theme</h4>
+<<<<<<< HEAD
         <div class="uiButtonSet">
 	        <p>
 	            <input type="radio" name="theme" id="rdoThemeDefault" checked="checked" />	<label for="rdoThemeDefault">Default theme</label>
@@ -20,6 +21,13 @@
 	            <input type="radio" name="theme" id="rdoThemeDark" />						<label for="rdoThemeDark">Dark theme</label>
 	        </p>
         </div>
+=======
+    <div class="uiButtonSet">
+        <input type="radio" name="theme" id="rdoThemeDefault" checked="checked" /><label for="rdoThemeDefault">Default theme
+        </label><input type="radio" name="theme" id="rdoThemeLight" /><label for="rdoThemeLight">Light theme
+        </label><input type="radio" name="theme" id="rdoThemeDark" /><label for="rdoThemeDark">Dark theme</label>
+    </div>
+>>>>>>> 95123343f5557d12a77cbe438511697f946f15cb
     <h4>Helper Functions</h4>
     <p>
 		<button class="buttonNext" onclick="window.location='helpers/refreshImageSizes.php';return false">Refresh image sizes</button>

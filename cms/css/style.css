@@ -6,6 +6,12 @@ h3{margin:0px}
 th {text-align:left}
 table{border:none; border-collapse:collapse; border-spacing:0px;width:100%}
 
+/* general "Helper" classes */
+.hidden {display:none}
+.thinTable,
+.thinTable th,
+.thinTable td {padding:0px; margin:0px; border:0px}
+
 /* Status Bar at the top */
 #statusBar {width:880px; text-align:right;
 			padding:8px 10px 8px 10px;margin: 10px auto 10px auto}
@@ -32,7 +38,7 @@ table{border:none; border-collapse:collapse; border-spacing:0px;width:100%}
 
 /* Tab Logs */
 .logTable {border-collapse:collapse; width:100%; table-layout:fixed}
-.logTable td {border:1px solid #ccc; overflow:hidden}
+.logTable td {border:1px solid #ccc; overflow:hidden; padding:3px}
 
 /* Float buttons to the right */
 .buttonControls {float:right; text-align:right; position:relative}

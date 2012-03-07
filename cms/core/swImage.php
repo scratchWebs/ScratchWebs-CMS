@@ -487,7 +487,7 @@ class swImage extends dbObject
 		
 		$result = mysql_query($sql);
 		
-		while ($data = mysql_fetch_array($result))
+		while (($data = mysql_fetch_array($result)) == true)
 		{
 			$image = new swImage();
 			$image->createImageFromSQLData($data);
@@ -514,7 +514,7 @@ class swImage extends dbObject
 		
 		$result = mysql_query($sql);
 		
-		while ($data = mysql_fetch_array($result))
+		while (($data = mysql_fetch_array($result)) == true)
 		{
 			$image = new swImage();
 			$image->createImageFromSQLData($data);

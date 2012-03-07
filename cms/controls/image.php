@@ -1,8 +1,16 @@
 <?php
 /*
 	this script assumes that $image is an instance of swImage
+	$image_has_changes can optionally be set to highlight a change
 */
 
+$image = (isset($image)) ? $image : null;
+$image_has_changes = (isset($image_has_changes)) ? $image_has_changes : false;		// assume there are no changes
+
+// error of $image has not been set
+if (!isset($image)) throw new Exception('must declare a variable "$image" as an instance of swImage before using this control');
+
+// set the unique id for this control
 $uid = swGallery::UID . $image->img_fk_gallery_id;
 
 // decide what colour the box should be

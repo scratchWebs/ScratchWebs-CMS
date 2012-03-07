@@ -54,9 +54,15 @@ function _showForm() {
     <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<<<<<<< HEAD
     <title><?=$title?></title>
     <script src="/cms/scripts/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript">
+=======
+    <title>Init ScratchWebs CMS</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript" type="text/javascript">
+>>>>>>> 95123343f5557d12a77cbe438511697f946f15cb
 	function _testConnection() {
 		_init("&testConnection=true");
 	}
@@ -65,10 +71,10 @@ function _showForm() {
 		$('#divSuccess').hide();
 		$('#divError').hide();
 		
-		var server = document.getElementById('txtServer').value;
-		var username = document.getElementById('txtUsername').value;
-		var password = document.getElementById('txtPassword').value;
-		var db_name = document.getElementById('txtDBName').value;
+		var server = $('#txtServer').val();
+		var username = $('#txtUsername').val();
+		var password = $('#txtPassword').val();
+		var db_name = $('#txtDBName').val();
 		
 		$.ajax({
 			type: "POST",
