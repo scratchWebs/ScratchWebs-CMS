@@ -5,7 +5,7 @@ require_once("cms.php");
 <h3>Showing last 50 events</h3>
 <p><a href="" id="a_log_refresh" onclick="tabLog_refresh();return false" style="float:right">Refresh</a>
 Last Refreshed at: <?= date('d/m/y h:m:s', time()) ?></p>
-<table class="logTable" cellpadding="3" cellspacing="0">
+<table class="logTable" style="padding:0px; border:0px">
 <tr>
     <th>Date</th>
     <th>User</th>

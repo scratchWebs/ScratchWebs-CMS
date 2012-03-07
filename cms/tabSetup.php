@@ -1,6 +1,12 @@
 <?php
 
-// Site information
+/* Site information
+ * Assumes $pages is an array of swPage objects
+ */
+
+// ensure include has required information
+$pages = (isset($pages)) ? $pages : null;
+if (!isset($pages)) throw new Exception('$pages must be an array of swPage objects in: ' . __FILE__);
 
 ?>
 <h3>Website Setup</h3>
@@ -10,7 +16,7 @@
 // Page Setup
 
 ?>
-<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr valign="top"><td width="165">
+<table style="padding:0px; border:0px; width:100%"><tr valign="top"><td width="165">
     <ul id="sortable">
 		<?
         // CREATE SORTABLE PAGE MENU

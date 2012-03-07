@@ -45,7 +45,7 @@ class swSection extends dbObject
 	}
 	static function getSectionFromArray($sections,$id)
 	{
-		$returnSection;
+		$returnSection = null;
 		
 		foreach ($sections as $section)
 			if ($section->section_id == $id) {
@@ -65,7 +65,7 @@ class swSection extends dbObject
 				
 		$result = mysql_query($sql);
 		
-		while ($data = mysql_fetch_array($result)) {
+		while (($data = mysql_fetch_array($result)) == true) {
 			
 			$section = new swSection();
 			
@@ -107,7 +107,7 @@ class swSection extends dbObject
 		
 		$result = mysql_query($sql);
 		
-		while ($data = mysql_fetch_array($result))
+		while (($data = mysql_fetch_array($result)) == true)
 		{
 			$section = new swSection();
 			$section->createSectionFromSQLData($data);

@@ -71,7 +71,7 @@ class swLog extends dbObject
 		
 		$result = mysql_query($sql) or die(mysql_error());
 		
-		while ($data = mysql_fetch_array($result))
+		while (($data = mysql_fetch_array($result)) == true)
 		{
 			$log = new swLog();
 			$log->createLogFromSQLData($data);

@@ -145,7 +145,7 @@ class swSessionUpdate
 	}
 	public function undo($sessionObject)
 	{
-		$undoResponse;
+		$undoResponse = "";
 		
 		switch ($this->update_type) {
 			// swPortfolio updates

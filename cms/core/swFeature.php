@@ -31,11 +31,11 @@ class swFeature extends dbObject
 	}
 	public function saveAsNew()
 	{
-		$feature_object->saveAsNew();
+		$this->feature_object->saveAsNew();
 	}
 	public function update()
 	{
-		$feature_object->update();
+		$this->feature_object->update();
 	}
 	public function createFromId($id)
 	{
@@ -98,7 +98,7 @@ class swFeature extends dbObject
 				
 		$result = mysql_query($sql);
 		
-		while ($data = mysql_fetch_array($result)) {
+		while (($data = mysql_fetch_array($result)) == true) {
 			$feature = new swFeature();
 			$feature->createFeatureFromSQLData($data);
 			
@@ -116,7 +116,7 @@ class swFeature extends dbObject
 				
 		$result = mysql_query($sql);
 		
-		while ($data = mysql_fetch_array($result))
+		while (($data = mysql_fetch_array($result)) == true)
 		{
 			$feature = new swFeature();
 			$feature->createFeatureFromSQLData($data,$images);

@@ -31,7 +31,7 @@ th {text-align:left}
 
 /* Tab Logs */
 .logTable {border-collapse:collapse; width:100%; table-layout:fixed}
-.logTable td {border:1px solid #ccc; overflow:hidden}
+.logTable td {border:1px solid #ccc; overflow:hidden; padding:3px}
 
 /* Float buttons to the right */
 .buttonControls {float:right; text-align:right; position:relative}
