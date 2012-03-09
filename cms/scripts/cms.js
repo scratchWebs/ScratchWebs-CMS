@@ -17,7 +17,7 @@ $(document).ready(function(e)
 	});
 	
 	// generic accordion setup
-	$(".accordion").accordion({ header: "h3", autoHeight: false, collapsible:true, active:false })
+	$(".accordion").accordion({ header: "h3", autoHeight: false, collapsible:true, active:false });
 	
 	// Selectable history items
 	$( "#selectable" ).selectable();
@@ -34,9 +34,9 @@ $(document).ready(function(e)
 	$( "#changeDialog" ).dialog({autoOpen: false,modal: true,draggable: false,resizable: false, width:700 });						// init
 	$(".selectAll, .deselectAll, .previewChanges, .commitChanges, .passwordCancel").button();										// init
 	$("#status_bar div").css("opacity",0.7);																						// set bar opacity
-	$("#status_commit").hover(function (){$(this).css("opacity",1);},function (){$(this).css("opacity",0.7);})						// commit button rollover
-	$('#commitDeselectAll').click(function(){$('#sessionChanges input[type=checkbox]').removeAttr('checked')});						// select/deslect all
-	$('#commitSelectAll').click(function(){$('#sessionChanges input[type=checkbox]').attr('checked','checked')});						// select/deslect all
+	$("#status_commit").hover(function (){$(this).css("opacity",1);},function (){$(this).css("opacity",0.7);});						// commit button rollover
+	$('#commitDeselectAll').click(function(){$('#sessionChanges input[type=checkbox]').removeAttr('checked');});						// select/deslect all
+	$('#commitSelectAll').click(function(){$('#sessionChanges input[type=checkbox]').attr('checked','checked');});						// select/deslect all
 	
 	
 // Status bar account button //////////////
@@ -51,10 +51,10 @@ $(document).ready(function(e)
 // editable text areas ////////////////////
 	$(".editSection, .editable").addClass("ui-corner-all");																	// init
 	$(".editable").hover(function(){$(this).css("border-color","#FAA");},function(){$(this).css("border-color","#CCC");})	// init
-		.focusin(function() {$(this).css("border-color","#FAA").css("border-style","solid")})								// init
-		.focusout(function() {$(this).css("border-color","#CCC").css("border-style","dashed")})								// init
-	$(".undoChange:not(.ui-state-disabled)").button({text:false,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo")	// init
-	$(".undoChange.ui-state-disabled").button({text:false,disabled:true,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo")	// init
+		.focusin(function() {$(this).css("border-color","#FAA").css("border-style","solid");})								// init
+		.focusout(function() {$(this).css("border-color","#CCC").css("border-style","dashed");});								// init
+	$(".undoChange:not(.ui-state-disabled)").button({text:false,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo");	// init
+	$(".undoChange.ui-state-disabled").button({text:false,disabled:true,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo");	// init
 	
 	
 	
@@ -133,15 +133,15 @@ function logoutFn() {
 	var sw = {
 		isUpdating:false,
 		isRefreshing:false
-	}
+	};
 	
 	// ajax manager to queue ajax calls to prevent the web browser from crashing
-	var ajaxManager = $.manageAjax.create('cacheQueue', {
+	$.manageAjax.create('cacheQueue', {
 		queue: true, 
 		cacheResponse: false,	// don't ever cache the response as it will always be different
 		preventDoubleRequests: false,
 		maxRequests:2
-	})
+	});
 	
 	// Loading dropdown message
 	$(document).ready(function(e) {
@@ -197,7 +197,7 @@ function logoutFn() {
 		$.swAjax('refreshControl.php',data,function(response){
 			if (typeof callback == 'function') callback.call(this,response);
 		});
-	}
+	};
 	
 	// To Update the session
 	// EXAMPLE 1 (Basic usage)...
@@ -233,19 +233,19 @@ function logoutFn() {
 	$.swUpdateSession = function( data, callback ){
 		sw.isUpdating=true;
 		$.swAjax('updateSession.php',data,function(response){
-			var response = {
+			var responseObj = {
 				updateKey:$('updateKey',response).text(),
 				responseHTML:$('responseHTML',response).text()
-			}
+			};
 			
-			if (typeof(callback) == 'function') callback.call(this,response);
+			if (typeof(callback) == 'function') callback.call(this,responseObj);
 		},'xml');
-	}
+	};
 	
 	$.swUndo = function( data, callback ){
 		sw.isUpdating=true;
 		$.swAjax('undo.php',data,callback);
-	}
+	};
 	
 	// Refresh commit status
 	// Function get's called automatically after $.swUpdateSession has finished
@@ -253,7 +253,7 @@ function logoutFn() {
 		sw.isRefreshing=true;
 		
 		$.swAjax('refreshStatus.php',{},function(response){			// ajax call to refresh the status
-			$("#status_commit").unbind('click')						// remove previous click event
+			$("#status_commit").unbind('click');					// remove previous click event
 			
 			var noOfChanges = $('noOfChanges',response).text();		// get the number of changes from the response
 			
@@ -282,7 +282,7 @@ function logoutFn() {
 			}
 			
 		},'xml');
-	}
+	};
 	
 	$.swCommit = function(){
 		$('#sessionChanges form')[0].submit();
@@ -292,20 +292,20 @@ function logoutFn() {
 		$.swAjax('commit.php',formData,function(response){
 			alert(response);
 		});*/
-	}
+	};
 	
 	// function to serialize form data to a javascript object
 	$.fn.swSerialize = function(object,querystring){
-		var serializedData = {}
+		var serializedData = {};
 		
 		this.each(function(){
 			if (this.tagName == "FORM") {
-				var formData = $(this).serialize()
+				var formData = $(this).serialize();
 				var regex_key_value = /([^&=]+)=?([^&]*)/g;
 				
 				var decode = function (string) {
 					return decodeURIComponent(string.replace(/\+/g, " "));
-				}
+				};
 				
 				while (keyVal = regex_key_value.exec(formData))
 					serializedData[decode(keyVal[1])] = decode(keyVal[2]);
@@ -313,6 +313,6 @@ function logoutFn() {
 		});
 		
 		return serializedData;
-	}
+	};
 	
-})(jQuery)
+})(jQuery);
