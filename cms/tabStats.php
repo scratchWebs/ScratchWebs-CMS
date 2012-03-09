@@ -14,7 +14,7 @@ Last Refreshed at: <?= date('d/m/y h:m:s', time()) ?></p>
     <th>IP Address</th>
 </tr>
 <?
-$stats = swPageStat::getStats(50);
+$stats = swStat::getStats(50);
 foreach ($stats as $stat)
 {
 	echo '<tr>';

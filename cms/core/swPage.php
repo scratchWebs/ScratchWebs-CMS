@@ -25,7 +25,7 @@ class swPage extends dbObject
 		if ($code_ref !== NULL) {
 			$this->createFromCodeRef($code_ref);
 			
-			$stat = new swPageStat();
+			$stat = new swStat();
 			$stat->stat_object_type = dbObject::OBJECT_TYPE_PAGE;
 			$stat->stat_object_id = $this->pg_id;
 			$stat->saveAsNew();
