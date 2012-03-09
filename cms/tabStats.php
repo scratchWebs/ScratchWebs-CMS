@@ -5,11 +5,7 @@ require_once("cms.php");
 <h3>Last 50 Site Visit Statistics</h3>
 <p><a href="" id="a_stats_refresh" onclick="tabStats_refresh();return false" style="float:right">Refresh</a>
 Last Refreshed at: <?= date('d/m/y h:m:s', time()) ?></p>
-<<<<<<< HEAD
-<table class="logTable">
-=======
 <table class="logTable" style="padding:0px; border:0px">
->>>>>>> 95123343f5557d12a77cbe438511697f946f15cb
 <tr>
     <th>Date</th>
     <th>Viewed Item</th>
