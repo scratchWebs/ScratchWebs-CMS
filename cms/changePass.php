@@ -17,9 +17,8 @@ if ($oldPass == $sessionObject->user->user_pass) {
 	
 	// Set new password
 	$sessionObject->user->user_pass = $newPass;
-	$sessionObject->user->update();
-	
-	$changeResponse = "success";
+	if ($sessionObject->user->update() == TRUE) $changeResponse = "success";
+	else $changeResponse = "dbError";
 }
 else {	
 	$changeResponse = "fail";

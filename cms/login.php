@@ -13,36 +13,38 @@ if (! $settings->hasData) {
 	exit;
 }
 
-if ($_POST["hidFormSubmitted"] == "true") {
-	
-	$user_name = $_POST["usr"];
-	$user_pass = $_POST["pwd"];
-	
-	$user = new swUser();
-	
-	$loginSuccessfull = $user->login($user_name,$user_pass);
-	
-	if ($loginSuccessfull) {
-		$sessionObject = new swSessionObject();
+if (isset($_POST["hidFormSubmitted"])) {
+	if ($_POST["hidFormSubmitted"] == "true") {
 		
-		$sessionObject->isLoggedIn = true;
-		$sessionObject->user = $user;
-		$sessionObject->loadAllCMSContent();
+		$user_name = $_POST["usr"];
+		$user_pass = $_POST["pwd"];
 		
-		$log = new swLog();
-		$log->log_object_type = dbObject::OBJECT_TYPE_USER;
-		$log->log_object_id = $user->user_id;
-		$log->log_type = swLog::LOG_TYPE_USER_LOGIN;
-		$log->log_fk_user_id = $user->user_id;
-		$log->saveAsNew();
-	} else {
-		$log = new swLog();
-		$log->log_object_type = dbObject::OBJECT_TYPE_USER;
-		$log->log_type = swLog::LOG_TYPE_USER_LOGIN_FAILED;
-		$log->log_message = 'username: "' . $user_name . '" password: "'  . $user_pass . '"';
-		$log->saveAsNew();
+		$user = new swUser();
 		
-		$ErrorMessage = "<span style='color:#C00'>Login Failed</span>";
+		$loginSuccessfull = $user->login($user_name,$user_pass);
+		
+		if ($loginSuccessfull) {
+			$sessionObject = new swSessionObject();
+			
+			$sessionObject->isLoggedIn = true;
+			$sessionObject->user = $user;
+			$sessionObject->loadAllCMSContent();
+			
+			$log = new swLog();
+			$log->log_object_type = dbObject::OBJECT_TYPE_USER;
+			$log->log_object_id = $user->user_id;
+			$log->log_type = swLog::LOG_TYPE_USER_LOGIN;
+			$log->log_fk_user_id = $user->user_id;
+			$log->saveAsNew();
+		} else {
+			$log = new swLog();
+			$log->log_object_type = dbObject::OBJECT_TYPE_USER;
+			$log->log_type = swLog::LOG_TYPE_USER_LOGIN_FAILED;
+			$log->log_message = 'username: "' . $user_name . '" password: "'  . $user_pass . '"';
+			$log->saveAsNew();
+			
+			$ErrorMessage = "<span style='color:#C00'>Login Failed</span>";
+		}
 	}
 }
 
@@ -179,7 +181,7 @@ if (isset($sessionObject) || $sessionObject->isLoggedIn) {
     						<div id="loginDialog">
                                 <div style="margin-bottom:10px">Please login to the CMS...</div>
                                 <form method="post" action="" id="loginForm"><input type="hidden" name="hidFormSubmitted" value="true" />
-                                    <div><label for="user_name">Username:</label><input type="text" id="user_name" name="usr" value="<?= $_POST["usr"] ?>" /></div>
+                                    <div><label for="user_name">Username:</label><input type="text" id="user_name" name="usr" value="<? if (isset($_POST["usr"])) echo $_POST["usr"]; ?>" /></div>
                                     <div><label for="user_pass">Password:</label><input type="password" id="user_pass" name="pwd" onkeypress="handleEnter(this, event)" value="" /></div>
                                     <div><a id="btnLogin" onClick="javascript:submitForm();">Login</a></div>
                                     <div id='loginError' style='text-align:center;color:#777'>

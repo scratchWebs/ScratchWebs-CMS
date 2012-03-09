@@ -16,11 +16,11 @@ if (!isset($pages)) throw new Exception('$pages must be an array of swPage objec
 // Page Setup
 
 ?>
-<<<<<<< HEAD
+
 <table><tr valign="top"><td width="165">
-=======
+
 <table class="thinTable" style="width:100%"><tr valign="top"><td width="165">
->>>>>>> 95123343f5557d12a77cbe438511697f946f15cb
+
     <ul id="sortable">
 		<?
         // CREATE SORTABLE PAGE MENU

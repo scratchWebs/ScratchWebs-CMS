@@ -124,12 +124,10 @@ class swUser extends dbObject
 							user_type = " . $this->user_type . ",
 							user_full_name = '" . mysql_real_escape_string(substr($this->user_full_name,0,50)) . "',
 							user_email = '" . mysql_real_escape_string(substr($this->user_email,0,100)) . "',
-							user_is_expired = " . (int) $this->user_is_expired . ")
+							user_is_expired = " . (int) $this->user_is_expired . "
 					WHERE user_id = " . $this->user_id . ";";
 						 
-			if (mysql_query($sql))
-				$success =  true;
-				
+			if (mysql_query($sql))	$success =  true;
 		}
 		
 		return $success;
