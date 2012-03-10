@@ -97,7 +97,7 @@ $(document).ready(function(e)
 
 // Ajax change password //////////////////////
 function changePasswordAjax () {
-	$.swAjax('changePass.php',{old_pass:$("#oldPW").val(),new_pass:$("#newPW").val()},function(){
+	$.swAjax('changePass.php',{old_pass:$("#oldPW").val(),new_pass:$("#newPW").val()},function(response){
 		alert(response);
 	});
 
