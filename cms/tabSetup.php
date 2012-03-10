@@ -16,12 +16,6 @@ if (!isset($pages)) throw new Exception('$pages must be an array of swPage objec
 // Page Setup
 
 ?>
-
-<table><tr valign="top"><td width="165">
-
-<table class="thinTable" style="width:100%"><tr valign="top"><td width="165">
-
-
 <table class="thinTable" style="width:100%"><tr valign="top"><td width="165">
     <ul id="sortable">
 		<?
