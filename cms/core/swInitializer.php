@@ -71,7 +71,7 @@ class swInitializer
 							 new swImage(),
 							 new swUser(),
 							 new swLog(),
-							 new swPageStat());
+							 new swStat());
 							 
 			foreach ($modules as $dbObject) {
 				echo "<br />creating table " . $dbObject->getTableName();

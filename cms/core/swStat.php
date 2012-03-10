@@ -1,6 +1,6 @@
 <?php
 
-class swPageStat extends dbObject
+class swStat extends dbObject
 {
 	const UID = "log";
 	
@@ -44,7 +44,7 @@ class swPageStat extends dbObject
 		
 		while (($data = mysql_fetch_array($result)) == true)
 		{
-			$stat = new swPageStat();
+			$stat = new swStat();
 			$stat->createStatFromSQLData($data);
 			
 			$stats[$stat->stat_id] = $stat;
