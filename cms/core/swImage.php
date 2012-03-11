@@ -34,6 +34,10 @@ class swImage extends dbObject
 	public function getUID() {
 		return self::UID . $this->img_id;
 	}
+	public function getObjectID()
+	{
+		return $this->img_id;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_IMAGE;

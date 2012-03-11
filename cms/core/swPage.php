@@ -38,6 +38,10 @@ class swPage extends dbObject
 	public function getUID() {
 		return self::UID . $this->pg_id;
 	}
+	public function getObjectID()
+	{
+		return $this->pg_id;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_PAGE;

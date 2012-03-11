@@ -17,6 +17,10 @@ class swSection extends dbObject
 	public function getUID() {
 		return self::UID . $this->section_id;
 	}
+	public function getObjectID()
+	{
+		return $this->section_id;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_SECTION;

@@ -16,6 +16,10 @@ class swFeature extends dbObject
 	public function getUID() {
 		return (isset($this->feature_object)) ? $this->feature_object->getUID() : NULL;
 	}
+	public function getObjectID()
+	{
+		return $this->feature_object->getObjectID();
+	}
 	public function getObjectType()
 	{
 		return $this->feature_object->getObjectType();

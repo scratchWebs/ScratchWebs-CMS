@@ -54,6 +54,10 @@ class swLog extends dbObject
 	public function getUID() {
 		return self::UID . $this->log_id;
 	}
+	public function getObjectID()
+	{
+		return $this->log_id;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_LOG;

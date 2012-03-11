@@ -27,6 +27,10 @@ class swStat extends dbObject
 	public function getUID() {
 		return self::UID . $this->stat_id;
 	}
+	public function getObjectID()
+	{
+		return $this->stat_id;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_PAGESTAT;
