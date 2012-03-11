@@ -57,7 +57,7 @@ class swPage extends dbObject
 		if (mysql_num_rows($result) !== 0) {
 			$data = mysql_fetch_array($result);
 			
-			$this->createPageFromSQLData($data,true,false);
+			$this->createPageFromSQLData($data,true);
 			
 			return true;
 		} else {
@@ -83,7 +83,7 @@ class swPage extends dbObject
 		}
 		
 	}
-	public function createPageFromSQLData($data,$getSections = true,$getFeatures = true)
+	public function createPageFromSQLData($data,$getSections = true)
 	{
 		$this->delete_flag = $data["delete_flag"];
 		$this->enabled = $data["enabled"];
@@ -102,16 +102,13 @@ class swPage extends dbObject
 		
 		if ($getSections)
 			$this->pg_sections = swSection::getSectionsForPage($this->pg_id);
-		
-		if ($getFeatures)
-			$this->pg_features = swFeature::getFeaturesForPage($this->pg_id);
 	}
 	
 	static function getAllPagesInOrder($images = NULL,$enabledOnly = true)
 	{
 		$pages = array();
 
-		if ($enabledOnly) $enabled_param = "AND enabled = 1";
+		$enabled_param = ($enabledOnly) ? "AND enabled = 1" : "";
 		
 		$sql = "SELECT * 
 				FROM tblPages 
@@ -124,7 +121,7 @@ class swPage extends dbObject
 		while (($data = mysql_fetch_array($result)) == true)
 		{
 			$page = new swPage();
-			$page->createPageFromSQLData($data, false, false);
+			$page->createPageFromSQLData($data, false);
 			
 			foreach ($images as $img)
 				if ($img->img_fk_pg_id == $page->pg_id)

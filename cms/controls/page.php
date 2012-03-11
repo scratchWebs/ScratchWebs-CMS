@@ -1,4 +1,10 @@
 <?php
+/*
+ * Script assumes $page is set to an instance of swPage
+ * 
+ * */
+$page = (isset($page)) ? $page : null;
+if (!isset($page)) throw new Exception('$page is not set to an instance of swPage');
 
 $divID = $page->getUID();		// unique div id to tie the sortable menu to the relevant page
 
@@ -16,15 +22,13 @@ if (!$page->isFirstPage()) $className = "ui-helper-hidden";		// hide all but the
 					$feature_name = "";
 					$feature_image = "";
 					
-					switch ($feature->feature_type) {
+					switch ($feature->getFeatureType()) {
 						case swFeature::FEATURE_TYPE_GALLERY:
-							$gallery = $feature->feature_object;
-							$feature_name = $gallery->gallery_name;
+							$feature_name = $feature->gallery_name;
 							$feature_image = "ui-icon-image";
 							break;
 						case swFeature::FEATURE_TYPE_PORTFOLIO:
-							$portfolio = $feature->feature_object;
-							$feature_name = $portfolio->portfolio_name;
+							$feature_name = $feature->portfolio_name;
 							$feature_image = "ui-icon-image";
 							break;
 					}
@@ -142,14 +146,14 @@ if (!$page->isFirstPage()) $className = "ui-helper-hidden";		// hide all but the
 			?>
 			<div id="feature_<?= $feature->getUID(); ?>">
 			<?
-			switch ($feature->feature_type) 
+			switch ($feature->getFeatureType()) 
 			{
 				case swFeature::FEATURE_TYPE_GALLERY:
-					$gallery = $feature->feature_object;
+					$gallery = $feature;
 					include("gallery.php");
 					break;
 				case swFeature::FEATURE_TYPE_PORTFOLIO:
-					$portfolio = $feature->feature_object;
+					$portfolio = $feature;
 					include("portfolio.php");
 					break;
 			}

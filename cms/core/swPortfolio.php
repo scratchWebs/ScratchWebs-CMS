@@ -1,6 +1,6 @@
 <?php
 
-class swPortfolio extends dbObject
+class swPortfolio extends swFeature
 {
 	const UID = "pf";
 	
@@ -24,6 +24,10 @@ class swPortfolio extends dbObject
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_PORTFOLIO;
+	}
+	public function getFeatureType()
+	{
+		return swFeature::FEATURE_TYPE_PORTFOLIO;
 	}
 	public function __construct($code_ref = NULL)
 	{
