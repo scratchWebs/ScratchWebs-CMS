@@ -1,8 +1,8 @@
 <?php session_start();
 // This file should be required_once on every document which needs to use the CMS
 
-error_reporting(0);
-//error_reporting(-1);
+//error_reporting(0);
+error_reporting(-1);
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
