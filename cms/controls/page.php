@@ -31,6 +31,10 @@ if (!$page->isFirstPage()) $className = "ui-helper-hidden";		// hide all but the
 							$feature_name = $feature->portfolio_name;
 							$feature_image = "ui-icon-image";
 							break;
+						case swFeature::FEATURE_TYPE_WEBLOG:
+							$feature_name = $feature->weblog_name;
+							$feature_image = "ui-icon-script";
+							break;
 					}
 					?>
 					  <li><a href="#feature_<?= $feature->getUID() ?>">
@@ -155,6 +159,10 @@ if (!$page->isFirstPage()) $className = "ui-helper-hidden";		// hide all but the
 				case swFeature::FEATURE_TYPE_PORTFOLIO:
 					$portfolio = $feature;
 					include("portfolio.php");
+					break;
+				case swFeature::FEATURE_TYPE_WEBLOG:
+					$weblog = $feature;
+					include("weblog.php");
 					break;
 			}
 			?>

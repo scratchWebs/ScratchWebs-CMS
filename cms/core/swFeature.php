@@ -1,10 +1,11 @@
 <?php
 
-abstract class swFeature extends dbObject {
-	
+abstract class swFeature extends dbObject
+{
 	const FEATURE_TYPE_CONTACT = 0;
 	const FEATURE_TYPE_GALLERY = 1;
 	const FEATURE_TYPE_PORTFOLIO = 2;
+	const FEATURE_TYPE_WEBLOG = 3;
 	
 	public abstract function getFeatureType();
 	
@@ -38,7 +39,6 @@ abstract class swFeature extends dbObject {
 		
 		return $features;
 	}
-	
 	private static function _getFeature($featureID,$featureType,$images)
 	{
 		$feature = null;
@@ -54,13 +54,16 @@ abstract class swFeature extends dbObject {
 				$feature->createFromId($featureID);
 				$feature->linkImages($images);
 				break;
+			case self::FEATURE_TYPE_WEBLOG:
+				$feature = new swWebLog();
+				$feature->createFromId($featureID);
+				break;
 			default:
 				throw new Exception("Unknown feature");
 		}
 		
 		return $feature;
 	}
-	
 }
 
 ?>

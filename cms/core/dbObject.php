@@ -10,6 +10,7 @@ abstract class dbObject
 	const OBJECT_TYPE_USER = 6;
 	const OBJECT_TYPE_LOG = 7;
 	const OBJECT_TYPE_STAT = 8;
+	const OBJECT_TYPE_WEBLOG = 9;
 	
 	public $delete_flag = false;
 	public $enabled = true;

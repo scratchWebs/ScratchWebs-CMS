@@ -160,8 +160,8 @@ class swPortfolio extends swFeature
 		if ($this->portfolio_id !== NULL) {
 			
 			$sql = "UPDATE tblPortfolios 
-						SET delete_flag = '" . (int) $this->delete_flag . "',
-							enabled = '" . (int) $this->enabled . "',
+						SET delete_flag = " . (int) $this->delete_flag . ",
+							enabled = " . (int) $this->enabled . ",
 							portfolio_name = '" . mysql_real_escape_string(substr($this->portfolio_name,0,100)) . "',
 							portfolio_gallery_rename = '" . mysql_real_escape_string(substr($this->portfolio_gallery_rename,0,100)) . "',
 							portfolio_order = " . $this->portfolio_order . ",
