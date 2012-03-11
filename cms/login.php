@@ -39,6 +39,7 @@ if (isset($_POST["hidFormSubmitted"])) {
 		} else {
 			$log = new swLog();
 			$log->log_object_type = dbObject::OBJECT_TYPE_USER;
+			$log->log_object_id = -1;
 			$log->log_type = swLog::LOG_TYPE_USER_LOGIN_FAILED;
 			$log->log_message = 'username: "' . $user_name . '" password: "'  . $user_pass . '"';
 			$log->saveAsNew();

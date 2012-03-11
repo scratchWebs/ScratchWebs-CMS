@@ -333,11 +333,11 @@ class swSessionUpdate
 		}
 	}
 	
-	public function commitUpdate(&$savedObjects)
+	public function commitUpdate(&$savedObjects)	// pass in $savedObjects by reference
 	{
 		$object_key = $this->update_object->getUID();
 		
-		if (isset($this->update_object) && !array_key_exists($object_key,$savedObjects))
+		if (isset($this->update_object) && !array_key_exists($object_key,$savedObjects))		// don't commit the same object twice
 		{
 			if ($this->is_new)	$this->update_object->saveAsNew();
 			else				$this->update_object->update();
@@ -349,8 +349,8 @@ class swSessionUpdate
 			$this->update_object->sessionUpdates = array();
 		}
 		
-		foreach ($this->additional_updates as $sessionUpdate)
-			$sessionUpdate->commitUpdate();
+		foreach ($this->additional_updates as $sessionUpdate)		// loop through and commit all additional_updates
+			$sessionUpdate->commitUpdate(&$savedObjects);
 	}
 }
 
