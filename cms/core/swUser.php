@@ -23,6 +23,10 @@ class swUser extends dbObject
 	public function getUID() {
 		return self::UID . $this->user_id;
 	}
+	public function getObjectID()
+	{
+		return $this->user_id;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_USER;

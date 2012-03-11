@@ -40,6 +40,10 @@ class swGallery extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_GALLERY;
 	}
+	public function getObjectID()
+	{
+		return $this->gallery_id;
+	}
 	public function getUID() {
 		return self::UID . $this->gallery_id;
 	}

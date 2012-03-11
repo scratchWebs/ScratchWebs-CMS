@@ -16,6 +16,7 @@ abstract class dbObject
 	
 	public $sessionUpdates = array();	// an array of swSessionUpdates that are relevant to this object
 	
+	abstract public function getObjectID();
 	abstract public function getObjectType();
 	abstract public function getUID();
 	abstract public function createFromId($id);
