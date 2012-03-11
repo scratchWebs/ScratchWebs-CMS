@@ -50,8 +50,8 @@ if (isset($_POST["hidFormSubmitted"])) {
 }
 
 // if the user is logged in then redirect to the admin page
-$sessionObject = $_SESSION["swSessionObject"];
-if (isset($sessionObject) || $sessionObject->isLoggedIn) {
+$sessionObject = new swSessionObject();
+if ($sessionObject->isLoggedIn) {
 	// ensure the session data get's written before we redirect
 	header("location: " . DOCUMENT_ROOT . "cms");
 	exit;
