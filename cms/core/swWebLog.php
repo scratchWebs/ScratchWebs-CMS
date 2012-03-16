@@ -2,7 +2,7 @@
 
 class swWebLog extends swFeature
 {
-	const UID = "wlog";
+	const UID = "wl";
 	
 	public $weblog_id;
 	public $weblog_name = "";
