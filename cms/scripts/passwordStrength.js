@@ -105,7 +105,7 @@ var IW = IW || {};
         if (percentage > 90) { 
             progressBar.addClass("strong"); 
         } else if (percentage > 50) { 
-            progressBar.addClass("medium") 
+            progressBar.addClass("medium"); 
         } else if (percentage > 10) { 
             progressBar.addClass("weak"); 
         } else { 
@@ -125,6 +125,55 @@ var IW = IW || {};
  
         return this; // for chaining 
  
-    } 
+    };
  
 })(IW, jQuery); 
+
+
+function changePasswordAjax () {
+	$.swAjax('changePass.php',{old_pass:$("#oldPW").val(),new_pass:$("#newPW").val()},function(response){
+		if (response == "success") {
+			$("#pwMsg").text('');
+			$("#oldPW, #newPW, #newPW2").val('');
+			$("#pw1").css({'display':'none'});
+			$("#pw2").css({'display':'block'});
+			$(".passwordStrengthBar div").removeClass("strong medium weak useless").css({"width": "0"}); 
+			
+		}
+		if (response == "fail") {
+			$("#pwMsg").text("Incorrect password").show();
+			$("#oldPW").val('');
+		}
+		
+		
+	});
+
+}
+
+function pwSuccess () {
+	$( "#passwordDialog" ).dialog("close");
+	$("#pw1").css({'display':'block'});
+	$("#pw2").css({'display':'none'});
+	$(".passwordChange").button({disabled:true});
+}
+
+function pwdFn() {
+	$( "#passwordDialog" ).dialog("open");
+	$(".ui-dialog").position({ my: 'center top', at: 'center top', of: '#main', offset: "0, 10" });
+	return false;
+}
+
+$(document).ready(function(e) {
+	$(".passwordChange").button({disabled:true}).css("height", 24);
+	jQuery("#newPW").passwordValidate();
+	jQuery("#newPW2").keyup(function(e) {
+		if ($(this).val() == $("#newPW").val()) {
+			$(this).css("color","#009900");
+			$(".passwordChange").button({disabled:false});
+		}
+		else {
+			$(this).css("color","#000000");
+			$(".passwordChange").button({disabled:true});
+		}
+	});
+});

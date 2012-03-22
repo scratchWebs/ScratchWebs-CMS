@@ -29,7 +29,7 @@ if (!isset($pages)) throw new Exception('$pages must be an array of swPage objec
             
             // the following line of code HTML needs to all be on one line for jquery to replace the text
             ?>
-            <li class="<?= $ButtonStyleEnabled; ?><?= $ButtonStyleHighlight; ?> sortItem" data-pageid="<?= $page->pg_id ?>" id="pgID_<?= $page->pg_id ?>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?= $page->pg_linkname; ?><? if ($page->hasUpdates()) echo '<span class="ui-icon ui-icon-alert hasEdits"></span>' ?></li>
+            <li style="position:relative" class="<?= $ButtonStyleEnabled; ?><?= $ButtonStyleHighlight; ?> sortItem" data-pageid="<?= $page->pg_id ?>" id="pgID_<?= $page->pg_id ?>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?= $page->pg_linkname; ?><? if ($page->noUpdates() > 0) echo '<span class="changeIndicator ui-state-error">'.$page->noUpdates().'</span>';?></li>
             <?
         }
 		?>

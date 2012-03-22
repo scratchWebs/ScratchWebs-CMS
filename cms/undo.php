@@ -18,8 +18,23 @@ if (array_key_exists($updateKey, $sessionObject->sessionUpdates))
 	$undoResponse = $sessionUpdate->undo($sessionObject);
 }
 
-echo $undoResponse;		// send the response back
 
+
+if (isset($_GET["update_object_id"])) $update_object_id = $_GET["update_object_id"];
+$page = $sessionObject->getPageById($update_object_id);
+
+
+// output this as xml so we can pass the responseHTML and updateKey to the page. jQuery will do the clever bit.
+echo '<?xml version="1.0"?>' .
+	 '<sessionUpdate>';
+
+echo '<undoResponse>' . $undoResponse . '</undoResponse>';		// send the response back
+
+echo '<noUpdates>' . $page->noUpdates() . '</noUpdates>';			// DOESNT WORK WITH SECTIONS
+
+echo '</sessionUpdate>';
+
+header("content-type:application/xml;charset=utf-8 .xml");
 
 $sessionObject->saveState();		// always save the sessionState to keep the changes
 

@@ -25,6 +25,7 @@ else {
 }
 
 // Return response
+$sessionObject->saveState();
 echo $changeResponse;
 
 ?>

@@ -85,8 +85,12 @@ if (isset($sessionObject) || $sessionObject->isLoggedIn) {
 		#helpDialog, #loginDialog{display:none;}
 		
     </style>
+<!-- script 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+-->
+		<script src="jquery.ui/js.ss/jquery-1.6.4.min.js" type="text/javascript"></script>
+		<script src="jquery.ui/js.ss/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
     <script type="text/javascript">
 		$(document).ready(function() {
 			$("#btnHelp").button({icons: {primary: "ui-icon-help", text: false}});
@@ -191,7 +195,7 @@ if (isset($sessionObject) || $sessionObject->isLoggedIn) {
                             </div>
 
                             <div id="helpDialog">
-                            	<div style="margin-bottom:10px">Scratchwebs CMS version:	&nbsp;&nbsp;&nbsp;1.00</div>
+                            	<div style="margin-bottom:10px">Scratchwebs CMS version:	&nbsp;&nbsp;&nbsp;1.01 beta</div>
                                 <div style="margin-bottom:10px; text-align:justify">If you need any help or assistance with <b>ScratchWebs CMS</b>, or have any queries or suggestions, please do not hesitate to contact us:</div>
                                 <table style="padding:0px; border:0px">
                                 	<tr height="28"><td width="35"><a class="emailButton" href="mailto:tomhrvy@gmail.com"></a></td><td width="120">Thomas Harvey</td><td>07816 270 860</td></tr>

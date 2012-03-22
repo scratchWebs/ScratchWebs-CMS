@@ -10,7 +10,7 @@ function common_configureDropDownButtons(context)
 	
 	// configure dropdown buttons
 	buttons.button({icons: {primary:"ui-icon-gear", secondary:"ui-icon-triangle-1-s"}})
-		   .click(function(){ return false });
+		   .click(function(){ return false; });
 						
 	common_initializeMenus(context);
 }
@@ -40,7 +40,7 @@ function common_accordionSortableSetup(context,activeItem)
 	var accordionSortableStop = false;
 	accordions.accordion("destroy")
 			  .accordion({ header:"h3", autoHeight:false, collapsible:true, active:activeItem, autoActivate:true })
-			  .sortable({axis:"y", handle:"h3", stop:function() {accordionSortableStop = true}})
+			  .sortable({axis:"y", handle:"h3", stop:function() {accordionSortableStop = true;}})
 			  .click(function( event ) {
 					if ( accordionSortableStop ) {
 						event.stopImmediatePropagation();

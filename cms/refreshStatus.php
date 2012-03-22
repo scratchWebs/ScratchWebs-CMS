@@ -10,7 +10,11 @@ $commit_form = '<form action="commit.php" method="post">' .
 foreach($sessionObject->sessionUpdates as $key => $sessionUpdate)
 {
 	$commit_form .= '<p style="margin:3px 0"><input type="checkbox" id="'.$key.'" name="'.$key.'" value="'.$key.'" checked="checked" />' .
-					'<label for="'.$key.'">' . $sessionUpdate->getDesciption() . '</label></p>';
+					'<label for="'.$key.'">' . $sessionUpdate->getDesciption() . '</label><a href="#" style="float:right" onclick="' .
+
+	''// some php required to generate undo function
+	
+							. '">undo</a></p>';
 }
 
 $commit_form .= '</form>';

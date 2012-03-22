@@ -8,7 +8,7 @@
     <textarea class="editRTE ui-corner-all" id="divSectionHTML<?= $section->section_id ?>">
 		<?= $section->section_html; ?>
     </textarea>
-    <div class="editRTEbuttons">
+    <div class="editRTEbuttons" data-pageid="<?= $page->pg_id ?>">
         <span class="RTEbutton RTEsave" onclick="swSection_html_update('<?= $section->section_id ?>',$('#btn_undo_section<?= $section->section_id ?>'))"></span>
 		<span id="btn_undo_section<?= $section->section_id ?>" class="RTEbutton undoChange<? if (!isset($updateKey)) echo " ui-state-disabled" ?>" onclick="swSection_html_undo('<?= $section->section_id ?>',$(this))" data-update-key="<?= $section->getUpdateKeyByType("section_update_html") ?>" style="margin-left:0px !important"></span>
     </div>

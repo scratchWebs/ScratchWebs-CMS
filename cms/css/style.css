@@ -24,6 +24,7 @@ table{border:none; border-collapse:collapse; border-spacing:0px;width:100%}
 #sortable li span {position: absolute; margin-left: -1.3em}
 #sortable .ui-selecting {background: #FECA40}
 #sortable .ui-selected {font-weight:bold}
+#sortable .changeIndicator {position:absolute; right:5px; width:15px; height:15px; text-align:center; }
 
 /* Popup menus */
 .popupMenu {display:none; position:relative; z-index:1}
@@ -115,5 +116,3 @@ table{border:none; border-collapse:collapse; border-spacing:0px;width:100%}
 .editRTEbuttons {position:relative; width:37px;float:right;margin-right:4px}
 .RTEbutton {position:relative; font-size:12px; line-height:26px; text-align:center;padding:0 !important; margin-bottom:3px; width:32px; height:26px}
 .RTEbold{font-weight:bold !important} .RTEitalic{font-style:italic !important} .RTEunderline{text-decoration:underline !important}
-
-/* Page Edit Buttons */

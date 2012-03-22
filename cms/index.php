@@ -93,17 +93,30 @@ $features = $sessionObject->features;
             <p>Please check the your ammendments before comitting them to the live site<!--, you may preview the changes beforehand if you wish.--></p>
             <span id="commitSelectAll" class="selectAll">Select All</span><span id="commitDeselectAll" class="deselectAll">Clear All</span>
             <div id="sessionChanges" style="max-height:350px; overflow-y:scroll; border:#CCCCCC solid 1px; margin:10px 0"></div>
-            <!--<span class="previewChanges">Preview Changes</span>--><span id="commitChanges" class="commitChanges">Commit selected changes</span>
+            <!--<span class="previewChanges">Preview Changes</span>-->
+            <span id="commitChanges" class="commitChanges">Commit selected changes</span>
+            <span id="undoChanges" class="commitChanges">Undo selected changes</span>
         </div>
         
         <div id="passwordDialog" title="Change Password" style="font-size:12px" class="ui-dialog-content ui-widget-content">
-        	<table>
-                <tr><td>Old password:</td><td><input id="oldPW" type="password" /></td></tr>
-                <tr><td>New password:</td><td><input id="newPW" type="password" /></td></tr>
-                <tr><td>Confirm new:</td><td><input id="newPW2" type="password" /></td></tr>
-                
-            </table>
-            <div style="text-align:center"><span class="passwordCancel" onclick='$( "#passwordDialog" ).dialog("close");'>Cancel</span> &nbsp;<span class="passwordChange" onclick="changePasswordAjax();">Change Password</span></div>
+        	<div id="pw1">
+	        	<table>
+	                <tr><td>Old password:</td><td><input id="oldPW" type="password" /></td></tr>
+	                <tr><td>New password:</td><td><input id="newPW" type="password" /></td></tr>
+	                <tr><td>Confirm new:</td><td><input id="newPW2" type="password" /></td></tr>
+	            </table>
+	            <div style="text-align:center"><span class="passwordChange" onclick="changePasswordAjax();">Change Password</span> &nbsp;<span class="passwordCancel" onclick='$( "#passwordDialog" ).dialog("close");'>Cancel</span></div>
+	            <div id="pwMsg" style="display:none; text-align:center; color:#ff0000; position:relative; top:5px"></div>
+	        </div>
+	        <div id="pw2" style="display:none">
+	        	<p>Your password was changed successfullly</p>
+	        	<div style="text-align:center"><span class="passwordCancel" onclick='pwSuccess()'>Close</span></div>
+	        </div>
+        </div>
+        
+        <div id="resetDialog" title="About to log off . . ." style="font-size:12px" class="ui-dialog-content ui-widget-content">
+			<p>You will be logged out after 30 minutes of inactivity.</p>
+	    	<div style="text-align:center"><span class="resetTimer" onclick='logoutFn();'>Log out in 300s</span> &nbsp;<span class="resetCancel" onclick='$( "#resetDialog" ).dialog("close");'>Cancel</span></div>
         </div>
 
         

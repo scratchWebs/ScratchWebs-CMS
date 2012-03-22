@@ -24,10 +24,19 @@ abstract class dbObject
 	abstract public function getTableName();
 	abstract public function createTable();
 	
+	
+	///////these functions should be combined///////////////////////////////////////////////////////////////////
 	public function hasUpdates()
 	{
 		return (count($this->sessionUpdates) > 0) ? true : false;
 	}
+	///////these functions should be combined///////////////////////////////////////////////////////////////////	
+	public function noUpdates()
+	{
+		return count($this->sessionUpdates);
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
 	
 	public function getUpdateKeyByType($update_tyoe)
 	{

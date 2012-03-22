@@ -8,7 +8,7 @@ $(document).ready(function(e)
 	// init menu's
 	common_initializeMenus();
 	common_configureDropDownButtons();
-	
+
 	// Generic buttons
 	common_initButtons();
 	
@@ -28,15 +28,19 @@ $(document).ready(function(e)
 		function() { $(this).removeClass('ui-state-hover'); }
 	);
 	
+	// close dialogs when click outside
+	$(".ui-widget-overlay").live("click", function() {  
+		$( "#noChangeDialog, #passwordDialog, #changeDialog" ).dialog("close");
+	}); 
 	
 // Status bar commit button ///////////////
-	$( "#noChangeDialog, #passwordDialog" ).dialog({autoOpen: false,modal: true,draggable: false,resizable: false });				// init
-	$( "#changeDialog" ).dialog({autoOpen: false,modal: true,draggable: false,resizable: false, width:700 });						// init
-	$(".selectAll, .deselectAll, .previewChanges, .commitChanges, .passwordCancel").button();										// init
-	$("#status_bar div").css("opacity",0.7);																						// set bar opacity
-	$("#status_commit").hover(function (){$(this).css("opacity",1);},function (){$(this).css("opacity",0.7);});						// commit button rollover
-	$('#commitDeselectAll').click(function(){$('#sessionChanges input[type=checkbox]').removeAttr('checked');});						// select/deslect all
-	$('#commitSelectAll').click(function(){$('#sessionChanges input[type=checkbox]').attr('checked','checked');});						// select/deslect all
+	$( "#noChangeDialog, #passwordDialog, #resetDialog" ).dialog({autoOpen: false,modal: true,draggable: false,resizable: false });				// init
+	$( "#changeDialog" ).dialog({autoOpen: false,modal: true,draggable: false,resizable: false, width:700 });										// init
+	$(".selectAll, .deselectAll, .previewChanges, .commitChanges, .passwordCancel").button();														// init
+	$("#status_bar div, .changeIndicator").css("opacity",0.7);																						// set bar opacity
+	$("#status_commit").hover(function (){$(this).css("opacity",1);},function (){$(this).css("opacity",0.7);});										// commit button rollover
+	$('#commitDeselectAll').click(function(){$('#sessionChanges input[type=checkbox]').removeAttr('checked');});										// select/deslect all
+	$('#commitSelectAll').click(function(){$('#sessionChanges input[type=checkbox]').attr('checked','checked');});										// select/deslect all
 	
 	
 // Status bar account button //////////////
@@ -73,19 +77,7 @@ $(document).ready(function(e)
 			setTimeout(function(){updateStatusReturn();},5000);});
 	}////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	// Password strength checker //////////////
-	$(".passwordChange").button({disabled:true}).css("height", 24);
-	jQuery("#newPW").passwordValidate();
-	jQuery("#newPW2").keyup(function(e) {
-		if ($(this).val() == $("#newPW").val()) {
-			$(this).css("color","#009900");
-			$(".passwordChange").button({disabled:false});
-		}
-		else {
-			$(this).css("color","#000000");
-			$(".passwordChange").button({disabled:true});
-		}
-	});
+
 	
 	$('#commitChanges').click($.swCommit);		//  bind the commit button click event
 	
@@ -95,19 +87,7 @@ $(document).ready(function(e)
 	
 });
 
-// Ajax change password //////////////////////
-function changePasswordAjax () {
-	$.swAjax('changePass.php',{old_pass:$("#oldPW").val(),new_pass:$("#newPW").val()},function(response){
-		alert(response);
-	});
 
-}
-
-function pwdFn() {
-	$( "#passwordDialog" ).dialog("open");
-	$(".ui-dialog").position({ my: 'center top', at: 'center top', of: '#main', offset: "0, 10" });
-	return false;
-}
 
  
  
@@ -120,6 +100,21 @@ function logoutFn() {
 	window.location.href = 'logout.php';
 }
 
+
+
+
+
+// LOG OUT TIMER //////////////////////////// TODO: complete reset timer
+var resetT = 30 * 60;		// 30 minute timeout
+var promptT = 5 * 60;		// T-5min prompt
+var currPromptT;			// current prompt
+
+function resetTimer () {
+	setTimeout(function(){
+		$( "#resetDialog" ).dialog('open');
+		
+	},resetT-promptT);
+}
 
 
 
@@ -235,16 +230,22 @@ function logoutFn() {
 		$.swAjax('updateSession.php',data,function(response){
 			var responseObj = {
 				updateKey:$('updateKey',response).text(),
+				noUpdates:$('noUpdates',response).text(),									//new line inserted
 				responseHTML:$('responseHTML',response).text()
 			};
-			
 			if (typeof(callback) == 'function') callback.call(this,responseObj);
 		},'xml');
 	};
 	
 	$.swUndo = function( data, callback ){
 		sw.isUpdating=true;
-		$.swAjax('undo.php',data,callback);
+		$.swAjax('undo.php',data,function(response){
+			var responseObj = {
+				noUpdates:$('noUpdates',response).text(),									
+				undoResponse:$('undoResponse',response).text()
+			};
+			if (typeof(callback) == 'function') callback.call(this,responseObj);
+		},'xml');
 	};
 	
 	// Refresh commit status

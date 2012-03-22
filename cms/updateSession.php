@@ -472,6 +472,14 @@ if ( !$cancelUpdate && $sessionUpdate->save($sessionObject) ) {
 	$log->saveAsNew();
 }
 
+		//$sessionUpdate = new swSessionUpdate("swPage");
+		$updates .= $page->noUpdates();
+		//$sessionUpdate = new swSessionUpdate("swSection");
+		//$updates .= $section->noUpdates();
+		//if ($update_object == "swPage") $updates .= $page->noUpdates();
+		//if ($update_object == "swSection") $updates .= $section->noUpdates(); 
+		echo '<noUpdates>' . $updates .	'</noUpdates>';			// TODO: DOESNT ADD BOTH TOGETHER
+
 echo '</sessionUpdate>';
 
 header("content-type:application/xml;charset=utf-8 .xml");
