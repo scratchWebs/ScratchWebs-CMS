@@ -174,8 +174,21 @@ function resetTimer () {
 				  if (typeof(callback) == 'function') callback.call(this,response);
 			  },
 			  error: function(data) {
-				  alert(data.statusText + ': ' + data.responseText);
-			  }
+				var ErrorWindow = window.open('','','left=0,top=0,width=600,height=400,toolbar=0,scrollbars=0,status=0');
+				var html = [
+					'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
+					'<html xmlns="http://www.w3.org/1999/xhtml">',
+					'<head><title>Ajax Error - ' + data.statusText + '</title></head>',
+					'<body>',
+						'<h4>Status: ' + data.statusText + '</h4>',
+						'<p>' + data.responseText + '</p>',
+					'</body>',
+					'</html>'
+				];
+				ErrorWindow.document.write(html.join(""));
+				ErrorWindow.document.close();
+				ErrorWindow.focus();
+	  		  }
 		});
 	};
 	
