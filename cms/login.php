@@ -39,6 +39,7 @@ if (isset($_POST["hidFormSubmitted"])) {
 		} else {
 			$log = new swLog();
 			$log->log_object_type = dbObject::OBJECT_TYPE_USER;
+			$log->log_object_id = -1;
 			$log->log_type = swLog::LOG_TYPE_USER_LOGIN_FAILED;
 			$log->log_message = 'username: "' . $user_name . '" password: "'  . $user_pass . '"';
 			$log->saveAsNew();
@@ -49,8 +50,8 @@ if (isset($_POST["hidFormSubmitted"])) {
 }
 
 // if the user is logged in then redirect to the admin page
-$sessionObject = $_SESSION["swSessionObject"];
-if (isset($sessionObject) || $sessionObject->isLoggedIn) {
+$sessionObject = new swSessionObject();
+if ($sessionObject->isLoggedIn) {
 	// ensure the session data get's written before we redirect
 	header("location: " . DOCUMENT_ROOT . "cms");
 	exit;
@@ -195,7 +196,7 @@ if (isset($sessionObject) || $sessionObject->isLoggedIn) {
                             </div>
 
                             <div id="helpDialog">
-                            	<div style="margin-bottom:10px">Scratchwebs CMS version:	&nbsp;&nbsp;&nbsp;1.01 beta</div>
+                            	<div style="margin-bottom:10px">Scratchwebs CMS version:	&nbsp;&nbsp;&nbsp;<?= DB_VERSION ?></div>
                                 <div style="margin-bottom:10px; text-align:justify">If you need any help or assistance with <b>ScratchWebs CMS</b>, or have any queries or suggestions, please do not hesitate to contact us:</div>
                                 <table style="padding:0px; border:0px">
                                 	<tr height="28"><td width="35"><a class="emailButton" href="mailto:tomhrvy@gmail.com"></a></td><td width="120">Thomas Harvey</td><td>07816 270 860</td></tr>

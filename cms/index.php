@@ -26,6 +26,7 @@ $features = $sessionObject->features;
     <script type="text/javascript" src="scripts/swPortfolio.js"></script>
     <script type="text/javascript" src="scripts/swPage.js"></script>
     <script type="text/javascript" src="scripts/swSection.js"></script>
+    <script type="text/javascript" src="scripts/swWebLog.js"></script>
     <script type="text/javascript" src="scripts/cms.js"></script>
     <script type="text/javascript" src="rte/jquery.rte.js"></script>
 	<script type="text/javascript" src="rte/jquery.rte.tb.js"></script>

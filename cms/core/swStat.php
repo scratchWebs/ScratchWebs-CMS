@@ -20,23 +20,27 @@ class swStat extends dbObject
 			$result = mysql_query($sql);
 			return "Page: " . mysql_result($result,0,0);
 		} else {
-			return "unknown";
+			return "description not implemented for this type";
 		}
 	}
 	
 	public function getUID() {
 		return self::UID . $this->stat_id;
 	}
+	public function getObjectID()
+	{
+		return $this->stat_id;
+	}
 	public function getObjectType()
 	{
-		return dbObject::OBJECT_TYPE_PAGESTAT;
+		return dbObject::OBJECT_TYPE_STAT;
 	}
 	public static function getStats($ammount = 50)
 	{
 		$stats = array();
 		
 		$sql = "SELECT *
-				FROM tblPageStats
+				FROM tblStats
 				ORDER BY stat_date DESC
 				LIMIT 0," . $ammount . "";
 		
@@ -68,7 +72,7 @@ class swStat extends dbObject
 	}
 	public function saveAsNew()
 	{
-		$sql = "INSERT INTO tblPageStats 
+		$sql = "INSERT INTO tblStats 
 						(stat_date,
 						 stat_object_type,
 						 stat_object_id,
@@ -92,11 +96,11 @@ class swStat extends dbObject
 	
 	public function getTableName()
 	{
-		return 'tblPageStats';
+		return 'tblStats';
 	}
 	public function createTable()
 	{
-		$sql = "CREATE TABLE IF NOT EXISTS `tblPageStats` (
+		$sql = "CREATE TABLE IF NOT EXISTS `tblStats` (
 					  `stat_id` int(11) NOT NULL auto_increment,
 					  `stat_date` datetime NOT NULL,
 					  `stat_object_type` int(11) NOT NULL,

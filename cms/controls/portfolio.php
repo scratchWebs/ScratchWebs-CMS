@@ -1,4 +1,9 @@
 <?
+/*
+ * Script assumes $portfolio is set to an instance of swPortfolio
+*/
+$portfolio = (isset($portfolio)) ? $portfolio : null;
+if (!isset($portfolio)) throw new Exception('$portfolio is not set to an instance of swPortfolio');
 
 $uid = $portfolio->getUID();
 

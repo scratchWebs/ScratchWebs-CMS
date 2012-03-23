@@ -9,13 +9,16 @@ abstract class dbObject
 	const OBJECT_TYPE_PORTFOLIO = 5;
 	const OBJECT_TYPE_USER = 6;
 	const OBJECT_TYPE_LOG = 7;
-	const OBJECT_TYPE_PAGESTAT = 8;
+	const OBJECT_TYPE_STAT = 8;
+	const OBJECT_TYPE_WEBLOG = 9;
+	const OBJECT_TYPE_WEBLOGENTRY = 10;
 	
 	public $delete_flag = false;
 	public $enabled = true;
 	
 	public $sessionUpdates = array();	// an array of swSessionUpdates that are relevant to this object
 	
+	abstract public function getObjectID();
 	abstract public function getObjectType();
 	abstract public function getUID();
 	abstract public function createFromId($id);
