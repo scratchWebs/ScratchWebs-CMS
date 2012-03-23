@@ -13,6 +13,4 @@ require_once("cms.php");
 </html>
 <?
 //}
-// ensure we save any changes to the session object
-$sessionObject->save();
 ?>

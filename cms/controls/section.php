@@ -1,6 +1,11 @@
 <?
-	// script assumes that $section is an instance of swSection
-	$updateKey = $section->getUpdateKeyByType('section_update_html')
+/*
+ * Script assumes $section is set to an instance of swSection
+*/
+$section = (isset($section)) ? $section : null;
+if (!isset($section)) throw new Exception('$section is not set to an instance of swSection');
+
+$updateKey = $section->getUpdateKeyByType('section_update_html')
 ?>
 
 <h3 class="RTEaccordion<? if (isset($updateKey)) echo " ui-state-error" ?>"><a href="#"><?= $section->section_name; ?></a></h3>

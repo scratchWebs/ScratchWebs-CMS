@@ -1,10 +1,15 @@
 <?
-
-$uid = $gallery->getUID();	// unique id for this gallery (must not be the same as any other element on the page)
-
-$isEmptyGallery = (count($gallery->gallery_images) == 0);	// confiure the control differently when it has no images
+/*
+* Script assumes $gallery is set to an instance of swGallery
+*/
+$gallery = (isset($gallery)) ? $gallery : null;
+if (!isset($gallery)) throw new Exception('$gallery is not set to an instance of swGallery');
 
 if (!$gallery->delete_flag) {								// only continue if the gallery hasn't been deleted
+	
+	$uid = $gallery->getUID();	// unique id for this gallery (must not be the same as any other element on the page)
+	
+	$isEmptyGallery = (count($gallery->gallery_images) == 0);	// confiure the control differently when it has no images
 
 ?>
 <div id="<?=$uid?>" data-id="<?=$gallery->gallery_id?>" class="swGallery" data-enabled="<?= ($gallery->enabled) ? 'true' : 'false' ?>">

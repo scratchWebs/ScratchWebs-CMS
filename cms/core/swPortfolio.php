@@ -1,6 +1,6 @@
 <?php
 
-class swPortfolio extends dbObject
+class swPortfolio extends swFeature
 {
 	const UID = "pf";
 	
@@ -17,9 +17,17 @@ class swPortfolio extends dbObject
 	public function getUID() {
 		return self::UID . $this->portfolio_id;
 	}
+	public function getObjectID()
+	{
+		return $this->portfolio_id;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_PORTFOLIO;
+	}
+	public function getFeatureType()
+	{
+		return swFeature::FEATURE_TYPE_PORTFOLIO;
 	}
 	public function __construct($code_ref = NULL)
 	{
@@ -152,8 +160,8 @@ class swPortfolio extends dbObject
 		if ($this->portfolio_id !== NULL) {
 			
 			$sql = "UPDATE tblPortfolios 
-						SET delete_flag = '" . (int) $this->delete_flag . "',
-							enabled = '" . (int) $this->enabled . "',
+						SET delete_flag = " . (int) $this->delete_flag . ",
+							enabled = " . (int) $this->enabled . ",
 							portfolio_name = '" . mysql_real_escape_string(substr($this->portfolio_name,0,100)) . "',
 							portfolio_gallery_rename = '" . mysql_real_escape_string(substr($this->portfolio_gallery_rename,0,100)) . "',
 							portfolio_order = " . $this->portfolio_order . ",

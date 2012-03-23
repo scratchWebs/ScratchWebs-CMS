@@ -29,13 +29,16 @@ if (isset($_POST["commit_form"])) {
 		
 		$log = new swLog();
 		
-		if (isset($sessionUpdate->update_object)) {
-			$log->log_object_type = $sessionUpdate->update_object->getObjectType();
+		if (isset($checkedUpdate->update_object)) {
+			$log->log_object_type = $checkedUpdate->update_object->getObjectType();
+			$log->log_object_id = $checkedUpdate->update_object->getObjectID();
 		} else {
-			$log->log_object_type = dbObject::OBJECT_TYPE_PAGE;	// this needs to change
+			// At the moment this only happens for pages 
+			// this needs to change because there is no parent object to tie this too
+			$log->log_object_type = dbObject::OBJECT_TYPE_PAGE;
+			$log->log_object_id = -1;
 		}
 		
-		$log->log_object_id = -1;	// TODO: THIS NEEDS TO BE THE ID OF THE OBEJCT BUT AT THE MOMENT ALL ID's HAVE DIFFERENT FIELD NAMES
 		$log->log_type = swLog::LOG_TYPE_COMMIT_OBJECT;
 		$log->log_message = $checkedUpdate->getDesciption();
 		$log->log_fk_user_id = $sessionObject->user->user_id;
@@ -47,5 +50,5 @@ if (isset($_POST["commit_form"])) {
 }
 
 // redirect so the user cannot re-post
-header("location: /cms/");
+header("location: " . DOCUMENT_ROOT . "cms/");
 ?>

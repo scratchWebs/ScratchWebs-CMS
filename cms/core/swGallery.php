@@ -1,6 +1,6 @@
 <?php
 
-class swGallery extends dbObject
+class swGallery extends swFeature
 {
 	const UID = "g_";
 	
@@ -40,8 +40,17 @@ class swGallery extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_GALLERY;
 	}
-	public function getUID() {
+	public function getObjectID()
+	{
+		return $this->gallery_id;
+	}
+	public function getUID()
+	{
 		return self::UID . $this->gallery_id;
+	}
+	public function getFeatureType()
+	{
+		return swFeature::FEATURE_TYPE_GALLERY;
 	}
 	public function createFromId($id,$getImages = false)
 	{
