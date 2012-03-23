@@ -464,7 +464,7 @@ if ( !$cancelUpdate && $sessionUpdate->save($sessionObject) ) {
 		$log->log_object_id = $sessionUpdate->update_object->getObjectID();
 	} else {
 		// At the moment this only happens for pages 
-		// this needs to change because there is no parent object to tie this too
+		// TODO: this needs to change because there is no parent object to tie this too
 		$log->log_object_type = dbObject::OBJECT_TYPE_PAGE;
 		$log->log_object_id = -1;
 	}
