@@ -5,11 +5,11 @@
 $section = (isset($section)) ? $section : null;
 if (!isset($section)) throw new Exception('$section is not set to an instance of swSection');
 
-$updateKey = $section->getUpdateKeyByType('section_update_html')
+$updateKey = $section->getUpdateKeyByType('section_update_html');
 ?>
 
 <h3 class="RTEaccordion<? if (isset($updateKey)) echo " ui-state-error" ?>"><a href="#"><?= $section->section_name; ?></a></h3>
-<div class="RTEaccordion<? if (isset($updateKey)) echo " ui-state-error" ?>" style="position:relative;padding:5px">
+<div id="<?= $section->getUID() ?>" data-no-updates="<?= $section->noUpdates() ?>" data-pageid="<?= $section->section_fk_pg_id ?>" class="RTEaccordion<? if (isset($updateKey)) echo " ui-state-error" ?>" style="position:relative;padding:5px">
     <textarea class="editRTE ui-corner-all" id="divSectionHTML<?= $section->section_id ?>">
 		<?= $section->section_html; ?>
     </textarea>

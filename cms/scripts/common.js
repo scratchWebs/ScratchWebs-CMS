@@ -53,3 +53,8 @@ function common_accordionSortableSetup(context,activeItem)
 function isInt(n) {
    return n % 1 == 0;
 }
+
+function common_diff(a,b)
+{
+	return Math.abs(a-b);
+}

@@ -36,6 +36,15 @@ class swGallery extends swFeature
 	{
 		return ($this->gallery_order == 0) ? true : false;
 	}
+	public function noUpdates()
+	{
+		$noUpdates = count($this->sessionUpdates);
+		
+		foreach ($this->gallery_images as $img)
+			$noUpdates += $img->noUpdates();
+		
+		return $noUpdates;
+	}
 	public function getObjectType()
 	{
 		return dbObject::OBJECT_TYPE_GALLERY;

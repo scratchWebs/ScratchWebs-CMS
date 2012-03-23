@@ -475,13 +475,10 @@ if ( !$cancelUpdate && $sessionUpdate->save($sessionObject) ) {
 	$log->saveAsNew();
 }
 
-		//$sessionUpdate = new swSessionUpdate("swPage");
-		$updates .= $page->noUpdates();
-		//$sessionUpdate = new swSessionUpdate("swSection");
-		//$updates .= $section->noUpdates();
-		//if ($update_object == "swPage") $updates .= $page->noUpdates();
-		//if ($update_object == "swSection") $updates .= $section->noUpdates(); 
-		echo '<noUpdates>' . $updates .	'</noUpdates>';			// TODO: DOESNT ADD BOTH TOGETHER
+// return how many this object has ($sessionUpdate->update_object might not be set is we are re-ordering pages)
+$noUpdates = (isset($sessionUpdate->update_object)) ? $sessionUpdate->update_object->noUpdates() : 0;
+
+echo '<noUpdates>' . $noUpdates . '</noUpdates>';
 
 echo '</sessionUpdate>';
 

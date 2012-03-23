@@ -25,6 +25,15 @@ class swSection extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_SECTION;
 	}
+	public function noUpdates()
+	{
+		$noUpdates = count($this->sessionUpdates);
+		
+		foreach ($this->images as $img)
+			$noUpdates += $img->noUpdates();
+		
+		return $noUpdates;
+	}
 	public function __construct($code_ref = NULL)
 	{
 		if ($code_ref !== NULL)

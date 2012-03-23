@@ -6,12 +6,10 @@
 $page = (isset($page)) ? $page : null;
 if (!isset($page)) throw new Exception('$page is not set to an instance of swPage');
 
-$divID = $page->getUID();		// unique div id to tie the sortable menu to the relevant page
-
 if (!$page->isFirstPage()) $className = "ui-helper-hidden";		// hide all but the first page
 ?>
 
-<div id="<?= $divID; ?>" class="<?= $className; ?>">
+<div id="<?= $page->getUID(); ?>" class="<?= $className; ?>" data-no-updates="<?= $page->noUpdates(); ?>">
 	
 	<div class="tabs">
 		<ul>

@@ -25,6 +25,10 @@ class swWebLog extends swFeature
 	{
 		return swFeature::FEATURE_TYPE_WEBLOG;
 	}
+	public function noUpdates()
+	{
+		return count($this->sessionUpdates);
+	}
 	public function createFromId($id)
 	{
 		$sql = "SELECT * 

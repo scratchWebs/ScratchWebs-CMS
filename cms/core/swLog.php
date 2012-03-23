@@ -62,6 +62,10 @@ class swLog extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_LOG;
 	}
+	public function noUpdates()
+	{
+		throw new Exception("This object doesn't support Updates");
+	}
 	public static function getLogs($ammount = 50)
 	{
 		$logs = array();

@@ -31,6 +31,10 @@ class swUser extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_USER;
 	}
+	public function noUpdates()
+	{
+		throw new Exception("This object doesn't support Updates");
+	}
 	public function login($user,$pass)
 	{
 		$user_name = mysql_real_escape_string($user);

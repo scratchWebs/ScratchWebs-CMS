@@ -70,7 +70,7 @@ var IW = IW || {};
         } 
  
  		// COMMENTED THIS AS IT WAS CAUSING THE PAGE TO CRASH
-        var 
+        /*var 
                 totalCombinations = Math.pow(possibilitiesPerLetterInPassword, password.length), 
             // how long, on average, it would take to crack this (@ 200 attempts per second) 
                 crackTime = ((totalCombinations / this.passwordAttemptsPerSecond) / 2) / secondsInADay, 
@@ -78,7 +78,7 @@ var IW = IW || {};
                 percentage = crackTime / this.passwordLifeTimeInDays; 
  
         return Math.min(Math.max(password.length * 8, percentage * 100), 100); 
- 
+ */
     }; 
  
     IW.PasswordValidator = new PasswordValidator(); 

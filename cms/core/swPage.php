@@ -46,6 +46,21 @@ class swPage extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_PAGE;
 	}
+	public function noUpdates()
+	{
+		$noUpdates = count($this->sessionUpdates);
+		
+		foreach ($this->pg_images as $img)
+			$noUpdates += $img->noUpdates();
+		
+		foreach ($this->pg_sections as $section)
+			$noUpdates += $section->noUpdates();
+		
+		foreach ($this->pg_features as $feature)
+			$noUpdates += $feature->noUpdates();
+		
+		return $noUpdates;
+	}
 	public function createFromCodeRef($code_ref) {
 		
 		$sql = "SELECT * 

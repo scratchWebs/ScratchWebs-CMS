@@ -230,7 +230,7 @@ function resetTimer () {
 		$.swAjax('updateSession.php',data,function(response){
 			var responseObj = {
 				updateKey:$('updateKey',response).text(),
-				noUpdates:$('noUpdates',response).text(),									//new line inserted
+				noUpdates:parseInt($('noUpdates',response).text()),
 				responseHTML:$('responseHTML',response).text()
 			};
 			if (typeof(callback) == 'function') callback.call(this,responseObj);
@@ -241,7 +241,7 @@ function resetTimer () {
 		sw.isUpdating=true;
 		$.swAjax('undo.php',data,function(response){
 			var responseObj = {
-				noUpdates:$('noUpdates',response).text(),									
+				noUpdates:parseInt($('noUpdates',response).text()),
 				undoResponse:$('undoResponse',response).text()
 			};
 			if (typeof(callback) == 'function') callback.call(this,responseObj);

@@ -31,6 +31,30 @@ $(document).ready(function(e) {
 	
 });
 
+function swPage_getById(id)
+{
+	return $('#pg_' + id);
+}
+
+function swPage_setNoUpdates(id,noUpdates)
+{
+	var page = swPage_getById(id);
+
+	$("#pgID_" + id + " .changeIndicator").remove();
+	
+	if (noUpdates > 0)
+		$("#pgID_" + id).append('<span class="changeIndicator ui-state-error">' + noUpdates + '</span>');
+	
+	page.data('noUpdates',noUpdates);
+}
+
+function swPage_adjustNoUpdates(id,adjustment)
+{
+	var page = swPage_getById(id);
+	var noUpdates = parseInt(page.data('noUpdates')) + adjustment;
+	
+	swPage_setNoUpdates(id,noUpdates);
+}
 
 function swPage_updatePageOrder(sortableMenu,movedPage)
 {
@@ -62,26 +86,14 @@ function swPage_setProperty( updateType, inputBox, undoButton, callback )
 	};
 	
 	$.swUpdateSession(data,function(response){
+		swPage_setNoUpdates(data.update_object_id,response.noUpdates);
+		
 		if (response.updateKey == ''){																											// if item was set back to original value
 			undoButton.button("option","disabled",true ).data('updateKey','');																			// disable undo button
-			inputBox.parent().removeClass('ui-state-error').prev().removeClass('ui-state-error');														// unhighlight in red
-			if(response.noUpdates == 0) {																												// if there are no updates left on page
-				$("#pgID_" + inputBox.data('pageid') + " .changeIndicator").remove();																			// remove the changeIndicator
-			}
-			else {																																		// if there are updates left on the page
-				$("#pgID_" + inputBox.data('pageid') + " .changeIndicator").remove();																			// update changeIndicator
-				$("#pgID_" + inputBox.data('pageid')).append('<span class="changeIndicator ui-state-error">' + response.noUpdates + '</span>');
-			}
+			inputBox.parent().removeClass('ui-state-error').prev().removeClass('ui-state-error');
 		} else {																																// if item was changed
 			undoButton.button("option","disabled",false ).data('updateKey',response.updateKey);															// enable undo button
 			inputBox.parent().addClass('ui-state-error').prev().addClass('ui-state-error');																// highlight in red
-			if($("#pgID_" + inputBox.data('pageid') + " .changeIndicator").size()) {																	// update changeIndicator
-				$("#pgID_" + inputBox.data('pageid') + " .changeIndicator").remove();
-				$("#pgID_" + inputBox.data('pageid')).append('<span class="changeIndicator ui-state-error">' + response.noUpdates + '</span>');
-			}
-			else {
-				$("#pgID_" + inputBox.data('pageid')).append('<span class="changeIndicator ui-state-error">' + response.noUpdates + '</span>');
-			}
 		}
 		if (typeof callback == 'function') callback.call(this,response);																		// do callback (if required)
 	});
@@ -93,25 +105,17 @@ function swPage_undoProperty( inputBox, undoButton, callback )
 {
 	if (undoButton.hasClass('ui-state-disabled')) return;
 	var data = {
-			update_key:undoButton.data('updateKey'),
-			update_object_id:inputBox.data('pageid')
-		};
+		update_key:undoButton.data('updateKey'),
+		update_object_id:inputBox.data('pageid')
+	};
+	
 	$.swUndo(data,function(response){
+		swPage_setNoUpdates(data.update_object_id,response.noUpdates);
+		
 		undoButton.button("option","disabled",true).data('updateKey','');																		// disable undo button
 		inputBox.val(response.undoResponse);																									// put the old value back into the input box
 		inputBox.parent().removeClass('ui-state-error').prev().removeClass('ui-state-error');													// unhighlight in red
-		if($("#pgID_" + inputBox.data('pageid') + " .changeIndicator").size()) {																// update changeIndicator
-			if(response.noUpdates == 0) {																												// if there are no updates left on page
-				$("#pgID_" + inputBox.data('pageid') + " .changeIndicator").remove();																			// remove the changeIndicator
-			}
-			else {																																		// if there are updates left on the page
-				$("#pgID_" + inputBox.data('pageid') + " .changeIndicator").remove();																			// update changeIndicator
-				$("#pgID_" + inputBox.data('pageid')).append('<span class="changeIndicator ui-state-error">' + response.noUpdates + '</span>');
-			}
-		}
-		else {
-			$("#pgID_" + inputBox.data('pageid')).append('<span class="changeIndicator ui-state-error">' + response.noUpdates + '</span>');
-		}		
+
 		if (typeof callback == 'function') callback.call(this,response);																		// do callback (if required)
 	});
 }

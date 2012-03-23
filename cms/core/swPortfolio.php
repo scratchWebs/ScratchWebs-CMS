@@ -29,6 +29,15 @@ class swPortfolio extends swFeature
 	{
 		return swFeature::FEATURE_TYPE_PORTFOLIO;
 	}
+	public function noUpdates()
+	{
+		$noUpdates = count($this->sessionUpdates);
+		
+		foreach ($this->galleries as $gallery)
+			$noUpdates += $gallery->noUpdates();
+		
+		return $noUpdates;
+	}
 	public function __construct($code_ref = NULL)
 	{
 		if ($code_ref !== NULL) {

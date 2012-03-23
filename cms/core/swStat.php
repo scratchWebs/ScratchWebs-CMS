@@ -35,6 +35,10 @@ class swStat extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_STAT;
 	}
+	public function noUpdates()
+	{
+		throw new Exception("This object doesn't support Updates");
+	}
 	public static function getStats($ammount = 50)
 	{
 		$stats = array();

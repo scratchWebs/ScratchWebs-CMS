@@ -34,17 +34,12 @@ abstract class dbObject
 		return (count($this->sessionUpdates) > 0) ? true : false;
 	}
 	///////these functions should be combined///////////////////////////////////////////////////////////////////	
-	public function noUpdates()
-	{
-		return count($this->sessionUpdates);
-	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	abstract public function noUpdates();	
 	
-	
-	public function getUpdateKeyByType($update_tyoe)
+	public function getUpdateKeyByType($update_type)
 	{
 		foreach ($this->sessionUpdates as $sessionUpdate)
-			if ($sessionUpdate->update_type == $update_tyoe) {
+			if ($sessionUpdate->update_type == $update_type) {
 				return $sessionUpdate->key;
 			}
 	}

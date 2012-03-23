@@ -22,6 +22,10 @@ class swWebLogEntry extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_WEBLOGENTRY;
 	}
+	public function noUpdates()
+	{
+		return count($this->sessionUpdates);
+	}
 	public function createFromId($id)
 	{
 		$sql = "SELECT * 

@@ -42,6 +42,10 @@ class swImage extends dbObject
 	{
 		return dbObject::OBJECT_TYPE_IMAGE;
 	}
+	public function noUpdates()
+	{
+		return count($this->sessionUpdates);
+	}
 	public function getImageSrc($size = self::IMAGE_SIZE_THUMB,$relativePathToCMS = "/cms/")
 	{
 		$param = "";

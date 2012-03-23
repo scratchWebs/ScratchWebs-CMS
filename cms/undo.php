@@ -19,18 +19,16 @@ if (array_key_exists($updateKey, $sessionObject->sessionUpdates))
 }
 
 
-
-if (isset($_GET["update_object_id"])) $update_object_id = $_GET["update_object_id"];
-$page = $sessionObject->getPageById($update_object_id);
-
-
 // output this as xml so we can pass the responseHTML and updateKey to the page. jQuery will do the clever bit.
 echo '<?xml version="1.0"?>' .
 	 '<sessionUpdate>';
 
-echo '<undoResponse>' . $undoResponse . '</undoResponse>';		// send the response back
+echo '<undoResponse><![CDATA[' . $undoResponse . ']]></undoResponse>';		// send the response back
 
-echo '<noUpdates>' . $page->noUpdates() . '</noUpdates>';			// DOESNT WORK WITH SECTIONS
+// return how many this object has ($sessionUpdate->update_object might not be set is we are re-ordering pages)
+$noUpdates = (isset($sessionUpdate->update_object)) ? $sessionUpdate->update_object->noUpdates() : 0;
+
+echo '<noUpdates>' . $noUpdates . '</noUpdates>';
 
 echo '</sessionUpdate>';
 
