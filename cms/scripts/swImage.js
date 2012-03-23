@@ -44,7 +44,7 @@ function _swImage_setLoadingMessage(id,message) {
 function swImage_exitImageCropper()
 {
 	$('.imgAreaSelect').each(function(){
-		$(this).imgAreaSelect({remove: true})
+		$(this).imgAreaSelect({remove: true});
 	});
 }
 
@@ -130,14 +130,14 @@ function swImage_SaveToSession(context,uid)
 		
 		$.swUpdateSession(formData,function(response){
 			swImage_init(imgID,response.responseHTML);
-		})
+		});
 	});
 }
 
 // once an image has been uploaded this function kicks off the cropping process
 function swImage_initCrop(uid,PathToImage,cropWidth,cropHeight)
 {
-	_setDimentionsOfCropPreview(uid,cropWidth,cropHeight)
+	_setDimentionsOfCropPreview(uid,cropWidth,cropHeight);
 	_preloadImageThenCrop(uid,PathToImage,cropWidth,cropHeight);
 }
 
@@ -173,12 +173,12 @@ function swImage_initReCrop(imgID,imgName,imgSize,galleryID,uid,cropWidth,cropHe
 			$('#img_id_' + uploader_uid).attr('value',imgID);				// set the id of the image to be sent to the server
 			$('#img_size_' + uploader_uid).attr('value',imgSize);			// set the size of the image to be sent to the server
 			
-			_setDimentionsOfCropPreview(uploader_uid,cropWidth,cropHeight)
+			_setDimentionsOfCropPreview(uploader_uid,cropWidth,cropHeight);
 			_preloadImageThenCrop(uploader_uid,PathToImage,cropWidth,cropHeight,imgSize);		// preload the image
 			
 			divEditBox.show();
 			buttonControls.slideDown();
-		})
+		});
 }
 
 /*
@@ -206,7 +206,7 @@ function _preloadImageThenCrop(uid,pathToImage,cropWidth,cropHeight)
 		
 		_resizePreview(img,originalWidth,originalHeight);			// now the image has loaded, resize to fit on document
 		_startCrop(uid,cropWidth,cropHeight,originalWidth,originalHeight); // initialize the crop feature now that the image has been resized
-	}
+	};
 	
 	img.removeAttr('width').removeAttr('height')	// remove any previous dimentions
 	   .attr('src', pathToImage);				// set the preview image first
@@ -260,7 +260,7 @@ function _startCrop(uid,cropWidth,cropHeight,originalWidth,originalHeight)	// in
 	var x2 = x1 + initCropWidth;							// set the initial selected area position
 	var y2 = y1 + initCropHeight;							// set the initial selected area position
 	
-	img.imgAreaSelect({remove: true})		// remove any previous AreaSelect plugins
+	img.imgAreaSelect({remove: true});		// remove any previous AreaSelect plugins
 	img.imgAreaSelect({aspectRatio: _reduceRatio(cropWidth,cropHeight),	// fix the ratio (based on the crop width/height)
 					   handles: true,									// puts square handles on the corners
 					   x1: x1, y1: y1, x2: x2, y2: y2,					// sets the initial selected area
@@ -302,7 +302,7 @@ function _reduceRatio(numerator, denominator) {
 	gcd = function (a, b) { 
 		if (b === 0) return a;
 		return gcd(b, a % b);
-	}
+	};
 	
 	// take care of some simple cases
 	if (!isInt(numerator) || !isInt(denominator)) return '? : ?';

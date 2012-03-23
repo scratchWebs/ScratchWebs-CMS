@@ -46,7 +46,7 @@ class swImage extends dbObject
 	{
 		return count($this->sessionUpdates);
 	}
-	public function getImageSrc($size = self::IMAGE_SIZE_THUMB,$relativePathToCMS = "/cms/")
+	public function getImageSrc($size = self::IMAGE_SIZE_THUMB)
 	{
 		$param = "";
 		// This switch statement is to load the image from the session (if it exists)
@@ -64,15 +64,15 @@ class swImage extends dbObject
 				if ($this->img_data_original != NULL) $param = "&fromSession=true";
 				break;
 		}
-		return $relativePathToCMS . "getImage.php?id=" . $this->img_id . "&size=" . $size . $param;
+		return DOCUMENT_ROOT . "cms/getImage.php?id=" . $this->img_id . "&size=" . $size . $param;
 	}
-	public static function getSrc($img_id,$size = self::IMAGE_SIZE_THUMB,$relativePathToCMS = "/cms/")
+	public static function getSrc($img_id,$size = self::IMAGE_SIZE_THUMB)
 	{
-		return $relativePathToCMS . "getImage.php?id=" . $img_id . "&size=" . $size;
+		return DOCUMENT_ROOT . "cms/getImage.php?id=" . $img_id . "&size=" . $size;
 	}
-	public static function getOriginalSrc($image_id,$relativePathToCMS = "/cms/")
+	public static function getOriginalSrc($image_id)
 	{
-		return $relativePathToCMS . "getImage.php?id=" . $image_id . "&size=" . swImage::IMAGE_SIZE_ORIGINAL;
+		return DOCUMENT_ROOT . "cms/getImage.php?id=" . $image_id . "&size=" . swImage::IMAGE_SIZE_ORIGINAL;
 	}
 	public function isFirstImage()
 	{
@@ -106,7 +106,7 @@ class swImage extends dbObject
 	
 	public static function resizeImageFromData($imageData,$mimeType,$maxWidth,$maxHeight,$quality = self::IMAGE_DEFAULT_QUALITY)
 	{
-		if (gettype($imageData) == string) $imageData = imagecreatefromstring($imageData); // ensure the data from the database has been converted to a php resource
+		if (gettype($imageData) == 'string') $imageData = imagecreatefromstring($imageData); // ensure the data from the database has been converted to a php resource
 		
 		// get the current width/height
 		$originalWidth = imagesx($imageData);
@@ -162,7 +162,7 @@ class swImage extends dbObject
 	public static function cropImageFromData($imageData,$mimeType,$cropW,$cropH,
 										 	 $selectionX,$selectionY,$selectionW,$selectionH,$quality = self::IMAGE_DEFAULT_QUALITY)
 	{
-		if (gettype($imageData) == string) $imageData = imagecreatefromstring($imageData); // ensure the data from the database has been converted to a php resource
+		if (gettype($imageData) == 'string') $imageData = imagecreatefromstring($imageData); // ensure the data from the database has been converted to a php resource
 		
 		return self::_createImageFromData($imageData,$mimeType,$cropW,$cropH,
 										  $selectionX,$selectionY,$selectionW,$selectionH,$quality);

@@ -61,12 +61,12 @@ class swSessionObject
 	public function findGalleryInSession($gallery_id)
 	{
 		foreach ($this->features as $feature) {
-			if ($feature->feature_type == swFeature::FEATURE_TYPE_GALLERY &&
-				$feature->feature_id == $gallery_id)
-				return $feature->feature_object;
+			if ($feature->getFeatureType() == swFeature::FEATURE_TYPE_GALLERY &&
+				$feature->getObjectID() == $gallery_id)
+				return $feature;
 			
-			elseif ($feature->feature_type == swFeature::FEATURE_TYPE_PORTFOLIO) {
-				$portfolio = $feature->feature_object;
+			elseif ($feature->getFeatureType() == swFeature::FEATURE_TYPE_PORTFOLIO) {
+				$portfolio = $feature;
 				
 				foreach ($portfolio->galleries as $gallery)
 					if ($gallery->gallery_id == $gallery_id)
@@ -78,9 +78,9 @@ class swSessionObject
 	public function findFeatureInSession($feature_id,$feature_type)
 	{
 		foreach ($this->features as $feature)
-			if ($feature->feature_type == $feature_type &&
-				$feature->feature_id == $feature_id)
-				return $feature->feature_object;
+			if ($feature->getFeatureType() == $feature_type &&
+				$feature->getObjectID() == $feature_id)
+				return $feature;
 		return NULL;	// return NULL if no feature was found
 	}
 	public function findImageInSession($image_id)
