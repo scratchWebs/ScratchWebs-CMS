@@ -59,23 +59,27 @@ $features = $sessionObject->features;
         <div id="main" class="tabs">
             <ul>
                 <li><a href="#tabSetup"><span class="ui-icon ui-icon-wrench"></span>Website Setup</a></li>
-                <? if ($user->user_type == swUser::USER_TYPE_ADMIN) { ?>
-                    <li><a href="#tabHistory"><span class="ui-icon ui-icon-clock"></span>History</a></li>
-                    <li><a href="#tabStats"><span class="ui-icon ui-icon-clipboard"></span>Website Stats</a></li>
+                <li><a href="#tabStats"><span class="ui-icon ui-icon-clipboard"></span>Website Stats</a></li>
+                    
+                    
+              <!-- 	
+              		<li><a href="#tabHistory"><span class="ui-icon ui-icon-clock"></span>History</a></li>
                     <li><a href="#tabControlPanel"><span class="ui-icon ui-icon-person"></span>Control Panel</a></li>
                     <li><a href="#tabAdmin"><span class="ui-icon ui-icon-gear"></span>CMS Admin</a></li>
                     <li><a href="#tabLogs"><span class="ui-icon ui-icon-clock"></span>Logs</a></li>
-                <? } ?>
+              -->
+                    
             </ul>
             <div id="tabSetup">
                 <? include("tabSetup.php"); ?>
             </div>
-            <? if ($user->user_type == swUser::USER_TYPE_ADMIN) { ?>
+            <div id="tabStats">
+                <? include("tabStats.php"); ?>
+            </div>
+                
+            <!-- 
                 <div id="tabHistory">
                     <? include("tabHistory.php"); ?>
-                </div>
-                <div id="tabStats">
-                    <? include("tabStats.php"); ?>
                 </div>
                 <div id="tabControlPanel">
                     <? include("tabControlPanel.php"); ?>
@@ -86,7 +90,8 @@ $features = $sessionObject->features;
                 <div id="tabLogs">
                     <? include("tabLogs.php"); ?>
                 </div>
-            <? } ?>
+            -->
+                
         </div>
         
         <div id="noChangeDialog" title="Commit Changes" style="font-size:12px" class="ui-dialog-content ui-widget-content"><p>It appears that you have not made any changes to your website.</p></div>        
@@ -117,7 +122,7 @@ $features = $sessionObject->features;
         
         <div id="resetDialog" title="About to log off . . ." style="font-size:12px" class="ui-dialog-content ui-widget-content">
 			<p>You will be logged out after 30 minutes of inactivity.</p>
-	    	<div style="text-align:center"><span class="resetTimer" onclick='logoutFn();'>Log out in 300s</span> &nbsp;<span class="resetCancel" onclick='$( "#resetDialog" ).dialog("close");'>Cancel</span></div>
+	    	<div style="text-align:center"><span class="resetTimer" onclick='logoutFn();'></span> &nbsp;<span class="resetCancel" onclick='resetTimer()'>Cancel</span></div>
         </div>
 
         
