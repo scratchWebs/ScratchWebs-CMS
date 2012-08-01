@@ -352,8 +352,9 @@ class swSessionUpdate
 			$this->update_object->sessionUpdates = array();
 		}
 		
-		foreach ($this->additional_updates as $sessionUpdate)		// loop through and commit all additional_updates
-			$sessionUpdate->commitUpdate(&$savedObjects);
+		foreach ($this->additional_updates as $sessionUpdate) {		// loop through and commit all additional_updates
+			$sessionUpdate->commitUpdate($savedObjects);
+		}
 	}
 }
 
