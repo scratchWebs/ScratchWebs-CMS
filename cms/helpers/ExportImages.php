@@ -4,7 +4,7 @@ require "cms.php";
 echo "<p>Creating Export file(s)...</p>";
 
 // first ensure we don't run out of memory
-ini_set('memory_limit', '200M');
+ini_set('memory_limit', '300M');
 
 // variable declarations
 $imageCount = 0;
@@ -17,7 +17,7 @@ $outputFiles = array();
 
 $result = mysql_query('SELECT * FROM tblImages ORDER BY img_id ASC');
 
-while ($data = mysql_fetch_array($result))
+while (($data = mysql_fetch_array($result)) == true)
 {
 	$sql = "INSERT INTO tblImages ";
 	$sql.= "(delete_flag," .

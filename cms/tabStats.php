@@ -1,9 +1,9 @@
 <?php
 require_once("cms.php");
 ?>
-<div id="div_stats_update">
 <h3>Last 50 Site Visit Statistics</h3>
 <p><a href="" id="a_stats_refresh" onclick="tabStats_refresh(); return false;" style="float:right">Refresh</a>
+<div id="div_stats_update">
 Last Refreshed at: <?= date('d/m/y h:m:s', time()) ?></p>
 
 
@@ -99,7 +99,7 @@ foreach ($stats as $stat)
 			function tabStats_refresh() {
 				// refresh page via ajax on a timer
 				if (typeof timer_refreshStats != 'undefined') clearTimeout(timer_refreshStats);
-				timer_refreshStats = setTimeout("tabLog_refresh()",10000);
+				timer_refreshStats = setTimeout("tabStats_refresh()",10000);
 				
 				// only when the log tab is open
 				if ($('#a_stats_refresh').is(':visible')) {

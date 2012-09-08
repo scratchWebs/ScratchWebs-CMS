@@ -110,28 +110,30 @@ class swLog extends dbObject
 	}
 	public function saveAsNew()
 	{
-		$sql = "INSERT INTO tblLog 
-						(delete_flag,
-						 log_object_type,
-						 log_object_id,
-						 log_type,
-						 log_message,
-						 log_date,
-						 ip_address,
-						 log_user_agent,
-						 log_fk_user_id) 
-					VALUES 
-						(" . (int) $this->delete_flag . ",
-						 " . $this->log_object_type . ",
-						 " . $this->log_object_id . ",
-						 " . $this->log_type . ",
-						 '" . substr(mysql_real_escape_string($this->log_message),0,200) . "',
-						 NOW(),
-						 '" . $_SERVER['REMOTE_ADDR'] . "',
-						 '" . $_SERVER['HTTP_USER_AGENT'] . "',
-						 " . $this->log_fk_user_id . ");";
-		
-		mysql_query($sql) or die(mysql_error());
+		if (is_numeric($this->log_object_id)) {
+			$sql = "INSERT INTO tblLog 
+							(delete_flag,
+							 log_object_type,
+							 log_object_id,
+							 log_type,
+							 log_message,
+							 log_date,
+							 ip_address,
+							 log_user_agent,
+							 log_fk_user_id) 
+						VALUES 
+							(" . (int) $this->delete_flag . ",
+							 " . $this->log_object_type . ",
+							 " . $this->log_object_id . ",
+							 " . $this->log_type . ",
+							 '" . substr(mysql_real_escape_string($this->log_message),0,200) . "',
+							 NOW(),
+							 '" . $_SERVER['REMOTE_ADDR'] . "',
+							 '" . $_SERVER['HTTP_USER_AGENT'] . "',
+							 " . $this->log_fk_user_id . ");";
+			
+			mysql_query($sql) or die(mysql_error());
+		}
 	}
 	public function update()
 	{

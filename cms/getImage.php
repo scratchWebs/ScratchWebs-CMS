@@ -1,15 +1,15 @@
 <?php
 require_once("cms.php");
 
-$img_id = $_GET['id'];
-$img_size = $_GET['size'];
+if (isset($_GET['id'])) $img_id = $_GET['id'];
+if (isset($_GET['size'])) $img_size = $_GET['size'];
 
 $img_data = null;
 $img_type = null;
 
 // make sure the image id is available and numeric then get from the database/session
 if(isset($img_id) && is_numeric($img_id)) {
-	$loadFromSession = $_GET["fromSession"];
+	if (isset($_GET["fromSession"])) $loadFromSession = $_GET["fromSession"];
 	
 	if (isset($loadFromSession) && $loadFromSession == "true") {
 		$sessionObject = new swSessionObject();

@@ -9,7 +9,7 @@ $(document).ready(function(e) {
 			var button = $(this);
 			$.swUndo({update_key:$(this).data('updateKey')},function(response){
 				var sortablePortfolio = button.siblings('.portfolioSortableAccordion');
-				var sortIdArray = response.split(',');
+				var sortIdArray = response.undoResponse.split(',');
 				
 				for (var i=0; i < sortIdArray.length; i++) {
 					swGallery_getById(sortIdArray[i]).appendTo(sortablePortfolio);
@@ -29,7 +29,7 @@ function swPortfolio_sortableAccordionSetup(context,activeItem)
 	accordions.accordion("destroy")
 			  .accordion({ header:"h3", autoHeight:false, collapsible:true, active:activeItem, autoActivate:true })
 			  .sortable({axis:"y", handle:"h3", stop:function() {accordionSortableStop = true}, update:function(event,ui) { 
-					swPortfolio_updateGalleryOrder($(this).data('portfolioid'),$(this))
+					swPortfolio_updateGalleryOrder($(this).data('portfolioid'),$(this));
 				}})
 			  .click(function( event ) {
 					if ( accordionSortableStop ) {
