@@ -61,7 +61,7 @@ if (!$gallery->delete_flag) {								// only continue if the gallery hasn't been
             ?>
             <ul class="swGalleryImageList" data-galleryid="<?=$gallery->gallery_id?>">
 			<?
-            // it this gallery is empty then satrt adding images straight away
+            // if this gallery is empty then start adding images straight away
             if ($isEmptyGallery) {
                 //echo "<b>Click on the drop-down button to start adding images</b>";
 				echo "<script type=\"text/javascript\">" . 

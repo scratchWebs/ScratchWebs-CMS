@@ -49,7 +49,7 @@ function swPortfolio_updateGalleryOrder(portfolioID,sortableGalleries)
 		update_object_id:portfolioID,		// update session parameters
 		update_type:'sort_galleries',
 		galleries_in_order_by_id:galleriesInOrderById
-	}
+	};
 	
 	$.swUpdateSession(data,function(response){
 		if (response.updateKey == '')
@@ -67,7 +67,7 @@ function swPortfolio_addGallery(portfolioID,addGalleryBox,theForm,container)
 		update_object_id:portfolioID,
 		update_type:'add_gallery'
 	},
-	theForm.swSerialize())
+	theForm.swSerialize());
 	
 	if (data.gallery_name == '') {
 		alert('Please enter a name for the new Gallery');
@@ -83,7 +83,7 @@ function swPortfolio_addGallery(portfolioID,addGalleryBox,theForm,container)
 		swPortfolio_sortableAccordionSetup(container.parent(),container.children().length-1);	// removing item breakes accordion, so set it up again
 		
 		theForm[0].reset();			// reset the form
-	})
+	});
 }
 
 function swPortfolio_deleteGallery(portfolioID,galleryID)
@@ -94,7 +94,7 @@ function swPortfolio_deleteGallery(portfolioID,galleryID)
 			update_object_id:portfolioID,
 			update_type:'delete_gallery',
 			gallery_id:galleryID
-		}
+		};
 		
 		$.swUpdateSession(data, function(response){
 			var gallery = swGallery_getById(galleryID);
@@ -118,7 +118,7 @@ function swPortfolio_enableGallery(portfolioID,galleryID,enable)
 			update_type:'enable_gallery',
 			gallery_id:galleryID,
 			enable:enable
-		}
+		};
 		
 		$.swUpdateSession(data, function(response){
 			var gallery = swGallery_getById(galleryID);				// get the gallery

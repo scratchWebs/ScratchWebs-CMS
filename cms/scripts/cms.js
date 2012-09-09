@@ -200,7 +200,7 @@ function resetTimer () {
 	//    });
 	//}
 	$.swRefreshControl = function( data, callback ){
-		$.swAjax('refreshControl.php',data,function(response){
+		$.swAjax('webmethods/refreshControl.php',data,function(response){
 			if (typeof callback == 'function') callback.call(this,response);
 		});
 	};
@@ -238,7 +238,7 @@ function resetTimer () {
 	//	updateKey is the reference to the sessionUpdate (so we can undo it later)
 	$.swUpdateSession = function( data, callback ){
 		sw.isUpdating=true;
-		$.swAjax('updateSession.php',data,function(response){
+		$.swAjax('webmethods/updateSession.php',data,function(response){
 			var responseObj = {
 				updateKey:$('updateKey',response).text(),
 				noUpdates:parseInt($('noUpdates',response).text()),
@@ -250,7 +250,7 @@ function resetTimer () {
 	
 	$.swUndo = function( data, callback ){
 		sw.isUpdating=true;
-		$.swAjax('undo.php',data,function(response){
+		$.swAjax('webmethods/undo.php',data,function(response){
 			var responseObj = {
 				noUpdates:parseInt($('noUpdates',response).text()),
 				undoResponse:$('undoResponse',response).text()
@@ -264,7 +264,7 @@ function resetTimer () {
 	$.swRefreshStatus = function(){
 		sw.isRefreshing=true;
 		
-		$.swAjax('refreshStatus.php',{},function(response){			// ajax call to refresh the status
+		$.swAjax('webmethods/refreshStatus.php',{},function(response){			// ajax call to refresh the status
 			$("#status_commit").unbind('click');					// remove previous click event
 			
 			var noOfChanges = $('noOfChanges',response).text();		// get the number of changes from the response

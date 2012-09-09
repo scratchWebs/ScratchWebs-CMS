@@ -4,7 +4,7 @@ require_once("../cms.php");
 $sessionObject = new swSessionObject();
 $sessionObject->redirectIfNotLoggedIn();
 
-$commit_form = '<form action="commit.php" method="post">' . 
+$commit_form = '<form action="webmethods/commit.php" method="post">' . 
 			   '<input type="hidden" name="commit_form" value="true" />';
 
 foreach($sessionObject->sessionUpdates as $key => $sessionUpdate)

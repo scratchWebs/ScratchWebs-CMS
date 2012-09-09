@@ -213,7 +213,6 @@ class swGallery extends swFeature
 				$img->img_featured = true;
 			elseif ($img->img_featured) {
 				$img->img_featured = false;
-				$img->has_changed = true;
 			}
 		}
 	}

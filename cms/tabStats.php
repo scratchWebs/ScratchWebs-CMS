@@ -1,9 +1,9 @@
 <?php
 require_once("cms.php");
 ?>
+<div id="div_stats_update">
 <h3>Last 50 Site Visit Statistics</h3>
 <p><a href="" id="a_stats_refresh" onclick="tabStats_refresh(); return false;" style="float:right">Refresh</a>
-<div id="div_stats_update">
 Last Refreshed at: <?= date('d/m/y h:m:s', time()) ?></p>
 
 

@@ -347,20 +347,25 @@ class swSessionUpdate
 		}
 	}
 	
+	public $counter = 1;
+	
 	public function commitUpdate(&$savedObjects)	// pass in $savedObjects by reference
 	{
-		$object_key = $this->update_object->getUID();
-		
-		if (isset($this->update_object) && !array_key_exists($object_key,$savedObjects))		// don't commit the same object twice
+		if (isset($this->update_object))
 		{
-			if ($this->is_new)	$this->update_object->saveAsNew();
-			else				$this->update_object->update();
+			$object_key = $this->update_object->getUID();
 			
-			// keep track of what get's saved (as we only need to save each dbObject once)
-			$savedObjects[$object_key] = $this->update_object;
-			
-			// remove the reference to all updates from the dbObject
-			$this->update_object->sessionUpdates = array();
+			if  (!array_key_exists($object_key,$savedObjects))		// don't commit the same object twice
+			{
+				if ($this->is_new)	$this->update_object->saveAsNew();
+				else				$this->update_object->update();
+				
+				// keep track of what get's saved (as we only need to save each dbObject once)
+				$savedObjects[$object_key] = $this->update_object;
+				
+				// remove the reference to all updates from the dbObject
+				$this->update_object->sessionUpdates = array();
+			}
 		}
 		
 		foreach ($this->additional_updates as $sessionUpdate) {		// loop through and commit all additional_updates

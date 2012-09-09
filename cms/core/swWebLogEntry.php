@@ -99,13 +99,21 @@ class swWebLogEntry extends dbObject
 						 " . (int) $this->enabled . ",
 						 '" . mysql_real_escape_string(substr($this->wlentry_text,0,5000)) . "',
 						 '" . mysql_real_escape_string(substr($this->wlentry_author,0,100)) . "',
-						 '" . $wlentry->wlentry_date . "',
+						 '" . $this->wlentry_date . "',
 						 " . (int) $this->wlentry_order . ",
 						 " . (int) $this->wlentry_fk_weblog_id . ");";
 		
 		if (mysql_query($sql) or die(mysql_error()))
 		{
-			$this->wlentry_id = mysql_insert_id();
+			$newid = mysql_insert_id();
+			
+			if (isset($this->weblog)) {
+				$this->weblog->weblog_entries[$newid] = $this;
+				unset($this->weblog->weblog_entries[$this->wlentry_id]);
+			}
+			
+			$this->wlentry_id = $newid;
+			
 			$success =  true;
 		}
 		

@@ -64,15 +64,15 @@ class swImage extends dbObject
 				if ($this->img_data_original != NULL) $param = "&fromSession=true";
 				break;
 		}
-		return DOCUMENT_ROOT . "cms/getImage.php?id=" . $this->img_id . "&size=" . $size . $param;
+		return DOCUMENT_ROOT . "cms/webmethods/getImage.php?id=" . $this->img_id . "&size=" . $size . $param;
 	}
 	public static function getSrc($img_id,$size = self::IMAGE_SIZE_THUMB)
 	{
-		return DOCUMENT_ROOT . "cms/getImage.php?id=" . $img_id . "&size=" . $size;
+		return DOCUMENT_ROOT . "cms/webmethods/getImage.php?id=" . $img_id . "&size=" . $size;
 	}
 	public static function getOriginalSrc($image_id)
 	{
-		return DOCUMENT_ROOT . "cms/getImage.php?id=" . $image_id . "&size=" . swImage::IMAGE_SIZE_ORIGINAL;
+		return DOCUMENT_ROOT . "cms/webmethods/getImage.php?id=" . $image_id . "&size=" . swImage::IMAGE_SIZE_ORIGINAL;
 	}
 	public function isFirstImage()
 	{
@@ -376,8 +376,6 @@ class swImage extends dbObject
 		mysql_query($sql) or die(mysql_error());
 		
 		$this->img_id = mysql_insert_id();
-		$this->is_new = false;
-		$this->has_changed = false;
 	}
 	public function update()
 	{
