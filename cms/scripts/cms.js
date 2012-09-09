@@ -57,8 +57,6 @@ $(document).ready(function(e)
 	$(".editable").hover(function(){$(this).css("border-color","#FAA");},function(){$(this).css("border-color","#CCC");})	// init
 		.focusin(function() {$(this).css("border-color","#FAA").css("border-style","solid");})								// init
 		.focusout(function() {$(this).css("border-color","#CCC").css("border-style","dashed");});								// init
-	$(".undoChange:not(.ui-state-disabled)").button({text:false,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo");	// init
-	$(".undoChange.ui-state-disabled").button({text:false,disabled:true,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo");	// init
 	
 	
 	

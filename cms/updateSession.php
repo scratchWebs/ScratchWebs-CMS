@@ -17,9 +17,68 @@ $sessionUpdate = new swSessionUpdate($update_type);
 $cancelUpdate = false;
 
 // output this as xml so we can pass the responseHTML and updateKey to the page. jQuery will do the clever bit.
+header("content-type:application/xml;charset=utf-8 .xml");
 echo '<?xml version="1.0"?>' .
 	 '<sessionUpdate>' .
 		 '<responseHTML><![CDATA[';
+
+
+
+// IF updating a web log
+if ($update_object == "swWebLog")
+{
+	$weblog = $sessionObject->findFeatureInSession($update_object_id,swFeature::FEATURE_TYPE_WEBLOG);
+	
+	if ($update_type == "weblog_create")
+	{
+		$author = $_GET['author'];
+		$entry_text = $_GET['text'];
+	
+		if ($author == '' && $entry_text == '') {
+			$cancelUpdate = true;
+		} else {
+			$wlentry = new swWebLogEntry();
+			$wlentry->wlentry_author = $author;
+			$wlentry->wlentry_date = new DateTime();
+			$wlentry->wlentry_date = $wlentry->wlentry_date->format(swCommon::SQL_DATE_FORMAT);
+			$wlentry->wlentry_text = $entry_text;
+			
+			$weblog->addEntry($wlentry);
+			
+			// save this update so it can be reviewed/undone later
+			$sessionUpdate->update_object = $wlentry;
+			$sessionUpdate->is_new = true;
+			
+			$force_has_updates = true;
+			include "controls/weblogentry.php";
+		}
+	}
+	if ($update_type == "weblog_update")
+	{
+		$author = $_GET['author'];
+		$entry_text = $_GET['text'];
+		
+		if ($author == '' && $entry_text == '') {
+			$cancelUpdate = true;
+		} else {
+			$wlentry = $weblog->getWebLogEntryById($_GET['wlentry_id']);
+			$wlentry->wlentry_author = $author;
+			$wlentry->wlentry_text = $entry_text;
+			
+			// save this update so it can be reviewed/undone later
+			$sessionUpdate->update_object = $wlentry;
+			
+			$force_has_updates = true;
+			include "controls/weblogentry.php";
+		}
+	}
+	
+}
+
+
+
+
+
 
 
 
@@ -160,7 +219,6 @@ if ($update_object == "swGallery")
 		$imageSize = $_GET["img_size"];
 		
 		// set the image name and create the thumbnail
-		$image->has_changed = true;
 		$image->img_name = $_GET['name'];
 		
 		$imageData = $image->img_data_original;
@@ -481,9 +539,6 @@ $noUpdates = (isset($sessionUpdate->update_object)) ? $sessionUpdate->update_obj
 echo '<noUpdates>' . $noUpdates . '</noUpdates>';
 
 echo '</sessionUpdate>';
-
-header("content-type:application/xml;charset=utf-8 .xml");
-
 
 
 

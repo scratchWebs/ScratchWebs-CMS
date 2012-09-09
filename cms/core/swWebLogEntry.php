@@ -11,6 +11,8 @@ class swWebLogEntry extends dbObject
 	public $wlentry_order;
 	public $wlentry_fk_weblog_id;
 	
+	public $weblog;
+	
 	public function getUID() {
 		return self::UID . $this->wlentry_id;
 	}
@@ -29,7 +31,7 @@ class swWebLogEntry extends dbObject
 	public function createFromId($id)
 	{
 		$sql = "SELECT * 
-				FROM tblweblogentry
+				FROM tblweblogentries
 				WHERE wlentry_id = $id
 					AND delete_flag = 0;";
 				
@@ -45,6 +47,30 @@ class swWebLogEntry extends dbObject
 			return false;
 		}
 	}
+	public static function getEntriesForWebLog(swWebLog $weblog)
+	{
+		$entries = array();
+		
+		$sql = 'SELECT * ' .
+				'FROM tblweblogentries ' .
+				'WHERE wlentry_fk_weblog_id = ' . $weblog->weblog_id . ' ' .
+					'AND delete_flag = 0;';
+		
+		$result = mysql_query($sql) or die(mysql_error());
+		
+		while (($data = mysql_fetch_array($result)) == true)
+		{
+			$wlentry = new swWebLogEntry();
+			
+			$wlentry->createWebLogEntryFromSQLData($data);
+			
+			$wlentry->weblog = $weblog;
+			
+			$entries[$wlentry->wlentry_id] = $wlentry;
+		}
+		
+		return $entries;
+	}
 	public function createWebLogEntryFromSQLData($data)
 	{
 		$this->delete_flag = $data["delete_flag"];
@@ -58,6 +84,8 @@ class swWebLogEntry extends dbObject
 	}
 	public function saveAsNew()
 	{
+		$success = false;
+		
 		$sql = "INSERT INTO tblweblogentries 
 						(delete_flag,
 						 enabled,
@@ -71,14 +99,20 @@ class swWebLogEntry extends dbObject
 						 " . (int) $this->enabled . ",
 						 '" . mysql_real_escape_string(substr($this->wlentry_text,0,5000)) . "',
 						 '" . mysql_real_escape_string(substr($this->wlentry_author,0,100)) . "',
-						 '" . $this->wlentry_date . "',
+						 '" . $wlentry->wlentry_date . "',
 						 " . (int) $this->wlentry_order . ",
 						 " . (int) $this->wlentry_fk_weblog_id . ");";
-						 
-		return (mysql_query($sql)) ? true : false;
-	}
-	public function update() {
 		
+		if (mysql_query($sql) or die(mysql_error()))
+		{
+			$this->wlentry_id = mysql_insert_id();
+			$success =  true;
+		}
+		
+		return $success;
+	}
+	public function update()
+	{
 		$success = false;
 		
 		if ($this->wlentry_id !== NULL)
@@ -87,13 +121,13 @@ class swWebLogEntry extends dbObject
 						SET delete_flag = " . (int) $this->delete_flag . ",
 							enabled = " . (int) $this->enabled . ",
 							wlentry_text = '" . mysql_real_escape_string(substr($this->wlentry_text,0,5000)) . "',
-							wlentry_author = " . mysql_real_escape_string(substr($this->wlentry_author,0,100)) . ",
+							wlentry_author = '" . mysql_real_escape_string(substr($this->wlentry_author,0,100)) . "',
 							wlentry_date = '" . $this->wlentry_date . "',
 							wlentry_order = " . (int) $this->wlentry_order . ",
 							wlentry_fk_weblog_id = " . (int) $this->wlentry_fk_weblog_id . "
 					WHERE wlentry_id = " . $this->wlentry_id . ";"; 
 							 
-			if (mysql_query($sql)) $success =  true;
+			if (mysql_query($sql) or die(mysql_error())) $success =  true;
 		}
 		
 		return $success;

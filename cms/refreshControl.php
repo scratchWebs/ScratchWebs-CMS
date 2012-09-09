@@ -14,11 +14,18 @@ if ($type == "swImage") {
 		include('controls/image.php');
 	}
 }
-if ($type == "swGallery") {
+elseif ($type == "swGallery") {
 	$gallery = $sessionObject->findGalleryInSession($id);
 
 	if (isset($gallery)) {
 		include('controls/gallery.php');
 	}
 }
+elseif ($type == "swWebLogEntry") {
+	$wlentry = $sessionObject->findWebLogEntryInSession($id);
+
+	if (isset($wlentry)) {
+		include('controls/weblogentry.php');
+	}
+} 
 ?>

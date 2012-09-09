@@ -17,6 +17,15 @@ $uid = $weblog->getUID();
 	    <p>Author<br /><input id="btnAuthor<?= $uid ?>" type="text" name="author" /></p>
 	    <p>Text<br /><textarea name="text" style="width:500px; height:80px"></textarea></p>
     </form>
-    <button class="buttonSave" onclick="swLogEntry_create('<?= $weblog->weblog_id ?>',$('#divAddNew<?= $uid ?>'),$('#frmCreate<?= $uid ?>'))">Create</button>
+    <button class="buttonSave" onclick="swLogEntry_create('<?= $weblog->weblog_id ?>',$('#divAddNew<?= $uid ?>'),$('#frmCreate<?= $uid ?>'),$('#weblog_list_<?=$uid?>'),$('#btnCreateNew<?= $uid ?>'))">Create</button>
     <button class="buttonCancel" id="" onclick="$('#divAddNew<?= $uid ?>').hide();$('#btnCreateNew<?= $uid ?>').show();">Cancel</button>
+</div>
+
+<div id="weblog_list_<?=$uid?>" data-weblogid="<?= $weblog->weblog_id ?>">
+	<?
+    // Populate Entries
+    foreach ($weblog->weblog_entries as $wlentry) {
+        include("controls/weblogentry.php");
+    }
+    ?>
 </div>

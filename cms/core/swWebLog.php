@@ -10,12 +10,14 @@ class swWebLog extends swFeature
 	public $weblog_entry_name = "";
 	public $weblog_fk_pg_id;
 	
+	public $weblog_entries = array(); 
+	
 	public function getUID() {
 		return self::UID . $this->weblog_id;
 	}
 	public function getObjectID()
 	{
-		return $this->$weblog_id;
+		return $this->weblog_id;
 	}
 	public function getObjectType()
 	{
@@ -29,7 +31,7 @@ class swWebLog extends swFeature
 	{
 		return count($this->sessionUpdates);
 	}
-	public function createFromId($id)
+	public function createFromId($id,$loadEntries = true)
 	{
 		$sql = "SELECT * 
 				FROM tblweblogs
@@ -41,14 +43,14 @@ class swWebLog extends swFeature
 		if (mysql_num_rows($result) == 1) {
 			$data = mysql_fetch_array($result);
 			
-			$this->createWebLogFromSQLData($data);
+			$this->createWebLogFromSQLData($data,$loadEntries);
 			
 			return true;
 		} else {
 			return false;
 		}
 	}
-	public function createWebLogFromSQLData($data)
+	public function createWebLogFromSQLData($data,$loadEntries)
 	{
 		$this->delete_flag = $data["delete_flag"];
 		$this->enabled = $data["enabled"];
@@ -57,6 +59,8 @@ class swWebLog extends swFeature
 		$this->weblog_desc = $data["weblog_desc"];
 		$this->weblog_entry_name = $data["weblog_entry_name"];
 		$this->weblog_fk_pg_id = $data["weblog_fk_pg_id"];
+		
+		if ($loadEntries) $this->weblog_entries = swWebLogEntry::getEntriesForWebLog($this);
 	}
 	public function saveAsNew()
 	{
@@ -113,6 +117,21 @@ class swWebLog extends swFeature
 				) ENGINE=InnoDB DEFAULT CHARSET=latin1$$";
 				
 		return (mysql_query($sql)) ? true : false;
+	}
+	
+	public function addEntry(swWebLogEntry $wlentry)
+	{
+		if (!isset($wlentry->wlentry_id)) $wlentry->wlentry_id = uniqid();
+		
+		$wlentry->wlentry_fk_weblog_id = $this->weblog_id;
+		$wlentry->wlentry_order = count($this->weblog_entries);
+		$wlentry->weblog = $this;
+		
+		$this->weblog_entries[$wlentry->wlentry_id] = $wlentry;
+	}
+	public function getWebLogEntryById($id)
+	{
+		return $this->weblog_entries[$id];
 	}
 }
 

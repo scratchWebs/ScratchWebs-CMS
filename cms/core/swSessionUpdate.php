@@ -324,14 +324,25 @@ class swSessionUpdate
 				return 'Page order changed';
 				break;
 			
-			// swSectionUpdates
+			// swSection updates
 			case "section_update_html":
 				return 'Section updated "' . $this->update_object->section_name . '"';
 				$this->undoField('section_html');
 				break;
 			
+			// swWebLog updates
+			case "weblog_create":
+				return 'New ' . $this->update_object->weblog->weblog_entry_name . ' added (' . $this->update_object->wlentry_author . ')';
+				break;
+			case "weblog_update":
+				return $this->update_object->weblog->weblog_entry_name . ' updated (' . $this->update_object->wlentry_author . ')';
+				break;
+			case "weblog_delete":
+				return $this->update_object->weblog->weblog_entry_name . ' deleted (' . $this->update_object->wlentry_author . ')';
+				break;
+			
 			default:
-				"Unnamed update";
+				return "Unnamed update";
 				break;
 		}
 	}

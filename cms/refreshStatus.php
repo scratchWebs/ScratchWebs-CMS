@@ -20,11 +20,11 @@ foreach($sessionObject->sessionUpdates as $key => $sessionUpdate)
 $commit_form .= '</form>';
 
 // output this as xml so we can pass the numberOfChanges to the page. jQuery will extract the HTML.
+header("content-type:application/xml;charset=utf-8 .xml");
 echo '<?xml version="1.0"?>' .
 	 '<sessionUpdate>' .
 		 '<noOfChanges>' . count($sessionObject->sessionUpdates) . '</noOfChanges>' .
 		 '<sessionChanges><![CDATA[' . $commit_form . ']]></sessionChanges>' .
 	 '</sessionUpdate>';
 
-header("content-type:application/xml;charset=utf-8 .xml");
 ?>

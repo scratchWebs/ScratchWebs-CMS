@@ -1,6 +1,8 @@
 <?php
 
-class swCommon {
+class swCommon 
+{
+	const SQL_DATE_FORMAT = "Y-m-d g:i:s";
 	
 	static public function startsWith($string, $startsWith)
 	{
