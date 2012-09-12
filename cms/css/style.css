@@ -99,7 +99,7 @@ table{border:none; border-collapse:collapse; border-spacing:0px;width:100%}
 	.editSection {border:solid 1px #999;background:#F5F5F5; padding:5px;margin-bottom:5px}
 	.editSection p{margin-top:0px;margin-bottom:5px}
 	.editable {border:dashed 1px #CCC;background:#fff; padding:5px; cursor:pointer;width:595px;height:20px;float:left}
-	.buttonSaveSmall, .undoChange {height:30px;width:30px;margin-left:5px}
+	.buttonDeleteSmall, .buttonSaveSmall, .undoChange {height:30px;width:30px;margin-left:5px}
 
 /* password strength bar */
 #passwordDialog input {width:150px}

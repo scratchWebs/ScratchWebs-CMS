@@ -122,12 +122,12 @@ class swWebLog extends swFeature
 	public function addEntry(swWebLogEntry $wlentry)
 	{
 		if (!isset($wlentry->wlentry_id)) $wlentry->wlentry_id = uniqid();
-		
+	
 		$wlentry->wlentry_fk_weblog_id = $this->weblog_id;
 		$wlentry->wlentry_order = count($this->weblog_entries);
 		$wlentry->weblog = $this;
 		
-		$this->weblog_entries[$wlentry->wlentry_id] = $wlentry;
+		swCommon::array_unshift_withkey($this->weblog_entries, $wlentry->wlentry_id, $wlentry);
 	}
 	public function getWebLogEntryById($id)
 	{

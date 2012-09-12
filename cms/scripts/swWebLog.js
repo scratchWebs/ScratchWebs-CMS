@@ -48,7 +48,7 @@ function swLogEntry_create(webLogID,formContainer,theForm,webLogEntryContainer,a
 	
 	$.swUpdateSession(data,function(response){
 		var id = $(response.responseHTML).data('id');
-		webLogEntryContainer.append(response.responseHTML);
+		$(response.responseHTML).hide().prependTo(webLogEntryContainer).slideDown();
 		swWebLog_init(id);
 		theForm[0].reset();			// reset the form
 	});
@@ -69,5 +69,24 @@ function swWebLog_update(webLogID,wlEntryID,theForm)
 	
 	$.swUpdateSession(data,function(response){
 		swWebLog_init(wlEntryID,response.responseHTML);
+	});
+}
+function swWebLog_delete(wlEntryID)
+{
+	var ctrl = swWebLog_getById(wlEntryID);
+	
+	var data = {
+		update_object:'swWebLog',
+		update_object_id:ctrl.data('weblogid'),
+		update_type:'weblog_delete',
+		wlentry_id:wlEntryID
+	};
+
+	if (!confirm('Are you sure you want to delete?')) return; // exit the function
+	
+	$.swUpdateSession(data,function(){
+		ctrl.slideUp('fast',function(){
+			this.remove();
+		});
 	});
 }

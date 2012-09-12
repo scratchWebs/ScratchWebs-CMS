@@ -29,6 +29,7 @@ if ($update_object == "swWebLog")
 {
 	$weblog = $sessionObject->findFeatureInSession($update_object_id,swFeature::FEATURE_TYPE_WEBLOG);
 	
+	
 	if ($update_type == "weblog_create")
 	{
 		$author = $_GET['author'];
@@ -53,7 +54,9 @@ if ($update_object == "swWebLog")
 			include "../controls/weblogentry.php";
 		}
 	}
-	if ($update_type == "weblog_update")
+	
+	
+	elseif ($update_type == "weblog_update")
 	{
 		$author = $_GET['author'];
 		$entry_text = $_GET['text'];
@@ -71,6 +74,20 @@ if ($update_object == "swWebLog")
 			$force_has_updates = true;
 			include "../controls/weblogentry.php";
 		}
+	}
+	
+	
+	elseif ($update_type == "weblog_delete")
+	{
+		$wlentry = $weblog->getWebLogEntryById($_GET['wlentry_id']);
+		
+		// save this update so it can be reviewed/undone later
+		$sessionUpdate->update_object = $wlentry;
+		$sessionUpdate->old_value = $wlentry->delete_flag;
+		$sessionUpdate->new_value = true;
+		$sessionUpdate->is_delete = true;
+		
+		$wlentry->delete_flag = true;
 	}
 	
 }

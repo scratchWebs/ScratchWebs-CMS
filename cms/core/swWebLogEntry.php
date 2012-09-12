@@ -54,7 +54,8 @@ class swWebLogEntry extends dbObject
 		$sql = 'SELECT * ' .
 				'FROM tblweblogentries ' .
 				'WHERE wlentry_fk_weblog_id = ' . $weblog->weblog_id . ' ' .
-					'AND delete_flag = 0;';
+					'AND delete_flag = 0 ' .
+				'ORDER BY wlentry_order DESC';
 		
 		$result = mysql_query($sql) or die(mysql_error());
 		
@@ -108,7 +109,7 @@ class swWebLogEntry extends dbObject
 			$newid = mysql_insert_id();
 			
 			if (isset($this->weblog)) {
-				$this->weblog->weblog_entries[$newid] = $this;
+				swCommon::array_unshift_withkey($this->weblog->weblog_entries, $newid, $this);
 				unset($this->weblog->weblog_entries[$this->wlentry_id]);
 			}
 			
