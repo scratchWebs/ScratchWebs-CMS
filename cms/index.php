@@ -59,39 +59,45 @@ $features = $sessionObject->features;
         <div id="main" class="tabs">
             <ul>
                 <li><a href="#tabSetup"><span class="ui-icon ui-icon-wrench"></span>Website Setup</a></li>
-                <li><a href="#tabStats"><span class="ui-icon ui-icon-clipboard"></span>Website Stats</a></li>
-                    
-                    
-              <!-- 	
-              		<li><a href="#tabHistory"><span class="ui-icon ui-icon-clock"></span>History</a></li>
-                    <li><a href="#tabControlPanel"><span class="ui-icon ui-icon-person"></span>Control Panel</a></li>
-                    <li><a href="#tabAdmin"><span class="ui-icon ui-icon-gear"></span>CMS Admin</a></li>
-                    <li><a href="#tabLogs"><span class="ui-icon ui-icon-clock"></span>Logs</a></li>
-              -->
-                    
-            </ul>
-            <div id="tabSetup">
-                <? include("tabSetup.php"); ?>
-            </div>
-            <div id="tabStats">
-                <? include("tabStats.php"); ?>
-            </div>
-                
-            <!-- 
-                <div id="tabHistory">
-                    <? include("tabHistory.php"); ?>
-                </div>
-                <div id="tabControlPanel">
-                    <? include("tabControlPanel.php"); ?>
-                </div>
-                <div id="tabAdmin">
-                    <? include("tabAdmin.php"); ?>
-                </div>
-                <div id="tabLogs">
-                    <? include("tabLogs.php"); ?>
-                </div>
-            -->
-                
+                 <?php 
+	                 if ($user->user_type = swUser::USER_TYPE_ADMIN)
+	                 {
+	                 	?>
+	                 	<li><a href="#tabStats"><span class="ui-icon ui-icon-clipboard"></span>Website Stats</a></li>
+	              		<li><a href="#tabHistory"><span class="ui-icon ui-icon-clock"></span>History</a></li>
+	                    <li><a href="#tabControlPanel"><span class="ui-icon ui-icon-person"></span>Control Panel</a></li>
+	                    <li><a href="#tabAdmin"><span class="ui-icon ui-icon-gear"></span>CMS Admin</a></li>
+	                    <li><a href="#tabLogs"><span class="ui-icon ui-icon-clock"></span>Logs</a></li>
+	                    <?
+	                 }
+                 ?>   
+			</ul>
+			
+            <?php 
+	            if ($user->user_type == swUser::USER_TYPE_ADMIN)
+	            {
+	             	?>
+	              	<div id="tabSetup">
+		                <? include("tabSetup.php"); ?>
+		            </div>
+		            <div id="tabStats">
+		                <? include("tabStats.php"); ?>
+		            </div>
+	                <div id="tabHistory">
+	                    <? include("tabHistory.php"); ?>
+	                </div>
+	                <div id="tabControlPanel">
+	                    <? include("tabControlPanel.php"); ?>
+	                </div>
+	                <div id="tabAdmin">
+	                    <? include("tabAdmin.php"); ?>
+	                </div>
+	                <div id="tabLogs">
+	                    <? include("tabLogs.php"); ?>
+	                </div>
+	                <?
+	            }
+            ?>
         </div>
         
         <div id="noChangeDialog" title="Commit Changes" style="font-size:12px" class="ui-dialog-content ui-widget-content"><p>It appears that you have not made any changes to your website.</p></div>        

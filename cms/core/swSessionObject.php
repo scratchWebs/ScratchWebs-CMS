@@ -75,6 +75,19 @@ class swSessionObject
 		}
 		return NULL;	// return NULL if no gallery was found
 	}
+	public function findWebLogEntryInSession($wlentry_id)
+	{
+		foreach ($this->features as $feature) {
+			if ($feature->getFeatureType() == swFeature::FEATURE_TYPE_WEBLOG)
+			{
+				$weblog = $feature;
+				foreach ($weblog->weblog_entries as $wlentry)
+					if ($wlentry->wlentry_id == $wlentry_id)
+						return $wlentry;
+			}
+		}
+		return NULL;	// return NULL if no entry was found
+	}
 	public function findFeatureInSession($feature_id,$feature_type)
 	{
 		foreach ($this->features as $feature)

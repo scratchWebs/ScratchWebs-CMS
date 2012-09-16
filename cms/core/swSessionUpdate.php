@@ -324,36 +324,53 @@ class swSessionUpdate
 				return 'Page order changed';
 				break;
 			
-			// swSectionUpdates
+			// swSection updates
 			case "section_update_html":
 				return 'Section updated "' . $this->update_object->section_name . '"';
 				$this->undoField('section_html');
 				break;
 			
+			// swWebLog updates
+			case "weblog_create":
+				return 'New ' . $this->update_object->weblog->weblog_entry_name . ' added (' . $this->update_object->wlentry_author . ')';
+				break;
+			case "weblog_update":
+				return $this->update_object->weblog->weblog_entry_name . ' updated (' . $this->update_object->wlentry_author . ')';
+				break;
+			case "weblog_delete":
+				return $this->update_object->weblog->weblog_entry_name . ' deleted (' . $this->update_object->wlentry_author . ')';
+				break;
+			
 			default:
-				"Unnamed update";
+				return "Unnamed update";
 				break;
 		}
 	}
 	
+	public $counter = 1;
+	
 	public function commitUpdate(&$savedObjects)	// pass in $savedObjects by reference
 	{
-		$object_key = $this->update_object->getUID();
-		
-		if (isset($this->update_object) && !array_key_exists($object_key,$savedObjects))		// don't commit the same object twice
+		if (isset($this->update_object))
 		{
-			if ($this->is_new)	$this->update_object->saveAsNew();
-			else				$this->update_object->update();
+			$object_key = $this->update_object->getUID();
 			
-			// keep track of what get's saved (as we only need to save each dbObject once)
-			$savedObjects[$object_key] = $this->update_object;
-			
-			// remove the reference to all updates from the dbObject
-			$this->update_object->sessionUpdates = array();
+			if  (!array_key_exists($object_key,$savedObjects))		// don't commit the same object twice
+			{
+				if ($this->is_new)	$this->update_object->saveAsNew();
+				else				$this->update_object->update();
+				
+				// keep track of what get's saved (as we only need to save each dbObject once)
+				$savedObjects[$object_key] = $this->update_object;
+				
+				// remove the reference to all updates from the dbObject
+				$this->update_object->sessionUpdates = array();
+			}
 		}
 		
-		foreach ($this->additional_updates as $sessionUpdate)		// loop through and commit all additional_updates
-			$sessionUpdate->commitUpdate(&$savedObjects);
+		foreach ($this->additional_updates as $sessionUpdate) {		// loop through and commit all additional_updates
+			$sessionUpdate->commitUpdate($savedObjects);
+		}
 	}
 }
 

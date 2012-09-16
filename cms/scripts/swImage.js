@@ -130,6 +130,8 @@ function swImage_SaveToSession(context,uid)
 		
 		$.swUpdateSession(formData,function(response){
 			swImage_init(imgID,response.responseHTML);
+
+			$('html,body').animate({scrollTop:0});
 		});
 	});
 }

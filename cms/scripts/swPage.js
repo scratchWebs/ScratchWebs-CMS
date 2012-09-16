@@ -20,7 +20,7 @@ $(document).ready(function(e) {
 		.button({icons:{primary:'ui-icon-arrowreturnthick-1-w'}})		// init button style
 		.click(function(e) {
 			$.swUndo({update_key:$(this).data('updateKey')},function(response){
-				var sortIdArray = response.split(',');
+				var sortIdArray = response.undoResponse.split(',');
 				for (var i=0; i < sortIdArray.length; i++)
 				{
 					$('#sortable li[data-pageid='+ sortIdArray[i] +']').appendTo($("#sortable"));

@@ -1,6 +1,8 @@
 <?php
 
-class swCommon {
+class swCommon 
+{
+	const SQL_DATE_FORMAT = "Y-m-d g:i:s";
 	
 	static public function startsWith($string, $startsWith)
 	{
@@ -20,6 +22,13 @@ class swCommon {
 		$contents = ob_get_contents();
 		ob_end_clean();
 		return $contents;
+	}
+	static public function array_unshift_withkey(&$array,$key,$value)
+	{
+		$arry = array_reverse($array,true);
+		$array[$key] = $value;
+		$array = array_reverse($array,true);
+		return $array;
 	}
 	
 }

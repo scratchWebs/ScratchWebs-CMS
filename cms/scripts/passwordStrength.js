@@ -131,7 +131,7 @@ var IW = IW || {};
 
 
 function changePasswordAjax () {
-	$.swAjax('changePass.php',{old_pass:$("#oldPW").val(),new_pass:$("#newPW").val()},function(response){
+	$.swAjax('webmethods/changePass.php',{old_pass:$("#oldPW").val(),new_pass:$("#newPW").val()},function(response){
 		if (response == "success") {
 			$("#pwMsg").text('');
 			$("#oldPW, #newPW, #newPW2").val('');

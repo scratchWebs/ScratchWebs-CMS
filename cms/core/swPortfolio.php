@@ -12,7 +12,7 @@ class swPortfolio extends swFeature
 	public $portfolio_internal_count = 0;
 	public $portfolio_external_count = 0;
 	
-	public $galleries;
+	public $galleries = array();
 	
 	public function getUID() {
 		return self::UID . $this->portfolio_id;
@@ -117,7 +117,6 @@ class swPortfolio extends swFeature
 		$gallery->gallery_fk_portfolio_id = $this->portfolio_id;
 		$gallery->gallery_order = count($this->galleries);
 		$gallery->gallery_id = uniqid();
-		$gallery->is_new = true;
 		$this->galleries[$gallery->gallery_id] = $gallery;
 	}
 	public function removeGallery(&$gallery)

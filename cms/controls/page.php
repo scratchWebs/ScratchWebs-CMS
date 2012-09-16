@@ -50,16 +50,6 @@ if (!$page->isFirstPage()) $className = "ui-helper-hidden";		// hide all but the
 		?>
         
 		<div id="General">
-			<div class="buttonControls">
-            	<? if ($user->user_type == swUser::USER_TYPE_ADMIN) { ?>
-				<button class="buttonEnable">Disable Page</button>
-                <button class="buttonEdit">Edit Title</button>
-				<button class="buttonEdit">Edit Link</button>
-                <button class="buttonEdit">Edit Meta Description</button>
-                <? } ?>
-                
-			</div>
-			
 			<h3 id="set_page_title<?= $page->pg_id ?>"><?= $page->pg_title ?></h3>
             
             <div class="accordion">
