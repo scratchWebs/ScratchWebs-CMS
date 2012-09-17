@@ -129,6 +129,10 @@ class swWebLog extends swFeature
 		
 		swCommon::array_unshift_withkey($this->weblog_entries, $wlentry->wlentry_id, $wlentry);
 	}
+	public function removeEntry($wlentry_id)
+	{
+		unset($this->weblog_entries[$wlentry_id]);
+	}
 	public function getWebLogEntryById($id)
 	{
 		return $this->weblog_entries[$id];

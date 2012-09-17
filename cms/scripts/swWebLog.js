@@ -43,14 +43,17 @@ function swLogEntry_create(webLogID,formContainer,theForm,webLogEntryContainer,a
 	
 	if (!formIsValid(data)) return; // exit the function
 	
-	formContainer.slideUp();
-	addNewButton.slideDown();
-	
 	$.swUpdateSession(data,function(response){
-		var id = $(response.responseHTML).data('id');
-		$(response.responseHTML).hide().prependTo(webLogEntryContainer).slideDown();
-		swWebLog_init(id);
-		theForm[0].reset();			// reset the form
+		var id = response.responseHTML;
+
+		$.swRefreshControl({type:'swWebLogEntry',id:id}, function(response){
+			$(response).hide().prependTo(webLogEntryContainer).slideDown();
+			swWebLog_init(id);
+
+			formContainer.slideUp();
+			addNewButton.slideDown();
+			theForm[0].reset();			// reset the form
+		});
 	});
 }
 
@@ -68,11 +71,13 @@ function swWebLog_update(webLogID,wlEntryID,theForm)
 	if (!formIsValid(data)) return; // exit the function
 	
 	$.swUpdateSession(data,function(response){
-		swWebLog_init(wlEntryID,response.responseHTML);
+		swWebLog_refreshById(wlEntryID);
 	});
 }
 function swWebLog_delete(wlEntryID)
 {
+	if (!confirm('Are you sure you want to delete?')) return; // exit the function
+	
 	var ctrl = swWebLog_getById(wlEntryID);
 	
 	var data = {
@@ -82,11 +87,20 @@ function swWebLog_delete(wlEntryID)
 		wlentry_id:wlEntryID
 	};
 
-	if (!confirm('Are you sure you want to delete?')) return; // exit the function
-	
 	$.swUpdateSession(data,function(){
-		ctrl.slideUp('fast',function(){
-			this.remove();
-		});
+		ctrl.slideUp('fast',ctrl.remove);
+	});
+}
+function swWebLog_undo(wlEntryID,undoButton)
+{
+	if (undoButton.hasClass('ui-state-disabled')) return;
+	
+	var data = {
+		update_key:undoButton.data('updateKey'),
+		update_object_id:wlEntryID
+	};
+	
+	$.swUndo(data,function(response){
+		swWebLog_refreshById(wlEntryID);
 	});
 }

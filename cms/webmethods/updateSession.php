@@ -46,12 +46,11 @@ if ($update_object == "swWebLog")
 			
 			$weblog->addEntry($wlentry);
 			
+			echo $wlentry->wlentry_id;	// return the id so we can load the control
+			
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $wlentry;
 			$sessionUpdate->is_new = true;
-			
-			$force_has_updates = true;
-			include "../controls/weblogentry.php";
 		}
 	}
 	
@@ -65,14 +64,11 @@ if ($update_object == "swWebLog")
 			$cancelUpdate = true;
 		} else {
 			$wlentry = $weblog->getWebLogEntryById($_GET['wlentry_id']);
-			$wlentry->wlentry_author = $author;
-			$wlentry->wlentry_text = $entry_text;
 			
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $wlentry;
-			
-			$force_has_updates = true;
-			include "../controls/weblogentry.php";
+			$sessionUpdate->updateField('wlentry_author',$author);
+			$sessionUpdate->updateField('wlentry_text',$entry_text);
 		}
 	}
 	
@@ -83,11 +79,8 @@ if ($update_object == "swWebLog")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $wlentry;
-		$sessionUpdate->old_value = $wlentry->delete_flag;
-		$sessionUpdate->new_value = true;
+		$sessionUpdate->updateField('delete_flag',true);
 		$sessionUpdate->is_delete = true;
-		
-		$wlentry->delete_flag = true;
 	}
 	
 }

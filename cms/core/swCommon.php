@@ -25,7 +25,7 @@ class swCommon
 	}
 	static public function array_unshift_withkey(&$array,$key,$value)
 	{
-		$arry = array_reverse($array,true);
+		$array = array_reverse($array,true);
 		$array[$key] = $value;
 		$array = array_reverse($array,true);
 		return $array;
