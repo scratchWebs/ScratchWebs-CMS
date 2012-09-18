@@ -60,7 +60,7 @@ $features = $sessionObject->features;
             <ul>
                 <li><a href="#tabSetup"><span class="ui-icon ui-icon-wrench"></span>Website Setup</a></li>
                  <?php 
-	                 if ($user->user_type = swUser::USER_TYPE_ADMIN)
+	                 if ($user->user_type == swUser::USER_TYPE_ADMIN)
 	                 {
 	                 	?>
 	                 	<li><a href="#tabStats"><span class="ui-icon ui-icon-clipboard"></span>Website Stats</a></li>
@@ -72,28 +72,29 @@ $features = $sessionObject->features;
 	                 }
                  ?>   
 			</ul>
-			
+		
+            <div id="tabSetup">
+	        	<? include("tabs/tabSetup.php"); ?>
+            </div>
+            
             <?php 
 	            if ($user->user_type == swUser::USER_TYPE_ADMIN)
 	            {
 	             	?>
-	              	<div id="tabSetup">
-		                <? include("tabSetup.php"); ?>
-		            </div>
 		            <div id="tabStats">
-		                <? include("tabStats.php"); ?>
+		                <? include("tabs/tabStats.php"); ?>
 		            </div>
 	                <div id="tabHistory">
-	                    <? include("tabHistory.php"); ?>
+	                    <? include("tabs/tabHistory.php"); ?>
 	                </div>
 	                <div id="tabControlPanel">
-	                    <? include("tabControlPanel.php"); ?>
+	                    <? include("tabs/tabControlPanel.php"); ?>
 	                </div>
 	                <div id="tabAdmin">
-	                    <? include("tabAdmin.php"); ?>
+	                    <? include("tabs/tabAdmin.php"); ?>
 	                </div>
 	                <div id="tabLogs">
-	                    <? include("tabLogs.php"); ?>
+	                    <? include("tabs/tabLogs.php"); ?>
 	                </div>
 	                <?
 	            }
