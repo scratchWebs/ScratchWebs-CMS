@@ -297,7 +297,12 @@ function resetTimer () {
 	};
 	
 	$.swCommit = function(){
-		$('#sessionChanges form')[0].submit();
+		if (confirm('This will apply all of the selected changes to the live website.\n\n' + 
+					'Unselected changes will be undone.\n\n' + 
+					'Are you sure you\'re ready to commit?'))
+		{
+			$('#sessionChanges form')[0].submit();
+		}
 		
 		// ajax commit
 		/*var formData = $('#sessionChanges form').swSerialize();
