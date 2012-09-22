@@ -27,7 +27,20 @@ abstract class dbObject
 	abstract public function getTableName();
 	abstract public function createTable();
 	
-	
+	public function isNew()
+	{
+		$isNew = false;
+		
+		foreach ($this->sessionUpdates as $sessionUpdate)
+		{
+			if ($sessionUpdate->is_new) {
+				$isNew = true;
+				break;
+			}
+		}
+		
+		return $isNew;
+	}
 	///////these functions should be combined///////////////////////////////////////////////////////////////////
 	public function hasUpdates()
 	{
@@ -39,9 +52,11 @@ abstract class dbObject
 	public function getUpdateKeyByType($update_type)
 	{
 		foreach ($this->sessionUpdates as $sessionUpdate)
+		{
 			if ($sessionUpdate->update_type == $update_type) {
 				return $sessionUpdate->key;
 			}
+		}
 	}
 	
 	public function event_sessionUpdated(swSessionUpdate $sessionUpdate,swSessionObject $sessionObject)

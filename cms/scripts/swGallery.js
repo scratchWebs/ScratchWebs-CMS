@@ -8,10 +8,10 @@ $(document).ready(function(e) {
 			var button = $(this);
 			$.swUndo({update_key:$(this).data('updateKey')},function(response){
 				var sortableImages = button.siblings('.swGalleryImageList');
-				var sortIdArray = response.split(',');
+				var sortIdArray = response.undoResponse.split(',');
 				
 				for (var i=0; i < sortIdArray.length; i++) {
-					swImage_getById(sortIdArray[i]).appendTo(sortableImages)
+					swImage_getById(sortIdArray[i]).appendTo(sortableImages);
 				}
 				
 				button.fadeOut('fast');
@@ -39,7 +39,7 @@ function swGallery_init(id)
 	
 	// make images sortable...// sortable gallery images
 	$(".swGalleryImageList", context).sortable({placeholder:"ui-state-highlight", update:function() { 
-		swGallery_sortImages($(this).data('galleryid'),$(this))
+		swGallery_sortImages($(this).data('galleryid'),$(this));
 	}});
 }
 
@@ -60,7 +60,7 @@ function swGallery_sortImages(galleryID,images)
 		update_object_id:galleryID,		// update session parameters
 		update_type:'sort_images',
 		images_in_order_by_id:imagesInOrderById
-	}
+	};
 	
 	$.swUpdateSession(data,function(response){
 		if (response.updateKey == '')
@@ -80,10 +80,10 @@ function swGallery_deleteImage(galleryID,imageID)
 			update_object_id:galleryID,
 			update_type:"delete_image",
 			img_id:imageID
-		}
+		};
 		
 		$.swUpdateSession(data,function(){
 			swImage_getById(imageID).remove();
-		})
+		});
 	}
 }

@@ -6,11 +6,12 @@ class swSessionUpdate
 	
 	public $update_type;		// the type of update (ie: delete_gallery)
 	public $update_object;		// reference to the object being updated (ie: swImage / swPage / swSection)
-	public $old_value;			// the old value (optional)
-	public $new_value;			// the new value (optional)
 	
-	public $is_new = false;		// by default these updates are not creating new objects (used when commiting to the database)
-	public $is_delete = false;	// used to detect if we're adding and deleting at the same time (no need to do either in that case!)
+	public $old_value = array();		// the old value (optional)
+	public $new_value = array();		// the new value (optional)
+	
+	public $is_new = false;			// by default these updates are not creating new objects (used when commiting to the database)
+	public $is_delete = false;		// used to detect if we're adding and deleting at the same time (no need to do either in that case!)
 	
 	public $additional_updates = array();	// It may be that one update effects many objects but we only want to see this as one change
 											// this is where we will store the "additional" swSessionUpdate objects associated with this change
@@ -19,6 +20,18 @@ class swSessionUpdate
 	{
 		$this->update_type = $update_type;
 		$this->update_object = $update_object;
+	}
+	
+	public function updateField($fieldName,$newValue)
+	{
+		if (isset($this->update_object) && property_exists($this->update_object, $fieldName))
+		{
+			$this->old_value[$fieldName] = $this->update_object->$fieldName;
+			$this->new_value[$fieldName] = $newValue;
+			$this->update_object->$fieldName = $newValue;
+		} else {
+			throw new exception('Scratchwebs Error: Error updating field');
+		}
 	}
 	
 	public function addAdditionalUpdate(swSessionUpdate $additional_update)	// adds a reference to an additional update
@@ -133,17 +146,22 @@ class swSessionUpdate
 		return $areSame;
 	}
 	
-	private function undoField($field)
+	private function undoField($fieldName)
 	{
-		if (isset($this->update_object) && property_exists($this->update_object, $field))
-			$this->update_object->$field = $this->old_value;
+		if (isset($this->update_object) && property_exists($this->update_object, $fieldName))
+		{
+			$this->update_object->$fieldName = $this->old_value[$fieldName];
+		}
 		
 		foreach ($this->additional_updates as $additionalUpdate)
-			if (isset($additionalUpdate->update_object) && property_exists($additionalUpdate->update_object, $field)) {
-				$additionalUpdate->update_object->$field = $additionalUpdate->old_value;
+		{
+			if (isset($additionalUpdate->update_object) && property_exists($additionalUpdate->update_object, $fieldName))
+			{
+				$additionalUpdate->update_object->$fieldName = $additionalUpdate->old_value[$fieldName];
 			}
+		}
 	}
-	public function undo($sessionObject)
+	public function undo(swSessionObject $sessionObject)
 	{
 		$undoResponse = "";
 		
@@ -174,13 +192,19 @@ class swSessionUpdate
 			
 			// swGallery updates
 			case "update_image":
-				
+				foreach ($this->old_value as $key => $value) {
+					$this->undoField($key);
+				}
 				break;
 			case "add_new_image":
-				
+				$gallery = $sessionObject->findGalleryInSession($this->update_object->img_fk_gallery_id);
+				$gallery->removeImageById($this->update_object->img_id);
 				break;
 			case "delete_image":
 				$this->undoField('delete_flag');
+				break;
+			case "rename_gallery":
+				$this->undoField('gallery_name');
 				break;
 			case "sort_images":
 				$this->undoField('img_order');
@@ -198,27 +222,27 @@ class swSessionUpdate
 			// swPage updates
 			case "set_title":
 				$this->undoField('pg_title');
-				$undoResponse = $this->old_value;
+				$undoResponse = $this->update_object->pg_title;
 				break;
 			case "set_linkname":
 				$this->undoField('pg_linkname');
-				$undoResponse = $this->old_value;
+				$undoResponse = $this->update_object->pg_linkname;
 				break;
 			case "set_description":
 				$this->undoField('pg_description');
-				$undoResponse = $this->old_value;
+				$undoResponse = $this->update_object->pg_description;
 				break;
 			case "set_meta_title":
 				$this->undoField('pg_meta_title');
-				$undoResponse = $this->old_value;
+				$undoResponse = $this->update_object->pg_meta_title;
 				break;
 			case "set_meta_description":
 				$this->undoField('pg_meta_description');
-				$undoResponse = $this->old_value;
+				$undoResponse = $this->update_object->pg_meta_description;
 				break;
 			case "set_meta_keywords":
 				$this->undoField('pg_meta_keywords');
-				$undoResponse = $this->old_value;
+				$undoResponse = $this->update_object->pg_meta_keywords;
 				break;
 			case "page_sort":
 				$this->undoField('pg_order');
@@ -231,10 +255,24 @@ class swSessionUpdate
 				}
 				break;
 			
-			// swSectionUpdates
+			// swSection Updates
 			case "section_update_html":
 				$this->undoField('section_html');
 				$undoResponse = $this->update_object->section_html;
+				break;
+			
+			// swWebLog Updates
+			case "weblog_update":
+				$this->undoField('wlentry_author');
+				$this->undoField('wlentry_text');
+				break;
+				
+			case "weblog_create":
+				$this->update_object->weblog->removeEntry($this->update_object->getObjectID());
+				break;
+				
+			case "weblog_delete":
+				$this->undoField('delete_flag');
 				break;
 				
 			default:
@@ -244,8 +282,9 @@ class swSessionUpdate
 		
 		unset($sessionObject->sessionUpdates[$this->key]);
 		
-		if (isset($this->update_object))
+		if (isset($this->update_object)) {
 			unset($this->update_object->sessionUpdates[$this->key]);
+		}
 		
 		$log = new swLog();
 		
@@ -295,7 +334,7 @@ class swSessionUpdate
 				return 'Image deleted "' . $this->update_object->img_name . '"';
 				break;
 			case "rename_gallery":
-				return 'Renamed ' . $this->update_object->gallery_type . ' to "' . $this->new_value . '"';
+				return 'Renamed ' . $this->update_object->gallery_type . ' to "' . $this->update_object->gallery_name . '"';
 				break;
 			case "sort_images":
 				return $this->update_object->gallery_name . ' images sorted';
@@ -346,8 +385,6 @@ class swSessionUpdate
 				break;
 		}
 	}
-	
-	public $counter = 1;
 	
 	public function commitUpdate(&$savedObjects)	// pass in $savedObjects by reference
 	{

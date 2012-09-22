@@ -46,12 +46,11 @@ if ($update_object == "swWebLog")
 			
 			$weblog->addEntry($wlentry);
 			
+			echo $wlentry->wlentry_id;	// return the id so we can load the control
+			
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $wlentry;
 			$sessionUpdate->is_new = true;
-			
-			$force_has_updates = true;
-			include "../controls/weblogentry.php";
 		}
 	}
 	
@@ -65,14 +64,11 @@ if ($update_object == "swWebLog")
 			$cancelUpdate = true;
 		} else {
 			$wlentry = $weblog->getWebLogEntryById($_GET['wlentry_id']);
-			$wlentry->wlentry_author = $author;
-			$wlentry->wlentry_text = $entry_text;
 			
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $wlentry;
-			
-			$force_has_updates = true;
-			include "../controls/weblogentry.php";
+			$sessionUpdate->updateField('wlentry_author',$author);
+			$sessionUpdate->updateField('wlentry_text',$entry_text);
 		}
 	}
 	
@@ -83,11 +79,8 @@ if ($update_object == "swWebLog")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $wlentry;
-		$sessionUpdate->old_value = $wlentry->delete_flag;
-		$sessionUpdate->new_value = true;
+		$sessionUpdate->updateField('delete_flag',true);
 		$sessionUpdate->is_delete = true;
-		
-		$wlentry->delete_flag = true;
 	}
 	
 }
@@ -114,11 +107,8 @@ if ($update_object == "swPortfolio")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
-		$sessionUpdate->old_value = $gallery->delete_flag;
-		$sessionUpdate->new_value = true;
+		$sessionUpdate->updateField('delete_flag',true);
 		$sessionUpdate->is_delete = true;
-		
-		$gallery->delete_flag = true;
 	}
 	
 	
@@ -129,10 +119,8 @@ if ($update_object == "swPortfolio")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
-		$sessionUpdate->old_value = $gallery->enabled;
-		$sessionUpdate->new_value = (int) $_GET["enable"];
+		$sessionUpdate->updateField('enabled',(int) $_GET["enable"]);
 		
-		$gallery->enabled = (int) $_GET["enable"];
 		include '../controls/gallery.php';
 	}
 	
@@ -143,10 +131,7 @@ if ($update_object == "swPortfolio")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
-		$sessionUpdate->old_value = $gallery->gallery_name;
-		$sessionUpdate->new_value = $_GET["gallery_name"];
-		
-		$gallery->gallery_name = $_GET["gallery_name"];
+		$sessionUpdate->updateField('gallery_name',$_GET["gallery_name"]);
 	}
 	
 	
@@ -187,11 +172,8 @@ if ($update_object == "swPortfolio")
 			
 			// save this update so it can be reviewed/undone later
 			$additional_update = new swSessionUpdate($update_type,$gallery);
-			$additional_update->old_value = $gallery->gallery_order;
-			$additional_update->new_value = $i;
+			$additional_update->updateField('gallery_order',$i);
 			$sessionUpdate->addAdditionalUpdate($additional_update);
-			
-			$gallery->gallery_order = $i;	// SET the new order for this gallery
 		}
 		
 		$portfolio->sortGalleries();	// reorder the galleries in the session object to reflect the changes
@@ -217,14 +199,12 @@ if ($update_object == "swGallery")
 	if ( $update_type == "delete_image" ) {
 		$image = $gallery->getImageFromId($_GET["img_id"]);
 		
+		$gallery->removeImageById($_GET["img_id"]);
+		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $image;
-		$sessionUpdate->old_value = $image->delete_flag;
-		$sessionUpdate->new_value = true;
+		$sessionUpdate->updateField('delete_flag',true);
 		$sessionUpdate->is_delete = true;
-		
-		$image->delete_flag = true;
-		$gallery->removeImageById($_GET["img_id"]);
 	}
 	
 	
@@ -252,16 +232,18 @@ if ($update_object == "swGallery")
 												$_GET['x'],$_GET['y'],
 												$_GET['w'],$_GET['h']);
 		
-		// put the cropped image in the appropriate place
+		// save this update so it can be reviewed/undone later
+		$sessionUpdate->update_object = $image;
+		
 		switch ($imageSize) {
 			case swImage::IMAGE_SIZE_THUMB:
-				$image->img_data_thumb = $imageData;
+				$sessionUpdate->updateField('img_data_thumb',$imageData);
 				break;
 			case swImage::IMAGE_SIZE_PREVIEW:
-				$image->img_data_preview = $imageData;
+				$sessionUpdate->updateField('img_data_preview',$imageData);
 				break;
 			case swImage::IMAGE_SIZE_LARGE:
-				$image->img_data_large = $imageData;
+				$sessionUpdate->updateField('img_data_large',$imageData);
 				break;
 		}
 		
@@ -274,10 +256,6 @@ if ($update_object == "swGallery")
 					swImage_refreshFeaturedImages($('#div_gallery" . $gallery->getUID() . "'),'" . $image->img_id . "');
 				  </script>";
 		}
-		
-		// save this update so it can be reviewed/undone later
-		$sessionUpdate->update_object = $image;
-		$sessionUpdate->new_value = $imageData;
 		
 		// return the image control
 		$image_has_changes = true;
@@ -314,7 +292,8 @@ if ($update_object == "swGallery")
 				break;
 		}
 		
-		// if we are creating a new image image then set it and also reset any other featured images
+		// if this is the first image in the gallery then set it as the 'featured' image 
+		// and also ask the client to recrop it
 		if (count($gallery->gallery_images) == 1) {
 			$gallery->setFeaturedImage($image->img_id);
 			
@@ -357,11 +336,8 @@ if ($update_object == "swGallery")
 			
 			// save this update so it can be reviewed/undone later
 			$additional_update = new swSessionUpdate($update_type,$image);
-			$additional_update->old_value = $image->img_order;
-			$additional_update->new_value = $i;
+			$additional_update->updateField('img_order', $i);
 			$sessionUpdate->addAdditionalUpdate($additional_update);
-			
-			$image->img_order = $i;	// SET the new order for this image
 		}
 		
 		$gallery->sortImages();	// reorder the images in the session object to reflect the changes
@@ -389,10 +365,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->old_value = $page->pg_title;
-		$sessionUpdate->new_value = $_GET["value"];
-		
-		$page->pg_title = $_GET["value"];
+		$sessionUpdate->updateField('pg_title',  $_GET["value"]);
 	}
 	
 	
@@ -401,10 +374,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->old_value = $page->pg_linkname;
-		$sessionUpdate->new_value = $_GET["value"];
-		
-		$page->pg_linkname = $_GET["value"];
+		$sessionUpdate->updateField('pg_linkname',  $_GET["value"]);
 	}
 	
 	
@@ -413,10 +383,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->old_value = $page->pg_description;
-		$sessionUpdate->new_value = $_GET["value"];
-		
-		$page->pg_description = $_GET["value"];
+		$sessionUpdate->updateField('pg_description',  $_GET["value"]);
 	}
 	
 	
@@ -425,12 +392,8 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->old_value = $page->pg_meta_title;
-		$sessionUpdate->new_value = $_GET["value"];
-		
-		$page->pg_meta_title = $_GET["value"];
+		$sessionUpdate->updateField('pg_meta_title',  $_GET["value"]);
 	}
-	
 	
 	
 	elseif ($update_type == "set_meta_description") {
@@ -438,10 +401,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->old_value = $page->pg_meta_description;
-		$sessionUpdate->new_value = $_GET["value"];
-		
-		$page->pg_meta_description = $_GET["value"];
+		$sessionUpdate->updateField('pg_meta_description',  $_GET["value"]);
 	}
 	
 	
@@ -450,10 +410,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->old_value = $page->pg_meta_keywords;
-		$sessionUpdate->new_value = $_GET["value"];
-		
-		$page->pg_meta_keywords = $_GET["value"];
+		$sessionUpdate->updateField('pg_meta_keywords',  $_GET["value"]);
 	}
 	
 	
@@ -473,11 +430,8 @@ if ($update_object == "swPage")
 			// pages get added as additional updates
 			// because we don't want a seperate update for each page
 			$additional_update = new swSessionUpdate($update_type,$page);
-			$additional_update->old_value = $page->pg_order;
-			$additional_update->new_value = $i;
+			$additional_update->updateField('pg_order',  $i);
 			$sessionUpdate->addAdditionalUpdate($additional_update);
-			
-			$page->pg_order = $i;	// SET the new order for this page
 		}
 		
 		$sessionObject->sortPages();	// reorder the pages in the session object to reflect the changes
@@ -506,10 +460,7 @@ if ($update_object == "swSection")
 		} else {
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $section;
-			$sessionUpdate->old_value = $section->section_html;
-			$sessionUpdate->new_value = $_GET["value"];
-			
-			$section->section_html = $_GET["value"];
+			$sessionUpdate->updateField('section_html',  $_GET["value"]);
 		}
 	}
 }

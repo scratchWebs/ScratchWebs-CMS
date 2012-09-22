@@ -1,5 +1,10 @@
 <?php
 require_once("cms.php");
+
+// Ensure the user is logged in
+$sessionObject = new swSessionObject();
+$sessionObject->redirectIfNotLoggedIn();
+
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
