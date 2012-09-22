@@ -108,7 +108,7 @@ $features = $sessionObject->features;
             <div id="sessionChanges" style="max-height:350px; overflow-y:scroll; border:#CCCCCC solid 1px; margin:10px 0"></div>
             <!--<span class="previewChanges">Preview Changes</span>-->
             <span id="commitChanges" class="commitChanges">Commit selected changes</span>
-            <span id="undoChanges" class="commitChanges">Undo selected changes</span>
+            <!--<span id="undoChanges" class="commitChanges">Undo selected changes</span> -->
         </div>
         
         <div id="passwordDialog" title="Change Password" style="font-size:12px" class="ui-dialog-content ui-widget-content">
