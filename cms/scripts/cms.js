@@ -16,6 +16,9 @@ $(document).ready(function(e)
 		$('.popupMenu').slideUp();
 	});
 	
+	// generic sortable setup
+	$('.sortable').sortable();
+	
 	// generic accordion setup
 	$(".accordion").accordion({ header: "h3", autoHeight: false, collapsible:true, active:false });
 	

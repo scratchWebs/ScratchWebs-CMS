@@ -10,10 +10,12 @@ if (isset($_POST["commit_form"])) {
 	
 	// first seperate the the checked updates from the unchecked updates
 	foreach ($_POST as $key)
+	{
 		if (array_key_exists($key,$sessionObject->sessionUpdates)) {
 			$checkedUpdates[$key] = $sessionObject->sessionUpdates[$key];
 			unset($sessionObject->sessionUpdates[$key]);
 		}
+	}
 	
 	// now undo all of the unchecked updates
 	$uncheckedUpdates = $sessionObject->sessionUpdates;

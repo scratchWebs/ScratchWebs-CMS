@@ -266,13 +266,21 @@ class swSessionUpdate
 				$this->undoField('wlentry_author');
 				$this->undoField('wlentry_text');
 				break;
-				
 			case "weblog_create":
 				$this->update_object->weblog->removeEntry($this->update_object->getObjectID());
 				break;
-				
 			case "weblog_delete":
 				$this->undoField('delete_flag');
+				break;
+			case "weblog_sort":
+				$this->undoField('wlentry_order');
+				$weblog = $this->update_object;
+				$weblog->sortEntries();
+				foreach ($weblog->weblog_entries as $wlentry)
+				{
+					$undoResponse .= $wlentry->wlentry_id . ',';
+				}
+				$undoResponse = substr($undoResponse,0,strlen($undoResponse)-1);
 				break;
 				
 			default:
@@ -378,6 +386,9 @@ class swSessionUpdate
 				break;
 			case "weblog_delete":
 				return $this->update_object->weblog->weblog_entry_name . ' deleted (' . $this->update_object->wlentry_author . ')';
+				break;
+			case "weblog_sort":
+				return $this->update_object->weblog_name . ' sorted';
 				break;
 			
 			default:

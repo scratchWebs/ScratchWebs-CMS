@@ -83,6 +83,30 @@ if ($update_object == "swWebLog")
 		$sessionUpdate->is_delete = true;
 	}
 	
+	
+	// If we are sorting entries in a weblog...
+	elseif ($update_type == "weblog_sort")
+	{
+		// entries_in_order_by_id comes in like this "wlentryid=2&wlentryid=1&wlentryid=4&wlentryid=3"
+		// $entriesInOrderById will now contain... array('2','1','4','3');
+		$entriesInOrderById = explode("&",str_replace("wlentryid=","",$_GET["entries_in_order_by_id"]));
+	
+		$sessionUpdate->update_object = $weblog;
+	
+		// loop through and set the new wlentry order
+		for ($i=0; $i<count($entriesInOrderById); $i++)
+		{
+			$wlentry_id = $entriesInOrderById[$i];
+			$wlentry = $weblog->getWebLogEntryById($wlentry_id);
+			
+			// save this update so it can be reviewed/undone later
+			$additional_update = new swSessionUpdate($update_type,$wlentry);
+			$additional_update->updateField('wlentry_order',$i);
+			$sessionUpdate->addAdditionalUpdate($additional_update);
+		}
+	
+		$weblog->sortEntries();	// reorder the entries in the session object to reflect the changes
+	}
 }
 
 

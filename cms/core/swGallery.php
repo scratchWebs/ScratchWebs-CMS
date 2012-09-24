@@ -238,7 +238,7 @@ class swGallery extends swFeature
 		  return ($a->img_order < $b->img_order) ? -1 : 1;
 		} 
 		
-		usort($this->gallery_images,'cmp');
+		uasort($this->gallery_images,'cmp');
 	}
 	public function saveAsNew()
 	{

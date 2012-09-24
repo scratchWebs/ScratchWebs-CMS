@@ -132,7 +132,7 @@ class swPortfolio extends swFeature
 		  return ($a->gallery_order < $b->gallery_order) ? -1 : 1;
 		} 
 		
-		usort($this->galleries,'cmp');
+		uasort($this->galleries,'cmp');
 	}
 	public function saveAsNew() {
 		

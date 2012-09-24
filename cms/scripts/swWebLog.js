@@ -1,3 +1,26 @@
+// init weblogs
+$(document).ready(function(){
+	
+	$('.weblog_sortable').sortable({axis:"y", handle:".buttonSortSmall", stop:function() {
+		swWebLog_sort($(this).data('weblogid'),$(this));
+	}});
+
+	$(".undoWeblogSort")
+		.button({icons:{primary:'ui-icon-arrowreturnthick-1-w'}})		// init button style
+		.click(function(e) {
+			var button = $(this);
+			$.swUndo({update_key:$(this).data('updateKey')},function(response){
+				var sortableWeblog = button.siblings('.weblog_sortable');
+				var sortIdArray = response.undoResponse.split(',');
+				
+				for (var i=0; i < sortIdArray.length; i++) {
+					swWebLog_getById(sortIdArray[i]).appendTo(sortableWeblog);
+				}
+				
+				button.fadeOut('fast');
+			});
+		});	
+});
 
 function swWebLog_getById(id)
 {
@@ -54,6 +77,29 @@ function swLogEntry_create(webLogID,formContainer,theForm,webLogEntryContainer,a
 			addNewButton.slideDown();
 			theForm[0].reset();			// reset the form
 		});
+	});
+}
+
+function swWebLog_sort(webLogID,sortableItems)
+{
+	var entriesInOrderById = sortableItems.sortable("serialize",{key:'wlentryid',attribute:'data-id',expression:'(.*)'});
+	
+	// reverse the order (this will an admin option in the future)
+	entriesInOrderById = entriesInOrderById.split("&").reverse().join("&");
+	
+	var data = {
+		update_object:'swWebLog',		// update session parameters
+		update_object_id:webLogID,
+		update_type:'weblog_sort',
+		entries_in_order_by_id:entriesInOrderById
+	};
+	
+	$.swUpdateSession(data,function(response){
+		if (response.updateKey == '') {
+			sortableItems.siblings(".undoWeblogSort").fadeOut('fast');
+		} else {
+			sortableItems.siblings(".undoWeblogSort").fadeIn('fast').data('updateKey',response.updateKey);
+		}
 	});
 }
 

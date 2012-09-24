@@ -21,7 +21,18 @@ $uid = $weblog->getUID();
     <button class="buttonCancel" id="" onclick="$('#divAddNew<?= $uid ?>').hide();$('#btnCreateNew<?= $uid ?>').show();">Cancel</button>
 </div>
 
-<div id="weblog_list_<?=$uid?>" data-weblogid="<?= $weblog->weblog_id ?>">
+<?
+$updateKey = $weblog->getUpdateKeyByType('weblog_sort');
+
+if (isset($updateKey)) {
+	echo '<span class="undoWeblogSort" data-update-key="' . $updateKey . '">Undo sort</span>';
+} else {
+	echo '<span class="undoWeblogSort" style="display:none">Undo sort</span>';
+}
+
+?>
+
+<div id="weblog_list_<?=$uid?>" data-weblogid="<?= $weblog->weblog_id ?>" class="weblog_sortable">
 	<?
     // Populate Entries
     foreach ($weblog->weblog_entries as $wlentry) {

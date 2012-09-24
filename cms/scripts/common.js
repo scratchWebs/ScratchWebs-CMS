@@ -31,7 +31,11 @@ function common_initButtons(context)
 	$(".buttonUpload",context).button({icons: {primary: "ui-icon-arrowthick-1-n"}});
 	$(".buttonNext",context).button({icons: {primary: "ui-icon-arrowthick-1-e"}});
 	$(".buttonSaveSmall",context).button({text:false,icons: {primary: "ui-icon-disk"}}).attr('title','Save');
-	$(".buttonDeleteSmall",context).button({text:false,icons: {primary: "ui-icon-trash"}}).attr('title','Save');
+	$(".buttonDeleteSmall",context).button({text:false,icons: {primary: "ui-icon-trash"}}).attr('title','Delete');
+	$(".buttonSortSmall",context).button({text:false,icons: {primary: "ui-icon-arrowthick-2-n-s"}}).attr('title','Click + Drag to Sort')
+								 .css('width','10px')
+								 .css('height','10px')
+								 .css('padding','3px');
 	$(".undoChange:not(.ui-state-disabled)",context).button({text:false,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo");
 	$(".undoChange.ui-state-disabled",context).button({text:false,disabled:true,icons:{primary:'ui-icon-arrowreturnthick-1-w'}}).attr("title","Undo");
 }

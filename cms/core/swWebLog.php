@@ -137,6 +137,16 @@ class swWebLog extends swFeature
 	{
 		return $this->weblog_entries[$id];
 	}
+	public function sortEntries()
+	{
+		function cmp( $a, $b )
+		{ 
+		  if(  $a->wlentry_order ==  $b->wlentry_order ){ return 0 ; } 
+		  return ($a->wlentry_order < $b->wlentry_order) ? 1 : -1;		// reverse the order (the order will be an admin option in the future)
+		} 
+		
+		uasort($this->weblog_entries,'cmp');
+	}
 }
 
 ?>
