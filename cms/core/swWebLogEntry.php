@@ -109,8 +109,9 @@ class swWebLogEntry extends dbObject
 			$newid = mysql_insert_id();
 			
 			if (isset($this->weblog)) {
-				swCommon::array_unshift_withkey($this->weblog->weblog_entries, $newid, $this);
 				unset($this->weblog->weblog_entries[$this->wlentry_id]);
+				$this->weblog->weblog_entries[$newid] = $this;
+				$this->weblog->sortEntries();
 			}
 			
 			$this->wlentry_id = $newid;
