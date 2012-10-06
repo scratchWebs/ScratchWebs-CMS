@@ -8,7 +8,6 @@ class swWebLog extends swFeature
 	public $weblog_name = "";
 	public $weblog_desc = "";
 	public $weblog_entry_name = "";
-	public $weblog_fk_pg_id;
 	
 	public $weblog_entries = array(); 
 	
@@ -30,6 +29,33 @@ class swWebLog extends swFeature
 	public function noUpdates()
 	{
 		return count($this->sessionUpdates);
+	}
+	public function __construct($code_ref = NULL)
+	{
+		if ($code_ref !== NULL) {
+			$this->createFromCodeRef($code_ref);
+		}
+	}
+	public function createFromCodeRef($code_ref)
+	{	
+		$sql = "SELECT tblweblogs.* 
+				FROM tblweblogs
+				JOIN tblFeatures
+					ON tblFeatures.feature_id = tblweblogs.weblog_id
+					AND tblFeatures.feature_type = " . swFeature::FEATURE_TYPE_WEBLOG . "
+				WHERE tblFeatures.feature_code_ref = '$code_ref';";
+
+		$result = mysql_query($sql);
+
+		if (mysql_num_rows($result) == 1) {
+			$data = mysql_fetch_array($result);
+			
+			$this->createWebLogFromSQLData($data,true);
+			
+			return true;
+		} else {
+			return false;
+		}
 	}
 	public function createFromId($id,$loadEntries = true)
 	{
@@ -58,7 +84,6 @@ class swWebLog extends swFeature
 		$this->weblog_name = $data["weblog_name"];
 		$this->weblog_desc = $data["weblog_desc"];
 		$this->weblog_entry_name = $data["weblog_entry_name"];
-		$this->weblog_fk_pg_id = $data["weblog_fk_pg_id"];
 		
 		if ($loadEntries) $this->weblog_entries = swWebLogEntry::getEntriesForWebLog($this);
 	}
@@ -76,8 +101,7 @@ class swWebLog extends swFeature
 						 " . (int) $this->enabled . ",
 						 '" . mysql_real_escape_string(substr($this->weblog_name,0,50)) . "',
 						 '" . mysql_real_escape_string(substr($this->weblog_desc,0,500)) . "',
-						 '" . mysql_real_escape_string(substr($this->weblog_entry_name,50)) . "',
-						 " . (int) $this->weblog_fk_pg_id . ");";
+						 '" . mysql_real_escape_string(substr($this->weblog_entry_name,50)) . "');";
 						 
 		return (mysql_query($sql)) ? true : false;
 	}
@@ -92,8 +116,7 @@ class swWebLog extends swFeature
 							enabled = " . (int) $this->enabled . ",
 							weblog_name = '" . mysql_real_escape_string(substr($this->weblog_name,0,50)) . "',
 							weblog_desc = " . mysql_real_escape_string(substr($this->weblog_desc,0,500)) . ",
-							weblog_entry_name = '" . mysql_real_escape_string(substr($this->weblog_entry_name,0,50)) . "',
-							weblog_fk_pg_id = " . (int) $this->weblog_fk_pg_id . "
+							weblog_entry_name = '" . mysql_real_escape_string(substr($this->weblog_entry_name,0,50)) . "'
 					WHERE weblog_id = " . $this->$weblog_id . ";"; 
  			
 			if (mysql_query($sql)) $success =  true;
