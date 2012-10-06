@@ -38,14 +38,14 @@ function swPage_getById(id)
 
 function swPage_setNoUpdates(id,noUpdates)
 {
-	var page = swPage_getById(id);
+	/*var page = swPage_getById(id);
 
 	$("#pgID_" + id + " .changeIndicator").remove();
 	
 	if (noUpdates > 0)
 		$("#pgID_" + id).append('<span class="changeIndicator ui-state-error">' + noUpdates + '</span>');
 	
-	page.data('noUpdates',noUpdates);
+	page.data('noUpdates',noUpdates);*/
 }
 
 function swPage_adjustNoUpdates(id,adjustment)
