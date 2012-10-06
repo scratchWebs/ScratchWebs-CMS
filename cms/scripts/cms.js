@@ -8,6 +8,9 @@ $(document).ready(function(e)
 	// init menu's
 	common_initializeMenus();
 	common_configureDropDownButtons();
+	
+	// generic rte
+	common_initRTE();
 
 	// Generic buttons
 	common_initButtons();

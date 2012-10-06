@@ -1,3 +1,38 @@
+function common_initRTE(context)
+{
+	context = (typeof(context) == 'undefined') ? $(document) : context;
+	
+	// RTE init and functions /////////////////
+	$(".RTEbold, .RTEitalic, .RTEunderline",context).button({disabled:true});
+	$(".RTEsave",context).button({text:false,icons:{primary:'ui-icon-disk'}}).attr("title","Save");
+	$(".RTEundo.ui-state-disabled",context).button( "option", "disabled", true );
+	
+	var newRTEditors = $(".editRTE",context).rte({
+		width: 605,
+		height: 200,
+		controls_rte: rte_toolbar
+	});
+	
+	// add all editors to an array so they can be accessed later
+	if (typeof window.RTEditors != 'undefined') {
+		window.RTEditors = window.RTEditors.concat(newRTEditors);
+	} else {
+		window.RTEditors = newRTEditors;
+	}
+	
+	/* EXAMPLE GET HTML FROM SECTIONS
+	for (var rte in RTEditors)
+		if (typeof RTEditors[rte].get_content == 'function')
+			alert(rte + ' = ' + RTEditors[rte].get_content());*/
+	
+	// init
+	$(".editRTE",context).hover(function(){
+		$(this).css("border-color","#FAA");
+	},function(){
+		$(this).css("border-color","#CCC");
+	});
+}
+
 function common_initializeMenus(context)
 {
 	var menus = (typeof(context) == 'undefined') ? $(".menu") : $(".menu",context);

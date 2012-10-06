@@ -1,24 +1,3 @@
-$(document).ready(function(e){
-	
-	// RTE init and functions /////////////////
-		$(".RTEbold, .RTEitalic, .RTEunderline").button({disabled:true});
-		$(".RTEsave").button({text:false,icons:{primary:'ui-icon-disk'}}).attr("title","Save");
-		$(".RTEundo.ui-state-disabled").button( "option", "disabled", true );
-	
-		window.RTEditors = $(".editRTE").rte({
-			width: 605,
-			height: 200,
-			controls_rte: rte_toolbar
-		});
-		
-		/* EXAMPLE GET HTML FROM SECTIONS
-		for (var rte in RTEditors)
-			if (typeof RTEditors[rte].get_content == 'function')
-				alert(rte + ' = ' + RTEditors[rte].get_content());*/
-				
-		$(".editRTE").hover(function(){$(this).css("border-color","#FAA");},function(){$(this).css("border-color","#CCC");});	// init	
-});
-
 function swSection_getById(id)
 {
 	return $('#sect' + id);

@@ -366,6 +366,17 @@ if ($update_object == "swGallery")
 		
 		$gallery->sortImages();	// reorder the images in the session object to reflect the changes
 	}
+	
+	elseif ($update_type == 'gallery_update_desc_long')
+	{
+		// make sure the value has actually changed
+		if ($gallery->gallery_desc_long == $_GET["value"]) {
+			$cancelUpdate = true;
+		} else {
+			$sessionUpdate->update_object = $gallery;
+			$sessionUpdate->updateField('gallery_desc_long',$_GET['value']);
+		}
+	}
 }
 
 

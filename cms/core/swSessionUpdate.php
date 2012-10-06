@@ -160,6 +160,8 @@ class swSessionUpdate
 				$additionalUpdate->update_object->$fieldName = $additionalUpdate->old_value[$fieldName];
 			}
 		}
+		
+		if (property_exists($this->update_object, $fieldName)) return $this->update_object->$fieldName;
 	}
 	public function undo(swSessionObject $sessionObject)
 	{
@@ -218,31 +220,28 @@ class swSessionUpdate
 					$undoResponse .= $image->img_id;
 				}
 				break;
+			case "gallery_update_desc_long":
+				$undoResponse = $this->undoField('gallery_desc_long');
+				break;
 			
 			// swPage updates
 			case "set_title":
-				$this->undoField('pg_title');
-				$undoResponse = $this->update_object->pg_title;
+				$undoResponse = $this->undoField('pg_title');
 				break;
 			case "set_linkname":
-				$this->undoField('pg_linkname');
-				$undoResponse = $this->update_object->pg_linkname;
+				$undoResponse = $this->undoField('pg_linkname');
 				break;
 			case "set_description":
-				$this->undoField('pg_description');
-				$undoResponse = $this->update_object->pg_description;
+				$undoResponse = $this->undoField('pg_description');
 				break;
 			case "set_meta_title":
-				$this->undoField('pg_meta_title');
-				$undoResponse = $this->update_object->pg_meta_title;
+				$undoResponse = $this->undoField('pg_meta_title');
 				break;
 			case "set_meta_description":
-				$this->undoField('pg_meta_description');
-				$undoResponse = $this->update_object->pg_meta_description;
+				$undoResponse = $this->undoField('pg_meta_description');
 				break;
 			case "set_meta_keywords":
-				$this->undoField('pg_meta_keywords');
-				$undoResponse = $this->update_object->pg_meta_keywords;
+				$undoResponse = $this->undoField('pg_meta_keywords');
 				break;
 			case "page_sort":
 				$this->undoField('pg_order');
@@ -346,6 +345,9 @@ class swSessionUpdate
 				break;
 			case "sort_images":
 				return $this->update_object->gallery_name . ' images sorted';
+				break;
+			case "gallery_update_desc_long":
+				return $this->update_object->gallery_name . ' description updated';
 				break;
 			
 			// swPage updates

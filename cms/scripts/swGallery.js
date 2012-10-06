@@ -35,6 +35,7 @@ function swGallery_init(id)
 		context = swGallery_getById(id);
 		common_configureDropDownButtons(context);
 		common_initButtons(context);
+		common_initRTE(context);
 	}
 	
 	// make images sortable...// sortable gallery images
@@ -50,6 +51,23 @@ function swGallery_init(id)
 		swGallery_init(id,response);
 	});
 }*/
+
+function swGallery_editDescriptionLong(galleryID)
+{
+	var rte = RTEditors['txtGalleryDescLongHTML' + galleryID];		// get the RTE object
+	
+	var data = {
+		update_object:'swGallery',
+		update_object_id:galleryID,
+		update_type:'gallery_update_desc_long',
+		value:rte.get_content()			// get the html from the RTE object
+	};
+	
+	$.swUpdateSession(data,function(response){
+		$('#divGalleryDescLongEdit' + galleryID).slideUp();
+		$('#divGalleryDescLong' + galleryID).html(data.value).slideDown();
+	});
+}
 
 function swGallery_sortImages(galleryID,images)
 {
