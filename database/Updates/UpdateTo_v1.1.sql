@@ -1,8 +1,11 @@
 /* Scripts Updates db v1.0 to v1.1 
  * 
- * change 'use audley_1' to the name of your local db
+ * change 'use audley_1' to the name of the relevant db
  * */
-use audley_1;
+
+/*
+ * use audley_1;
+ * */
 
 
 
@@ -36,8 +39,8 @@ CREATE TABLE `tblweblogs` (
 
 
 
-/* Insert: testimonial header record */
-INSERT INTO `audley_1`.`tblweblogs`
+/* Insert: testimonial header record (for audley site) */
+INSERT INTO `tblweblogs`
 (`delete_flag`,`enabled`,`weblog_id`,`weblog_name`,`weblog_desc`,`weblog_entry_name`)
 VALUES(0,1,1,'Testimonials',NULL,'Testimonial');
 
@@ -55,4 +58,10 @@ CREATE TABLE `tblweblogentries` (
   `wlentry_fk_weblog_id` int(11) NOT NULL,
   PRIMARY KEY (`wlentry_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
+
+
+/* Update gallery descriptions so they can hold more data */
+ALTER TABLE `tblgalleries` 
+CHANGE COLUMN `gallery_desc_long` `gallery_desc_long` MEDIUMTEXT NOT NULL;
 
