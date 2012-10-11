@@ -12,9 +12,9 @@ define('PATH_CORE', dirname(__FILE__) . '/core/');
 define('PATH_CONTROLS', dirname(__FILE__) . '/controls/');
 define('PATH_CMS', dirname(__FILE__) . '/');
 
-// error reporting options (set to 0 in a live enviroment)
-//error_reporting(0);
-error_reporting(-1);
+//error reporting options (set to 0 in a live enviroment)
+error_reporting(0);
+// error_reporting(-1);
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 

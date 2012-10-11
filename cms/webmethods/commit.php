@@ -52,5 +52,5 @@ if (isset($_POST["commit_form"])) {
 }
 
 // redirect so the user cannot re-post
-header("location: " . DOCUMENT_ROOT . "cms/");
+header("location: " . URI_CMS);
 ?>

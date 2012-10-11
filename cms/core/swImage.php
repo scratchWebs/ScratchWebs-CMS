@@ -64,15 +64,15 @@ class swImage extends dbObject
 				if ($this->img_data_original != NULL) $param = "&fromSession=true";
 				break;
 		}
-		return DOCUMENT_ROOT . "cms/webmethods/getImage.php?id=" . $this->img_id . "&size=" . $size . $param;
+		return URI_CMS . "webmethods/getImage.php?id=" . $this->img_id . "&size=" . $size . $param;
 	}
 	public static function getSrc($img_id,$size = self::IMAGE_SIZE_THUMB)
 	{
-		return DOCUMENT_ROOT . "cms/webmethods/getImage.php?id=" . $img_id . "&size=" . $size;
+		return URI_CMS . "webmethods/getImage.php?id=" . $img_id . "&size=" . $size;
 	}
 	public static function getOriginalSrc($image_id)
 	{
-		return DOCUMENT_ROOT . "cms/webmethods/getImage.php?id=" . $image_id . "&size=" . swImage::IMAGE_SIZE_ORIGINAL;
+		return URI_CMS . "webmethods/getImage.php?id=" . $image_id . "&size=" . swImage::IMAGE_SIZE_ORIGINAL;
 	}
 	public function isFirstImage()
 	{

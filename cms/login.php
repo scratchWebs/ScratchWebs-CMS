@@ -53,7 +53,7 @@ if (isset($_POST["hidFormSubmitted"])) {
 $sessionObject = new swSessionObject();
 if ($sessionObject->isLoggedIn) {
 	// ensure the session data get's written before we redirect
-	header("location: " . DOCUMENT_ROOT . "cms");
+	header("location: " . URI_CMS);
 	exit;
 }
 
