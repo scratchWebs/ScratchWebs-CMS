@@ -8,9 +8,9 @@ $sessionObject = new swSessionObject();
 $sessionObject->redirectIfNotLoggedIn();
 
 // Get update object/id/type
-if (isset($_GET["update_object"])) $update_object = $_GET["update_object"];
-if (isset($_GET["update_object_id"])) $update_object_id = $_GET["update_object_id"];
-if (isset($_GET["update_type"])) $update_type = $_GET["update_type"];
+if (isset($_POST["update_object"])) $update_object = $_POST["update_object"];
+if (isset($_POST["update_object_id"])) $update_object_id = $_POST["update_object_id"];
+if (isset($_POST["update_type"])) $update_type = $_POST["update_type"];
 
 
 $sessionUpdate = new swSessionUpdate($update_type);
@@ -32,8 +32,8 @@ if ($update_object == "swWebLog")
 	
 	if ($update_type == "weblog_create")
 	{
-		$author = $_GET['author'];
-		$entry_text = $_GET['text'];
+		$author = $_POST['author'];
+		$entry_text = $_POST['text'];
 	
 		if ($author == '' && $entry_text == '') {
 			$cancelUpdate = true;
@@ -57,13 +57,13 @@ if ($update_object == "swWebLog")
 	
 	elseif ($update_type == "weblog_update")
 	{
-		$author = $_GET['author'];
-		$entry_text = $_GET['text'];
+		$author = $_POST['author'];
+		$entry_text = $_POST['text'];
 		
 		if ($author == '' && $entry_text == '') {
 			$cancelUpdate = true;
 		} else {
-			$wlentry = $weblog->getWebLogEntryById($_GET['wlentry_id']);
+			$wlentry = $weblog->getWebLogEntryById($_POST['wlentry_id']);
 			
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $wlentry;
@@ -75,7 +75,7 @@ if ($update_object == "swWebLog")
 	
 	elseif ($update_type == "weblog_delete")
 	{
-		$wlentry = $weblog->getWebLogEntryById($_GET['wlentry_id']);
+		$wlentry = $weblog->getWebLogEntryById($_POST['wlentry_id']);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $wlentry;
@@ -89,7 +89,7 @@ if ($update_object == "swWebLog")
 	{
 		// entries_in_order_by_id comes in like this "wlentryid=2&wlentryid=1&wlentryid=4&wlentryid=3"
 		// $entriesInOrderById will now contain... array('2','1','4','3');
-		$entriesInOrderById = explode("&",str_replace("wlentryid=","",$_GET["entries_in_order_by_id"]));
+		$entriesInOrderById = explode("&",str_replace("wlentryid=","",$_POST["entries_in_order_by_id"]));
 	
 		$sessionUpdate->update_object = $weblog;
 	
@@ -127,7 +127,7 @@ if ($update_object == "swPortfolio")
 	// If we are deleting a gallery from a portfolio...
 	if ($update_type == "delete_gallery")
 	{
-		$gallery = $portfolio->getGalleryById($_GET["gallery_id"]);
+		$gallery = $portfolio->getGalleryById($_POST["gallery_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
@@ -139,11 +139,11 @@ if ($update_object == "swPortfolio")
 	// If we are enabling/disabling a gallery in a portfolio...
 	elseif ($update_type == "enable_gallery")
 	{
-		$gallery = $portfolio->getGalleryById($_GET["gallery_id"]);
+		$gallery = $portfolio->getGalleryById($_POST["gallery_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
-		$sessionUpdate->updateField('enabled',(int) $_GET["enable"]);
+		$sessionUpdate->updateField('enabled',(int) $_POST["enable"]);
 		
 		include '../controls/gallery.php';
 	}
@@ -151,22 +151,22 @@ if ($update_object == "swPortfolio")
 	
 	// if we are about to rename a gallery
 	elseif ( $update_type == "rename_gallery" ) {
-		$gallery = $portfolio->getGalleryById($_GET["gallery_id"]);
+		$gallery = $portfolio->getGalleryById($_POST["gallery_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
-		$sessionUpdate->updateField('gallery_name',$_GET["gallery_name"]);
+		$sessionUpdate->updateField('gallery_name',$_POST["gallery_name"]);
 	}
 	
 	
 	// If we are adding a new gallery to a portfolio...
 	elseif ($update_type == "add_gallery")
 	{
-		if ($_GET["gallery_name"] == '')
+		if ($_POST["gallery_name"] == '')
 			$cancelUpdate = true;
 		else {
 			$gallery = new swGallery();
-			$gallery->gallery_name = $_GET["gallery_name"];
+			$gallery->gallery_name = $_POST["gallery_name"];
 			
 			$portfolio->addGallery($gallery);
 			
@@ -184,7 +184,7 @@ if ($update_object == "swPortfolio")
 	{
 		// galleries_in_order_by_id comes in like this "galleryid=2&galleryid=1&galleryid=4&galleryid=3"
 		// galleriesInOrderById will now contain... array('2','1','4','3');
-		$galleriesInOrderById = explode("&",str_replace("galleryid=","",$_GET["galleries_in_order_by_id"]));
+		$galleriesInOrderById = explode("&",str_replace("galleryid=","",$_POST["galleries_in_order_by_id"]));
 		
 		$sessionUpdate->update_object = $portfolio;
 		
@@ -221,9 +221,9 @@ if ($update_object == "swGallery")
 	
 	// if we are about to delete an image from a gallery
 	if ( $update_type == "delete_image" ) {
-		$image = $gallery->getImageFromId($_GET["img_id"]);
+		$image = $gallery->getImageFromId($_POST["img_id"]);
 		
-		$gallery->removeImageById($_GET["img_id"]);
+		$gallery->removeImageById($_POST["img_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $image;
@@ -234,13 +234,13 @@ if ($update_object == "swGallery")
 	
 	// if we are about to recrop/update an existing image
 	elseif ( $update_type == "update_image" ) {
-		$image_id = $_GET["img_id"];
+		$image_id = $_POST["img_id"];
 		$image = $gallery->getImageFromId($image_id);
 		
-		$imageSize = $_GET["img_size"];
+		$imageSize = $_POST["img_size"];
 		
 		// set the image name and create the thumbnail
-		$image->img_name = $_GET['name'];
+		$image->img_name = $_POST['name'];
 		
 		$imageData = $image->img_data_original;
 		
@@ -252,9 +252,9 @@ if ($update_object == "swGallery")
 		
 		// crop the image
 		$imageData = swImage::cropImageFromData($imageData,$image->img_type,
-												$_GET['tw'],$_GET['th'],
-												$_GET['x'],$_GET['y'],
-												$_GET['w'],$_GET['h']);
+												$_POST['tw'],$_POST['th'],
+												$_POST['x'],$_POST['y'],
+												$_POST['w'],$_POST['h']);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $image;
@@ -289,19 +289,19 @@ if ($update_object == "swGallery")
 	
 	elseif ($update_type == "add_new_image") {
 		// we are adding a new image
-		$image_id = $_GET["img_id"];
+		$image_id = $_POST["img_id"];
 		$image = $sessionObject->images[$image_id];		// get the image from the session
 		
-		$imageSize = $_GET["img_size"];
+		$imageSize = $_POST["img_size"];
 		
-		$image->img_name = $_GET['name'];				// rename the image
+		$image->img_name = $_POST['name'];				// rename the image
 		$gallery->addImage($image);						// add the image to the gallery
 		
 		// create the thumbnail
 		$imageData = swImage::cropImageFromData($image->img_data_original,$image->img_type,
-												$_GET['tw'],$_GET['th'],
-												$_GET['x'],$_GET['y'],
-												$_GET['w'],$_GET['h']);
+												$_POST['tw'],$_POST['th'],
+												$_POST['x'],$_POST['y'],
+												$_POST['w'],$_POST['h']);
 		
 		// Apply the cropped image to the relative image
 		switch ($imageSize) {
@@ -348,7 +348,7 @@ if ($update_object == "swGallery")
 	{
 		// images_in_order_by_id comes in like this "imageid=2&imageid=1&imageid=4&imageid=3"
 		// imagesInOrderById will now contain... array('2','1','4','3');
-		$imagesInOrderById = explode("&",str_replace("imageid=","",$_GET["images_in_order_by_id"]));
+		$imagesInOrderById = explode("&",str_replace("imageid=","",$_POST["images_in_order_by_id"]));
 		
 		$sessionUpdate->update_object = $gallery;
 		
@@ -370,11 +370,11 @@ if ($update_object == "swGallery")
 	elseif ($update_type == 'gallery_update_desc_long')
 	{
 		// make sure the value has actually changed
-		if ($gallery->gallery_desc_long == $_GET["value"]) {
+		if ($gallery->gallery_desc_long == $_POST["value"]) {
 			$cancelUpdate = true;
 		} else {
 			$sessionUpdate->update_object = $gallery;
-			$sessionUpdate->updateField('gallery_desc_long',$_GET['value']);
+			$sessionUpdate->updateField('gallery_desc_long',$_POST['value']);
 		}
 	}
 }
@@ -400,7 +400,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_title',  $_GET["value"]);
+		$sessionUpdate->updateField('pg_title',  $_POST["value"]);
 	}
 	
 	
@@ -409,7 +409,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_linkname',  $_GET["value"]);
+		$sessionUpdate->updateField('pg_linkname',  $_POST["value"]);
 	}
 	
 	
@@ -418,7 +418,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_description',  $_GET["value"]);
+		$sessionUpdate->updateField('pg_description',  $_POST["value"]);
 	}
 	
 	
@@ -427,7 +427,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_meta_title',  $_GET["value"]);
+		$sessionUpdate->updateField('pg_meta_title',  $_POST["value"]);
 	}
 	
 	
@@ -436,7 +436,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_meta_description',  $_GET["value"]);
+		$sessionUpdate->updateField('pg_meta_description',  $_POST["value"]);
 	}
 	
 	
@@ -445,7 +445,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_meta_keywords',  $_GET["value"]);
+		$sessionUpdate->updateField('pg_meta_keywords',  $_POST["value"]);
 	}
 	
 	
@@ -454,7 +454,7 @@ if ($update_object == "swPage")
 	{
 		// pages_in_order_by_id comes in like this "pageid=2&pageid=1&pageid=4&pageid=3"
 		// pagesInOrderById will now contain... array('2','1','4','3');
-		$pagesInOrderById = explode("&",str_replace("pageid=","",$_GET["pages_in_order_by_id"]));
+		$pagesInOrderById = explode("&",str_replace("pageid=","",$_POST["pages_in_order_by_id"]));
 		
 		 // loop through and set the new page order
 		for ($i=0; $i<count($pagesInOrderById); $i++)
@@ -490,12 +490,12 @@ if ($update_object == "swSection")
 	
 	if ($update_type == "section_update_html") {
 		// make sure the value has actually changed
-		if ($section->section_html == $_GET["value"]) {
+		if ($section->section_html == $_POST["value"]) {
 			$cancelUpdate = true;
 		} else {
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $section;
-			$sessionUpdate->updateField('section_html',  $_GET["value"]);
+			$sessionUpdate->updateField('section_html',  $_POST["value"]);
 		}
 	}
 }

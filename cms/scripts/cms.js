@@ -168,7 +168,7 @@ function resetTimer () {
 	//	},[dataType],[type])
 	$.swAjax = function( url, data, callback, dataType, type ){
 		dataType = (typeof dataType == 'undefined') ? 'html' : dataType;
-		type = (typeof type == 'undefined') ? 'GET' : type;
+		type = (typeof type == 'undefined') ? 'POST' : type;
 		$.manageAjax.add('cacheQueue',{
 			  url: url,
 			  data: data,

@@ -7,7 +7,7 @@ ini_set('memory_limit', '200M');
 $sessionObject = new swSessionObject();
 $sessionObject->redirectIfNotLoggedIn();
 
-$updateKey = $_GET["update_key"];
+$updateKey = $_POST["update_key"];
 
 
 if (array_key_exists($updateKey, $sessionObject->sessionUpdates))

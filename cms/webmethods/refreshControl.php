@@ -1,8 +1,8 @@
 <?
 require_once("../cms.php");
 
-$type = $_GET["type"];
-$id = $_GET["id"];
+$type = $_POST["type"];
+$id = $_POST["id"];
 
 $sessionObject = new swSessionObject();
 $sessionObject->redirectIfNotLoggedIn();

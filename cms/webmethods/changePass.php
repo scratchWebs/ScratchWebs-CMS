@@ -9,8 +9,8 @@ $sessionObject->redirectIfNotLoggedIn();
 $user = $sessionObject->user->user_name;
 
 // Get $_POST vars
-$oldPass = $_GET["old_pass"];
-$newPass = $_GET["new_pass"];
+$oldPass = $_POST["old_pass"];
+$newPass = $_POST["new_pass"];
 
 // Check correct password
 if ($oldPass == $sessionObject->user->user_pass) {
