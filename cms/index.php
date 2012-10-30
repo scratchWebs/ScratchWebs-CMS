@@ -1,5 +1,4 @@
 <?php 
-$title = "Audley &amp; Audley CMS";
 require_once("header.php"); 
 
 $user = $sessionObject->user;
