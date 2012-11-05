@@ -338,4 +338,41 @@ function resetTimer () {
 		return serializedData;
 	};
 	
+	$.swEditor = function(inputString,callback){
+
+		// setup text editor dialog
+		$('#divMainEditor').dialog({
+	        //show: 'drop',		// must not animate so the ckeditor works!
+	        //hide: 'drop',		// must not animate so the ckeditor works!
+	        modal: true,
+	        width: '80%',
+	        height: $(window).height() - 100,
+	        resizable: false,
+	        buttons: {
+	        	'Save': function(){
+	        		var returnString = $('#txtMainEditor').val();
+	        		
+	        		$(this).dialog('close');
+        			
+	        		if (typeof callback == 'function') callback.call(this,returnString);
+	        	},
+	        	'Cancel': function(){
+	        		$(this).dialog('close');
+	        	}
+	        },
+	        open:function(){
+	        	$('#txtMainEditor')
+	        		.val(inputString)
+	        		.ckeditor({
+		    			removePlugins: 'resize',
+		    			height: $(window).height() - 350 + 'px'
+		    		});
+	        },
+	        close:function(){
+	            $('#txtMainEditor').ckeditorGet().destroy();
+	            $('#divMainEditor').dialog('destroy');
+	        }
+		});
+	};
+	
 })(jQuery);

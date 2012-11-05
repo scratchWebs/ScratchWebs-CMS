@@ -52,20 +52,19 @@ function swGallery_init(id)
 	});
 }*/
 
-function swGallery_editDescriptionLong(galleryID)
+function swGallery_editDescription(galleryID,descriptionContainer)
 {
-	var rte = RTEditors['txtGalleryDescLongHTML' + galleryID];		// get the RTE object
-	
-	var data = {
-		update_object:'swGallery',
-		update_object_id:galleryID,
-		update_type:'gallery_update_desc_long',
-		value:rte.get_content()			// get the html from the RTE object
-	};
-	
-	$.swUpdateSession(data,function(response){
-		$('#divGalleryDescLongEdit' + galleryID).slideUp();
-		$('#divGalleryDescLong' + galleryID).html(data.value).slideDown();
+	$.swEditor(descriptionContainer.html(),function(returnString){
+		var data = {
+			update_object:'swGallery',
+			update_object_id:galleryID,
+			update_type:'gallery_update_desc_long',
+			value:returnString			// get the html from the RTE object
+		};
+		
+		$.swUpdateSession(data,function(response){
+			descriptionContainer.html(returnString);
+		});
 	});
 }
 

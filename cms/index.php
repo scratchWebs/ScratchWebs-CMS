@@ -13,7 +13,9 @@ $features = $sessionObject->features;
 	<link rel="stylesheet" type="text/css" href="css/jquery.contextMenu.css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" type="text/css" href="rte/jquery.rte.css"/>
-    <script type="text/javascript" src="scripts/jquery.ui.accordion.custom.js"></script>
+    <script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="scripts/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="scripts/dialog-patch.js"></script>
     <script type="text/javascript" src="scripts/jquery.ajaxmanager.js"></script>
     <script type="text/javascript" src="scripts/ahpi.imgload.js"></script>
     <script type="text/javascript" src="scripts/passwordStrength.js"></script>
@@ -29,7 +31,11 @@ $features = $sessionObject->features;
     <script type="text/javascript" src="scripts/cms.js"></script>
     <script type="text/javascript" src="rte/jquery.rte.js"></script>
 	<script type="text/javascript" src="rte/jquery.rte.tb.js"></script>
-
+	
+	<div id="divMainEditor" title="Text Editor" class="hidden">
+		<textarea id="txtMainEditor" style="margin:auto"></textarea>
+	</div>
+	
     <div id="div_main_loading" class="cloud" style="margin:auto; width:300px; display:block; text-align:center; margin-top:200px; padding:50px 100px; font-family:Arial, Helvetica, sans-serif; font-size:10pt"><h2>Welcome...</h2><img src="images/ajax-loader2.gif" alt="Initializing..." style="margin-right:15px" />Initializing ScratchWebs CMS.</div>
     
     <div id="div_update_loading" class="cloud"><img src="images/ajax-loader2.gif" />&nbsp; &nbsp; Updating session...</div>

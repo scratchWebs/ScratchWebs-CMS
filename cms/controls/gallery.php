@@ -23,7 +23,7 @@ if (!$gallery->delete_flag) {								// only continue if the gallery hasn't been
                 <button class="buttonOptions imageContextMenu" onclick="$('#gallery_menu<?=$uid?>').css('top','28px').css('right','15px');$('.popupMenu').not($('#gallery_menu<?=$uid?>')).slideUp();$('#gallery_menu<?=$uid?>').slideToggle();return false">Options</button>
                 <ul id="gallery_menu<?=$uid?>" class="menu popupMenu" style="position:absolute">
                   <li><a href="#" onclick="_addImageFromLocal('<?=$uid?>','<?=$gallery->gallery_id?>')">Add images</a></li>
-                  <li><a href="#" onclick="$('#divGalleryDescLong<?=$gallery->gallery_id?>').slideUp();$('#divGalleryDescLongEdit<?=$gallery->gallery_id?>').slideDown()">Edit Description</a></li>
+                  <li><a href="#" onclick="swGallery_editDescription('<?= $gallery->gallery_id ?>',$('#divGalleryDescLong<?=$gallery->gallery_id?>'))">Edit Description</a></li>
                   <? // if this gallery is part of a portfolio
 				  	 if (isset($gallery->gallery_fk_portfolio_id)) { ?>
                       <li><a href="#" onclick="$('#gallery_rename<?= $uid ?>').slideDown(function(){$('#gallery_rename_name<?= $uid ?>').focus()});">Rename</a></li>
@@ -35,19 +35,12 @@ if (!$gallery->delete_flag) {								// only continue if the gallery hasn't been
             <? if (!$gallery->enabled) echo '<b>This ' . $gallery->gallery_type . ' has been disabled and will not appear on the website</b><br />'; ?>
             <? if ($gallery->gallery_desc_short != "") echo $gallery->gallery_desc_short . '<br />' ?>
 			
+			
 			<?
 	    	// gallery description
 	    	?>
 	    	<div id="divGalleryDescLong<?= $gallery->gallery_id ?>"><?= $gallery->gallery_desc_long ?></div>
-	    	<div id="divGalleryDescLongEdit<?= $gallery->gallery_id ?>" class="editSection hidden" style="margin:10px auto">
-	    		<p><b>Edit Description</b></p>
-	    		<p>Edit the description in the box below, When you have finished press Update</p>
-	    	    <textarea class="editRTE ui-corner-all" id="txtGalleryDescLongHTML<?= $gallery->gallery_id ?>">
-					<?= $gallery->gallery_desc_long ?>
-			    </textarea>
-			    <button class="buttonSave" onclick="swGallery_editDescriptionLong('<?= $gallery->gallery_id ?>'); return false">Update</button>
-			    <button class="buttonCancel" onclick="$('#divGalleryDescLong<?=$gallery->gallery_id?>').slideDown();$('#divGalleryDescLongEdit<?=$gallery->gallery_id?>').slideUp();return false">Cancel</button>
-	    	</div>
+	    	
 	    	
 			<? // if this gallery is part of a portfolio
             	if (isset($gallery->gallery_fk_portfolio_id)) { ?>
