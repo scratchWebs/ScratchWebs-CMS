@@ -13,6 +13,7 @@ $features = $sessionObject->features;
 	<link rel="stylesheet" type="text/css" href="css/jquery.contextMenu.css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" type="text/css" href="rte/jquery.rte.css"/>
+    <script type="text/javascript" src="scripts/jquery.ui.accordion.custom.js"></script>
     <script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="scripts/ckeditor/adapters/jquery.js"></script>
 	<script type="text/javascript" src="scripts/dialog-patch.js"></script>
