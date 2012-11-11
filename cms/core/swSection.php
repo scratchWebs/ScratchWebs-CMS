@@ -74,6 +74,7 @@ class swSection extends dbObject
 		
 		$sql = "SELECT * 
 				FROM tblSections
+				WHERE delete_flag = 0
 					ORDER BY section_order ASC;";
 				
 		$result = mysql_query($sql);
