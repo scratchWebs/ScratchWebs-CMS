@@ -146,10 +146,10 @@ class swGallery extends swFeature
 		$this->delete_flag = (bool) $data["delete_flag"];
 		$this->enabled = (bool) $data["enabled"];
 		$this->gallery_id = $data["gallery_id"];
-		$this->gallery_name = $data["gallery_name"];
+		$this->gallery_name = swCommon::convert_smart_quotes($data["gallery_name"]);
 		$this->gallery_code_ref = $data["gallery_code_ref"];
-		$this->gallery_desc_short = $data["gallery_desc_short"];
-		$this->gallery_desc_long = $data["gallery_desc_long"];
+		$this->gallery_desc_short = swCommon::convert_smart_quotes($data["gallery_desc_short"]);
+		$this->gallery_desc_long = swCommon::convert_smart_quotes($data["gallery_desc_long"]);
 		$this->gallery_order = $data["gallery_order"];
 		$this->gallery_featured = $data["gallery_featured"];
 		$this->gallery_internal_count = $data["gallery_internal_count"];

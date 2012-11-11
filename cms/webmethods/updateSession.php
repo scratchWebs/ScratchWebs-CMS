@@ -7,10 +7,17 @@ ini_set('memory_limit', '200M');
 $sessionObject = new swSessionObject();
 $sessionObject->redirectIfNotLoggedIn();
 
+$post_data = array();
+
+// remove microsoft enabled "curly" quotes from post data
+foreach ($_POST as $key => $value){
+	$post_data[$key] = swCommon::convert_smart_quotes($value);
+}
+
 // Get update object/id/type
-if (isset($_POST["update_object"])) $update_object = $_POST["update_object"];
-if (isset($_POST["update_object_id"])) $update_object_id = $_POST["update_object_id"];
-if (isset($_POST["update_type"])) $update_type = $_POST["update_type"];
+if (isset($post_data["update_object"])) $update_object = $post_data["update_object"];
+if (isset($post_data["update_object_id"])) $update_object_id = $post_data["update_object_id"];
+if (isset($post_data["update_type"])) $update_type = $post_data["update_type"];
 
 
 $sessionUpdate = new swSessionUpdate($update_type);
@@ -32,8 +39,8 @@ if ($update_object == "swWebLog")
 	
 	if ($update_type == "weblog_create")
 	{
-		$author = $_POST['author'];
-		$entry_text = $_POST['text'];
+		$author = $post_data['author'];
+		$entry_text = $post_data['text'];
 	
 		if ($author == '' && $entry_text == '') {
 			$cancelUpdate = true;
@@ -57,13 +64,13 @@ if ($update_object == "swWebLog")
 	
 	elseif ($update_type == "weblog_update")
 	{
-		$author = $_POST['author'];
-		$entry_text = $_POST['text'];
+		$author = $post_data['author'];
+		$entry_text = $post_data['text'];
 		
 		if ($author == '' && $entry_text == '') {
 			$cancelUpdate = true;
 		} else {
-			$wlentry = $weblog->getWebLogEntryById($_POST['wlentry_id']);
+			$wlentry = $weblog->getWebLogEntryById($post_data['wlentry_id']);
 			
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $wlentry;
@@ -75,7 +82,7 @@ if ($update_object == "swWebLog")
 	
 	elseif ($update_type == "weblog_delete")
 	{
-		$wlentry = $weblog->getWebLogEntryById($_POST['wlentry_id']);
+		$wlentry = $weblog->getWebLogEntryById($post_data['wlentry_id']);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $wlentry;
@@ -89,7 +96,7 @@ if ($update_object == "swWebLog")
 	{
 		// entries_in_order_by_id comes in like this "wlentryid=2&wlentryid=1&wlentryid=4&wlentryid=3"
 		// $entriesInOrderById will now contain... array('2','1','4','3');
-		$entriesInOrderById = explode("&",str_replace("wlentryid=","",$_POST["entries_in_order_by_id"]));
+		$entriesInOrderById = explode("&",str_replace("wlentryid=","",$post_data["entries_in_order_by_id"]));
 	
 		$sessionUpdate->update_object = $weblog;
 	
@@ -127,7 +134,7 @@ if ($update_object == "swPortfolio")
 	// If we are deleting a gallery from a portfolio...
 	if ($update_type == "delete_gallery")
 	{
-		$gallery = $portfolio->getGalleryById($_POST["gallery_id"]);
+		$gallery = $portfolio->getGalleryById($post_data["gallery_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
@@ -139,11 +146,11 @@ if ($update_object == "swPortfolio")
 	// If we are enabling/disabling a gallery in a portfolio...
 	elseif ($update_type == "enable_gallery")
 	{
-		$gallery = $portfolio->getGalleryById($_POST["gallery_id"]);
+		$gallery = $portfolio->getGalleryById($post_data["gallery_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
-		$sessionUpdate->updateField('enabled',(int) $_POST["enable"]);
+		$sessionUpdate->updateField('enabled',(int) $post_data["enable"]);
 		
 		include '../controls/gallery.php';
 	}
@@ -151,22 +158,22 @@ if ($update_object == "swPortfolio")
 	
 	// if we are about to rename a gallery
 	elseif ( $update_type == "rename_gallery" ) {
-		$gallery = $portfolio->getGalleryById($_POST["gallery_id"]);
+		$gallery = $portfolio->getGalleryById($post_data["gallery_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $gallery;
-		$sessionUpdate->updateField('gallery_name',$_POST["gallery_name"]);
+		$sessionUpdate->updateField('gallery_name',$post_data["gallery_name"]);
 	}
 	
 	
 	// If we are adding a new gallery to a portfolio...
 	elseif ($update_type == "add_gallery")
 	{
-		if ($_POST["gallery_name"] == '')
+		if ($post_data["gallery_name"] == '')
 			$cancelUpdate = true;
 		else {
 			$gallery = new swGallery();
-			$gallery->gallery_name = $_POST["gallery_name"];
+			$gallery->gallery_name = $post_data["gallery_name"];
 			
 			$portfolio->addGallery($gallery);
 			
@@ -184,7 +191,7 @@ if ($update_object == "swPortfolio")
 	{
 		// galleries_in_order_by_id comes in like this "galleryid=2&galleryid=1&galleryid=4&galleryid=3"
 		// galleriesInOrderById will now contain... array('2','1','4','3');
-		$galleriesInOrderById = explode("&",str_replace("galleryid=","",$_POST["galleries_in_order_by_id"]));
+		$galleriesInOrderById = explode("&",str_replace("galleryid=","",$post_data["galleries_in_order_by_id"]));
 		
 		$sessionUpdate->update_object = $portfolio;
 		
@@ -221,9 +228,9 @@ if ($update_object == "swGallery")
 	
 	// if we are about to delete an image from a gallery
 	if ( $update_type == "delete_image" ) {
-		$image = $gallery->getImageFromId($_POST["img_id"]);
+		$image = $gallery->getImageFromId($post_data["img_id"]);
 		
-		$gallery->removeImageById($_POST["img_id"]);
+		$gallery->removeImageById($post_data["img_id"]);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $image;
@@ -234,13 +241,13 @@ if ($update_object == "swGallery")
 	
 	// if we are about to recrop/update an existing image
 	elseif ( $update_type == "update_image" ) {
-		$image_id = $_POST["img_id"];
+		$image_id = $post_data["img_id"];
 		$image = $gallery->getImageFromId($image_id);
 		
-		$imageSize = $_POST["img_size"];
+		$imageSize = $post_data["img_size"];
 		
 		// set the image name and create the thumbnail
-		$image->img_name = $_POST['name'];
+		$image->img_name = $post_data['name'];
 		
 		$imageData = $image->img_data_original;
 		
@@ -252,9 +259,9 @@ if ($update_object == "swGallery")
 		
 		// crop the image
 		$imageData = swImage::cropImageFromData($imageData,$image->img_type,
-												$_POST['tw'],$_POST['th'],
-												$_POST['x'],$_POST['y'],
-												$_POST['w'],$_POST['h']);
+												$post_data['tw'],$post_data['th'],
+												$post_data['x'],$post_data['y'],
+												$post_data['w'],$post_data['h']);
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $image;
@@ -289,19 +296,19 @@ if ($update_object == "swGallery")
 	
 	elseif ($update_type == "add_new_image") {
 		// we are adding a new image
-		$image_id = $_POST["img_id"];
+		$image_id = $post_data["img_id"];
 		$image = $sessionObject->images[$image_id];		// get the image from the session
 		
-		$imageSize = $_POST["img_size"];
+		$imageSize = $post_data["img_size"];
 		
-		$image->img_name = $_POST['name'];				// rename the image
+		$image->img_name = $post_data['name'];				// rename the image
 		$gallery->addImage($image);						// add the image to the gallery
 		
 		// create the thumbnail
 		$imageData = swImage::cropImageFromData($image->img_data_original,$image->img_type,
-												$_POST['tw'],$_POST['th'],
-												$_POST['x'],$_POST['y'],
-												$_POST['w'],$_POST['h']);
+												$post_data['tw'],$post_data['th'],
+												$post_data['x'],$post_data['y'],
+												$post_data['w'],$post_data['h']);
 		
 		// Apply the cropped image to the relative image
 		switch ($imageSize) {
@@ -348,7 +355,7 @@ if ($update_object == "swGallery")
 	{
 		// images_in_order_by_id comes in like this "imageid=2&imageid=1&imageid=4&imageid=3"
 		// imagesInOrderById will now contain... array('2','1','4','3');
-		$imagesInOrderById = explode("&",str_replace("imageid=","",$_POST["images_in_order_by_id"]));
+		$imagesInOrderById = explode("&",str_replace("imageid=","",$post_data["images_in_order_by_id"]));
 		
 		$sessionUpdate->update_object = $gallery;
 		
@@ -370,11 +377,11 @@ if ($update_object == "swGallery")
 	elseif ($update_type == 'gallery_update_desc_long')
 	{
 		// make sure the value has actually changed
-		if ($gallery->gallery_desc_long == $_POST["value"]) {
+		if ($gallery->gallery_desc_long == $post_data["value"]) {
 			$cancelUpdate = true;
 		} else {
 			$sessionUpdate->update_object = $gallery;
-			$sessionUpdate->updateField('gallery_desc_long',$_POST['value']);
+			$sessionUpdate->updateField('gallery_desc_long',$post_data['value']);
 		}
 	}
 }
@@ -400,7 +407,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_title',  $_POST["value"]);
+		$sessionUpdate->updateField('pg_title',  $post_data["value"]);
 	}
 	
 	
@@ -409,7 +416,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_linkname',  $_POST["value"]);
+		$sessionUpdate->updateField('pg_linkname',  $post_data["value"]);
 	}
 	
 	
@@ -418,7 +425,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_description',  $_POST["value"]);
+		$sessionUpdate->updateField('pg_description',  $post_data["value"]);
 	}
 	
 	
@@ -427,7 +434,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_meta_title',  $_POST["value"]);
+		$sessionUpdate->updateField('pg_meta_title',  $post_data["value"]);
 	}
 	
 	
@@ -436,7 +443,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_meta_description',  $_POST["value"]);
+		$sessionUpdate->updateField('pg_meta_description',  $post_data["value"]);
 	}
 	
 	
@@ -445,7 +452,7 @@ if ($update_object == "swPage")
 		
 		// save this update so it can be reviewed/undone later
 		$sessionUpdate->update_object = $page;
-		$sessionUpdate->updateField('pg_meta_keywords',  $_POST["value"]);
+		$sessionUpdate->updateField('pg_meta_keywords',  $post_data["value"]);
 	}
 	
 	
@@ -454,7 +461,7 @@ if ($update_object == "swPage")
 	{
 		// pages_in_order_by_id comes in like this "pageid=2&pageid=1&pageid=4&pageid=3"
 		// pagesInOrderById will now contain... array('2','1','4','3');
-		$pagesInOrderById = explode("&",str_replace("pageid=","",$_POST["pages_in_order_by_id"]));
+		$pagesInOrderById = explode("&",str_replace("pageid=","",$post_data["pages_in_order_by_id"]));
 		
 		 // loop through and set the new page order
 		for ($i=0; $i<count($pagesInOrderById); $i++)
@@ -490,12 +497,12 @@ if ($update_object == "swSection")
 	
 	if ($update_type == "section_update_html") {
 		// make sure the value has actually changed
-		if ($section->section_html == $_POST["value"]) {
+		if ($section->section_html == $post_data["value"]) {
 			$cancelUpdate = true;
 		} else {
 			// save this update so it can be reviewed/undone later
 			$sessionUpdate->update_object = $section;
-			$sessionUpdate->updateField('section_html',  $_POST["value"]);
+			$sessionUpdate->updateField('section_html',  $post_data["value"]);
 		}
 	}
 }

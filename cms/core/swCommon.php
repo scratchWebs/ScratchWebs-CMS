@@ -4,18 +4,18 @@ class swCommon
 {
 	const SQL_DATE_FORMAT = "Y-m-d g:i:s";
 	
-	static public function startsWith($string, $startsWith)
+	public static function startsWith($string, $startsWith)
 	{
 		$length = strlen($startsWith);
 		return (substr($string, 0, $length) === $startsWith);
 	}
-	static public function endsWith($string, $endsWith)
+	public static function endsWith($string, $endsWith)
 	{
 		$length = strlen($endsWith);
 		$start = $length * -1;
 		return (substr($string, $start) === $endsWith);
 	}
-	static public function getIncludeContents($filename)
+	public static function getIncludeContents($filename)
 	{
 		ob_start();
 		include(PATH_CONTROLS . $filename);
@@ -23,14 +23,29 @@ class swCommon
 		ob_end_clean();
 		return $contents;
 	}
-	static public function array_unshift_withkey(&$array,$key,$value)
+	public static function array_unshift_withkey(&$array,$key,$value)
 	{
 		$array = array_reverse($array,true);
 		$array[$key] = $value;
 		$array = array_reverse($array,true);
 		return $array;
 	}
-	
+	public static function convert_smart_quotes($string)
+	{
+		$search = array(chr(145),
+						chr(146),
+						chr(147),
+						chr(148),
+						chr(151));
+		
+		$replace = array('&lsquo;',
+						 '&rsquo;',
+						 '&ldquo;',
+						 '&rdquo;',
+						 '&mdash;');
+		
+		return str_replace($search, $replace, $string);
+	}
 }
 
 ?>

@@ -213,8 +213,8 @@ class swSection extends dbObject
 		$this->enabled = $data["enabled"];
 		$this->section_id = $data["section_id"];
 		$this->section_code_ref = $data["section_code_ref"];
-		$this->section_name = $data["section_name"];
-		$this->section_html = $data["section_html"];
+		$this->section_name = swCommon::convert_smart_quotes($data["section_name"]);
+		$this->section_html = swCommon::convert_smart_quotes($data["section_html"]);
 		$this->section_max_size = $data["section_max_size"];
 		$this->section_order = $data["section_order"];
 		$this->section_fk_pg_id = $data["section_fk_pg_id"];

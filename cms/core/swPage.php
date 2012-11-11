@@ -106,11 +106,11 @@ class swPage extends dbObject
 		$this->pg_code_ref = $data["pg_code_ref"];
 		$this->pg_path = $data["pg_path"];
 		$this->pg_linkname = $data["pg_linkname"];
-		$this->pg_title = $data["pg_title"];
-		$this->pg_description = $data["pg_description"];
-		$this->pg_meta_title = $data["pg_meta_title"];
-		$this->pg_meta_description = $data["pg_meta_description"];
-		$this->pg_meta_keywords = $data["pg_meta_keywords"];
+		$this->pg_title = swCommon::convert_smart_quotes($data["pg_title"]);
+		$this->pg_description = swCommon::convert_smart_quotes($data["pg_description"]);
+		$this->pg_meta_title = swCommon::convert_smart_quotes($data["pg_meta_title"]);
+		$this->pg_meta_description = swCommon::convert_smart_quotes($data["pg_meta_description"]);
+		$this->pg_meta_keywords = swCommon::convert_smart_quotes($data["pg_meta_keywords"]);
 		$this->pg_order = $data["pg_order"];
 		$this->pg_internal_count = $data["pg_internal_count"];
 		$this->pg_external_count = $data["pg_external_count"];
