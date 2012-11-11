@@ -8,7 +8,6 @@
  * */
 
 
-
 /* Create: table to set databse version */
 CREATE  TABLE _dbVersion (
   id_dbVersion FLOAT NOT NULL ,
@@ -35,7 +34,7 @@ CREATE TABLE `tblweblogs` (
   `weblog_desc` varchar(500) DEFAULT NULL,
   `weblog_entry_name` varchar(50) NOT NULL,
   PRIMARY KEY (`weblog_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 
@@ -57,11 +56,11 @@ CREATE TABLE `tblweblogentries` (
   `wlentry_order` int(11) NOT NULL,
   `wlentry_fk_weblog_id` int(11) NOT NULL,
   PRIMARY KEY (`wlentry_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 
 /* Update gallery descriptions so they can hold more data */
-ALTER TABLE `tblgalleries` 
+ALTER TABLE `tblGalleries` 
 CHANGE COLUMN `gallery_desc_long` `gallery_desc_long` MEDIUMTEXT NOT NULL;
 
