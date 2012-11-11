@@ -20,7 +20,7 @@ if ($wlentry->delete_flag == false)
 			<? } ?>
 		</div>
 		<form id="frm<?= $wlentry->getUID() ?>">
-			Author: <input name="author" type="text" value="<?= $wlentry->wlentry_author ?>" /><br />
+			Author: <input name="author" type="text" value="<?= $wlentry->wlentry_author ?>" style="width:350px" /><br />
 			<textarea name="text" rows="8" cols="100"><?= $wlentry->wlentry_text ?></textarea>
 		</form>
 	</div>

@@ -14,7 +14,7 @@ $uid = $weblog->getUID();
 <div id="divAddNew<?= $uid ?>" class="editSection" style="display:none; margin:10px auto">
 	<form id="frmCreate<?= $uid ?>">
 		<p><b>Create new <?= $weblog->weblog_entry_name ?></b></p>
-	    <p>Author<br /><input id="btnAuthor<?= $uid ?>" type="text" name="author" /></p>
+	    <p>Author<br /><input id="btnAuthor<?= $uid ?>" type="text" name="author" style="width:350px" /></p>
 	    <p>Text<br /><textarea name="text" style="width:500px; height:80px"></textarea></p>
     </form>
     <button class="buttonSave" onclick="swLogEntry_create('<?= $weblog->weblog_id ?>',$('#divAddNew<?= $uid ?>'),$('#frmCreate<?= $uid ?>'),$('#weblog_list_<?=$uid?>'),$('#btnCreateNew<?= $uid ?>'))">Create</button>
