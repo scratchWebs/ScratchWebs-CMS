@@ -134,7 +134,7 @@ class swGallery extends swFeature
 		
 		while (($data = mysql_fetch_array($result)) == true) {
 			$gallery = new swGallery();
-			$gallery->createGalleryFromSQLData($data,$getImages,$featuredOnly);
+			$gallery->createGalleryFromSQLData($data,$getImages);
 			
 			$galleries[$gallery->gallery_id] = $gallery;
 		}
