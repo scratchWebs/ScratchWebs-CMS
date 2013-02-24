@@ -3,13 +3,13 @@ require_once("../cms.php");
 
 // get the required info either from previously saved values OR from $_GET data
 if (!isset($uid)) $uid = uniqid();										// uid
-if (!isset($galleryID)) $galleryID = $_GET["gallery_id"];				// gallery id
+if (!isset($galleryID)) $galleryID = $_POST["gallery_id"];				// gallery id
 if (!isset($imageID)) {													// image id
-	if (isset($_GET["image_id"])) $imageID = $_GET["image_id"];
+	if (isset($_POST["image_id"])) $imageID = $_POST["image_id"];
 	else $imageID = "";
 }
 
-if (isset($_GET["image_size"])) $imageSize = $_GET["image_size"];		// image_size
+if (isset($_GET["image_size"])) $imageSize = $_POST["image_size"];		// image_size
 else $imageSize = swImage::IMAGE_SIZE_THUMB;							// edit thumb by default
 
 if (!isset($update_type)) $update_type = "update_image";
@@ -17,13 +17,13 @@ if (!isset($update_type)) $update_type = "update_image";
 if ($imageID !== "" && $imageID !== NULL) $imgSrc = swImage::getOriginalSrc($imageID);
 else $imgSrc = "";
 
-$cropFeatured = (isset($_GET["crop_featured"])) ? $_GET["crop_featured"] : false;	// show the cropping featured image message
+$cropFeatured = (isset($_POST["crop_featured"])) ? $_POST["crop_featured"] : false;	// show the cropping featured image message
 
 ?>
 
 <div id="div_initializing<?=$uid?>" class="cloud" style="clear:both; padding:100px; text-align:center">
-    <img src="/cms/images/green-tick.jpg" style="margin-right:15px; width:16px; height:16px;" />Loading image... Complete<br />
-    <img src="/cms/images/ajax-loader2.gif" style="position:relative; top:4px; margin-right:5px; width:16px; height:16px;" />Initalizing... Please wait
+    <img src="<?= URI_CMS ?>images/green-tick.jpg" style="margin-right:15px; width:16px; height:16px;" />Loading image... Complete<br />
+    <img src="<?= URI_CMS ?>images/ajax-loader2.gif" style="position:relative; top:4px; margin-right:5px; width:16px; height:16px;" />Initalizing... Please wait
 </div>
 
 <form id="upload_form<?=$uid?>" class="box gallery_image_upload" method="post" action="updateSession.php" style="clear:both;display:none; overflow:hidden">
