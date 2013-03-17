@@ -14,6 +14,7 @@ class swImage extends dbObject
 	public $img_id;
 	public $img_code_ref = "";
 	public $img_name;
+	public $img_URL = "";
 	public $img_desc_short;
 	public $img_desc_long;
 	public $img_width;
@@ -338,6 +339,7 @@ class swImage extends dbObject
                 	(delete_flag,
 					 enabled,
 					 img_name,
+					 img_url,
 					 img_code_ref,
 					 img_desc_long,
 					 img_desc_short,
@@ -357,6 +359,7 @@ class swImage extends dbObject
                 	(" . (int) $this->delete_flag . ",
 					 " . (int) $this->enabled . ",
 					 '" . mysql_real_escape_string(substr($this->img_name,0,100)) ."',
+					 '" . mysql_real_escape_string($this->img_URL) . "',
 					 '" . mysql_real_escape_string(substr($this->img_code_ref,0,30)) ."',
 					 '" . mysql_real_escape_string(substr($this->img_desc_long,0,500)) ."',
 					 '" . mysql_real_escape_string(substr($this->img_desc_short,0,1000)) ."',
@@ -392,6 +395,7 @@ class swImage extends dbObject
 						SET delete_flag = " . (int) $this->delete_flag . ",
 							enabled = " . (int) $this->enabled . ",
 							img_name = '" . mysql_real_escape_string(substr($this->img_name,0,100)) . "',
+							img_url = '" .mysql_real_escape_string($this->img_URL) . "',
 							img_code_ref = '" . mysql_real_escape_string(substr($this->img_code_ref,0,30)) . "',
 							img_desc_long = '" . mysql_real_escape_string(substr($this->img_desc_long,0,500)) . "',
 							img_desc_short = '" . mysql_real_escape_string(substr($this->img_desc_short,0,1000)) . "',
@@ -442,6 +446,7 @@ class swImage extends dbObject
 					enabled,
 					img_id,
 					img_name,
+					img_url,
 					img_code_ref,
 					img_desc_long,
 					img_desc_short,
@@ -536,6 +541,7 @@ class swImage extends dbObject
 		$this->img_id = $data["img_id"];
 		$this->img_code_ref = $data["img_code_ref"];
 		$this->img_name = $data["img_name"];
+		$this->img_URL = $data["img_url"];
 		$this->img_desc_short = $data["img_desc_short"];
 		$this->img_desc_long = $data["img_desc_long"];
 		$this->img_width = $data["img_width"];
@@ -566,6 +572,7 @@ class swImage extends dbObject
 					  `img_id` int(11) NOT NULL auto_increment,
 					  `img_code_ref` varchar(30) NOT NULL,
 					  `img_name` varchar(100) NOT NULL,
+					  `img_url` varchar(MAX) default '',
 					  `img_desc_short` varchar(500) NOT NULL,
 					  `img_desc_long` varchar(1000) NOT NULL,
 					  `img_width` int(5) NOT NULL,

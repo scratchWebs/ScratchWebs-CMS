@@ -1,12 +1,19 @@
 <?php
 require_once("../cms.php");
 
+if (!isset($sessionObject)) $sessionObject = new swSessionObject();
+
 // get the required info either from previously saved values OR from $_GET data
 if (!isset($uid)) $uid = uniqid();										// uid
 if (!isset($galleryID)) $galleryID = $_POST["gallery_id"];				// gallery id
 if (!isset($imageID)) {													// image id
-	if (isset($_POST["image_id"])) $imageID = $_POST["image_id"];
-	else $imageID = "";
+	if (isset($_POST["image_id"])) {
+		$imageID = $_POST["image_id"];
+		$imageURL = $sessionObject->findImageInSession($imageID)->img_URL;
+	} else {
+		$imageID = "";
+		$imageURL = "";
+	}
 }
 
 if (isset($_GET["image_size"])) $imageSize = $_POST["image_size"];		// image_size
@@ -42,6 +49,8 @@ $cropFeatured = (isset($_POST["crop_featured"])) ? $_POST["crop_featured"] : fal
     <input type="hidden" id="img_size_<?=$uid?>" name="img_size" value="<?=$imageSize?>" />
     
     <b>name:</b> <input type="text" id="name_<?=$uid?>" name="name" value="" style="width:250px" /><p />
+    
+    <b>URL (optional):</b> <input type="text" id="url_<?=$uid?>" name="url" value="<?= $imageURL ?>" style="width:300px" /><p />
     
     <? if ($cropFeatured) { ?>
     	<b>Please create the main image</b><br />Use the mouse to select an area for the main image.

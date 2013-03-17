@@ -246,8 +246,9 @@ if ($update_object == "swGallery")
 		
 		$imageSize = $post_data["img_size"];
 		
-		// set the image name and create the thumbnail
+		// set the image name, url and create the thumbnail
 		$image->img_name = $post_data['name'];
+		$image->img_URL = $post_data['url'];
 		
 		$imageData = $image->img_data_original;
 		
@@ -302,6 +303,7 @@ if ($update_object == "swGallery")
 		$imageSize = $post_data["img_size"];
 		
 		$image->img_name = $post_data['name'];				// rename the image
+		$image->img_URL = $post_data['url'];				// set the image URL
 		$gallery->addImage($image);						// add the image to the gallery
 		
 		// create the thumbnail
