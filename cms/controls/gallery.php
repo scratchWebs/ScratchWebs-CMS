@@ -39,7 +39,7 @@ if (!$gallery->delete_flag) {								// only continue if the gallery hasn't been
 			<?
 	    	// gallery description
 	    	?>
-	    	<div id="divGalleryDescLong<?= $gallery->gallery_id ?>"><?= $gallery->gallery_desc_long ?></div>
+	    	<div id="divGalleryDescLong<?= $gallery->gallery_id ?>" class="gallery_desc"><?= $gallery->gallery_desc_long ?></div>
 	    	
 	    	
 			<? // if this gallery is part of a portfolio

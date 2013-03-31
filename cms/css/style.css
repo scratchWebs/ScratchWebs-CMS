@@ -51,6 +51,8 @@ table{border:none; border-collapse:collapse; border-spacing:0px;width:100%}
 .swGalleryImageList {list-style-type:none; margin:0px; padding:10px 0px; clear:both; min-height:100px}
 .swGalleryImageList>li { margin: 3px 3px 3px 3px;padding: 0px;float: left;width: 110px;height: 150px;text-align: center}
 .swGalleryImageList li img { margin: 3px 3px 3px 3px}
+.swGallery .gallery_desc {max-height:100px; overflow:auto; clear:both; margin:10px}
+
 
 /* Image Specific */
 .swImage {position:relative}
