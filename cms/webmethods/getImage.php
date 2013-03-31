@@ -1,6 +1,8 @@
 <?php
 require_once("../cms.php");
 
+$img_size = "";
+
 if (isset($_GET['id'])) $img_id = $_GET['id'];
 if (isset($_GET['size'])) $img_size = $_GET['size'];
 
@@ -39,39 +41,47 @@ if(isset($img_id) && is_numeric($img_id)) {
 				}
 			}
 		}
-	} else {		// get the image from the db
-		switch ($img_size) {
-			case swImage::IMAGE_SIZE_THUMB:
-				$ImgSizeParam = "img_data_thumb";
-				break;
-			case swImage::IMAGE_SIZE_PREVIEW:
-				$ImgSizeParam = "img_data_preview";
-				break;
-			case swImage::IMAGE_SIZE_LARGE:
-				$ImgSizeParam = "img_data_large";
-				break;
-			case swImage::IMAGE_SIZE_ORIGINAL:
-				$ImgSizeParam = "img_data_original";
-				break;
-			default:
-				$ImgSizeParam = "img_data_preview";
-				break;
+	} else {
+		if (DATABASE_IMAGE_STOREAGE) {
+			// get the image from the db
+			switch ($img_size) {
+				case swImage::IMAGE_SIZE_THUMB:
+					$ImgSizeParam = "img_data_thumb";
+					break;
+				case swImage::IMAGE_SIZE_PREVIEW:
+					$ImgSizeParam = "img_data_preview";
+					break;
+				case swImage::IMAGE_SIZE_LARGE:
+					$ImgSizeParam = "img_data_large";
+					break;
+				case swImage::IMAGE_SIZE_ORIGINAL:
+					$ImgSizeParam = "img_data_original";
+					break;
+				default:
+					$ImgSizeParam = "img_data_preview";
+					break;
+			}
+			
+			$sql = "SELECT " . $ImgSizeParam . ", img_type 
+					FROM tblImages 
+					WHERE img_id = " . $img_id . ";";
+		
+			// the result of the query
+			$result = mysql_query("$sql");
+			
+			$img_data = mysql_result($result,0,0);
+			$img_type = mysql_result($result,0,1);
+		} else {
+			// get image from filesystem
+			$img_data = file_get_contents(PATH_IMG . $img_id . '_' . $img_size);
+			$img_type = 'image';
 		}
-		
-		$sql = "SELECT " . $ImgSizeParam . ", img_type 
-				FROM tblImages 
-				WHERE img_id = " . $img_id . ";";
-	
-		// the result of the query
-		$result = mysql_query("$sql");
-		
-		$img_data = mysql_result($result,0,0);
-		$img_type = mysql_result($result,0,1);
 	}
 	
 	
 	
 	// otherwise get the uploaded image from the session
+	// because this is a newly uploaded image that only exists in memory
 } else if (isset($img_id))
 {
 	$sessionObject = new swSessionObject();

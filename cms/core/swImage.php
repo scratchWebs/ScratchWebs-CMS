@@ -49,27 +49,33 @@ class swImage extends dbObject
 	}
 	public function getImageSrc($size = self::IMAGE_SIZE_THUMB)
 	{
-		$param = "";
+		$fromSession = false;
+		
 		// This switch statement is to load the image from the session (if it exists)
 		switch ($size) {
 			case self::IMAGE_SIZE_THUMB:
-				if ($this->img_data_thumb != NULL) $param = "&fromSession=true";
+				if ($this->img_data_thumb != NULL) $fromSession = true;
 				break;
 			case self::IMAGE_SIZE_PREVIEW:
-				if ($this->img_data_preview != NULL) $param = "&fromSession=true";
+				if ($this->img_data_preview != NULL) $fromSession = true;
 				break;
 			case self::IMAGE_SIZE_LARGE:
-				if ($this->img_data_large != NULL) $param = "&fromSession=true";
+				if ($this->img_data_large != NULL) $fromSession = true;
 				break;
 			case self::IMAGE_SIZE_ORIGINAL:
-				if ($this->img_data_original != NULL) $param = "&fromSession=true";
+				if ($this->img_data_original != NULL) $fromSession = true;
 				break;
 		}
-		return URI_CMS . "webmethods/getImage.php?id=" . $this->img_id . "&size=" . $size . $param;
-	}
-	public static function getSrc($img_id,$size = self::IMAGE_SIZE_THUMB)
-	{
-		return URI_CMS . "webmethods/getImage.php?id=" . $img_id . "&size=" . $size;
+		
+		if ($fromSession) {
+			return URI_CMS . "webmethods/getImage.php?id=" . $this->img_id . "&size=" . $size . "&fromSession=true";
+		} else {
+			if (DATABASE_IMAGE_STOREAGE) {
+				return URI_CMS . "webmethods/getImage.php?id=" . $this->img_id . "&size=" . $size;
+			} else {
+				return URI_IMG . $this->img_id . '_' . $size;
+			}
+		}
 	}
 	public static function getOriginalSrc($image_id)
 	{
@@ -326,11 +332,21 @@ class swImage extends dbObject
 	public function saveAsNew()
 	{
 		$fields = "";
-		if (isset($this->img_fk_gallery_id)) $fields = ",img_fk_gallery_id";
+		$values = "";
+		
+		if (DATABASE_IMAGE_STOREAGE) {
+			$values = ',\'' . addslashes($this->img_data_thumb) . '\'' .
+					  ',\'' . addslashes($this->img_data_preview) . '\'' .
+					  ',\'' . addslashes($this->img_data_large) . '\'' .
+					  ',\'' . addslashes($this->img_data_original) . '\'';
+		} else {
+			$values = ',\'\',\'\',\'\',\'\'';
+		}
+		
+		if (isset($this->img_fk_gallery_id)) $fields .= ",img_fk_gallery_id";
 		if (isset($this->img_fk_section_id)) $fields .= ",img_fk_section_id";
 		if (isset($this->img_fk_pg_id)) $fields .= ",img_fk_pg_id";
 		
-		$values = "";
 		if (isset($this->img_fk_gallery_id)) $values .= "," . $this->img_fk_gallery_id;
 		if (isset($this->img_fk_section_id)) $values .= "," . $this->img_fk_section_id;
 		if (isset($this->img_fk_pg_id)) $values .= "," . $this->img_fk_pg_id;
@@ -346,14 +362,14 @@ class swImage extends dbObject
 					 img_width, 
 					 img_height, 
 					 img_type, 
-					 img_data_thumb, 
-					 img_data_preview, 
-					 img_data_large, 
-					 img_data_original, 
 					 img_featured, 
 					 img_order, 
 					 img_internal_count, 
-					 img_external_count 
+					 img_external_count,
+					 img_data_thumb,
+					 img_data_preview,
+					 img_data_large,
+					 img_data_original
 					 $fields)
                 VALUES
                 	(" . (int) $this->delete_flag . ",
@@ -366,19 +382,22 @@ class swImage extends dbObject
 					 " . $this->img_width .",
 					 " . $this->img_height .",
 					 '" . mysql_real_escape_string($this->img_type) ."',
-					 '" . addslashes($this->img_data_thumb) ."',
-					 '" . addslashes($this->img_data_preview) ."',
-					 '" . addslashes($this->img_data_large) ."',
-					 '" . addslashes($this->img_data_original) ."',
 					 " . (int) $this->img_featured . ",
 					 " . $this->img_order . ",
 					 " . $this->img_internal_count . ",
 					 " . $this->img_external_count . "
 					 $values);";
-					
+		
 		mysql_query($sql) or die(mysql_error());
 		
 		$this->img_id = mysql_insert_id();
+
+		if (!DATABASE_IMAGE_STOREAGE) {
+			$this->_saveImageToFileSystem($this->img_data_thumb, self::IMAGE_SIZE_THUMB);
+			$this->_saveImageToFileSystem($this->img_data_preview, self::IMAGE_SIZE_PREVIEW);
+			$this->_saveImageToFileSystem($this->img_data_large, self::IMAGE_SIZE_LARGE);
+			$this->_saveImageToFileSystem($this->img_data_original, self::IMAGE_SIZE_ORIGINAL);
+		}
 	}
 	public function update()
 	{
@@ -391,6 +410,18 @@ class swImage extends dbObject
 			if ($this->img_fk_section_id != "") $params .= ",img_fk_section_id = " . $this->img_fk_section_id;
 			if ($this->img_fk_pg_id != "") $params .= ",img_fk_pg_id = " . $this->img_fk_pg_id;
 			
+			if (DATABASE_IMAGE_STOREAGE) {
+				$params .= self::_getUpdateImageParam($this->img_data_thumb, self::IMAGE_SIZE_THUMB) .
+						   self::_getUpdateImageParam($this->img_data_preview, self::IMAGE_SIZE_PREVIEW) .
+						   self::_getUpdateImageParam($this->img_data_large, self::IMAGE_SIZE_LARGE) .
+						   self::_getUpdateImageParam($this->img_data_original, self::IMAGE_SIZE_ORIGINAL);
+			} else {
+				$this->_saveImageToFileSystem($this->img_data_thumb, self::IMAGE_SIZE_THUMB);
+				$this->_saveImageToFileSystem($this->img_data_preview, self::IMAGE_SIZE_PREVIEW);
+				$this->_saveImageToFileSystem($this->img_data_large, self::IMAGE_SIZE_LARGE);
+				$this->_saveImageToFileSystem($this->img_data_original, self::IMAGE_SIZE_ORIGINAL);
+			}
+			
 			$sql = "UPDATE tblImages 
 						SET delete_flag = " . (int) $this->delete_flag . ",
 							enabled = " . (int) $this->enabled . ",
@@ -402,10 +433,6 @@ class swImage extends dbObject
 							img_width = " . $this->img_width . ",
 							img_height = " . $this->img_height . ",
 							img_type = '" . mysql_real_escape_string($this->img_type) . "',
-							" . self::_getUpdateImageParam($this->img_data_thumb, self::IMAGE_SIZE_THUMB) . "
-							" . self::_getUpdateImageParam($this->img_data_preview, self::IMAGE_SIZE_PREVIEW) . "
-							" . self::_getUpdateImageParam($this->img_data_large, self::IMAGE_SIZE_LARGE) . "
-							" . self::_getUpdateImageParam($this->img_data_original, self::IMAGE_SIZE_ORIGINAL) . "
 							img_featured = " . (int) $this->img_featured . ",
 							img_order = " . $this->img_order . ",
 							img_internal_count = " . $this->img_internal_count . ",
@@ -414,9 +441,34 @@ class swImage extends dbObject
 					WHERE img_id = " . $this->img_id . ";"; 
 			
 			mysql_query($sql) or die(mysql_error());
-				$success =  true;
+			
+			$success =  true;
 		}
 		return $success;
+	}
+	private function _saveImageToFileSystem($imageData,$imageSize)
+	{
+		if (isset($imageData) && $imageData != "")
+		{
+			$filename = PATH_IMG . $this->img_id . '_' . $imageSize;
+			
+			$imageData = imagecreatefromstring($imageData);
+			
+			// Set up the appropriate image handling settings
+			// based on the original image's mime type
+			switch ($this->img_type)
+			{
+				case 'image/gif':
+				case 'image/x-png':
+				case 'image/png':
+					ImagePng($imageData,$filename);
+					break;
+		
+				default:
+					ImageJpeg($imageData,$filename);
+					break;
+			}
+		}
 	}
 	private function _getUpdateImageParam($imageData,$imageSize)
 	{
@@ -425,16 +477,16 @@ class swImage extends dbObject
 		if (isset($imageData) && $imageData != "") {
 			switch ($imageSize) {
 				case self::IMAGE_SIZE_THUMB:
-					$param = "img_data_thumb = '" . addslashes($imageData) . "',";
+					$param = ",img_data_thumb = '" . addslashes($imageData) . "'";
 					break;
 				case self::IMAGE_SIZE_PREVIEW:
-					$param = "img_data_preview = '" . addslashes($imageData) . "',";
+					$param = ",img_data_preview = '" . addslashes($imageData) . "'";
 					break;
 				case self::IMAGE_SIZE_LARGE:
-					$param = "img_data_large = '" . addslashes($imageData) . "',";
+					$param = ",img_data_large = '" . addslashes($imageData) . "'";
 					break;
 				case self::IMAGE_SIZE_ORIGINAL:
-					$param = "img_data_original = '" . addslashes($imageData) . "',";
+					$param = ",img_data_original = '" . addslashes($imageData) . "'";
 					break;
 			}
 		}
@@ -508,14 +560,22 @@ class swImage extends dbObject
 		
 		return $images;
 	}
-	static function getAllImages($getOriginalData = false,$enabled = true,$deleted = false)
+	static function getAllImages($getOriginalData = false,$enabled = true,$deleted = false,$getAllData = false)
 	{
 		$images = array();
+		$paramiter = "";
 		
 		if ($getOriginalData) {
 			ini_set('memory_limit', '200M');
 			$paramiter = ",img_data_original ";
-		} else $paramiter = "";
+		}
+		
+		if ($getAllData) {
+			ini_set('memory_limit', '200M');
+			$paramiter .= ",img_data_thumb ";
+			$paramiter .= ",img_data_preview ";
+			$paramiter .= ",img_data_large ";
+		}
 		
 		$sql = "SELECT " . self::getfieldsWithoutData() . $paramiter . " 
 				FROM tblImages

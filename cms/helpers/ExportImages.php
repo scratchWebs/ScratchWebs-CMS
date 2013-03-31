@@ -1,6 +1,10 @@
 <?php
 require "cms.php";
 
+// Ensure the user is logged in
+$sessionObject = new swSessionObject();
+$sessionObject->redirectIfNotLoggedIn();
+
 echo "<p>Creating Export file(s)...</p>";
 
 // first ensure we don't run out of memory

@@ -254,8 +254,12 @@ if ($update_object == "swGallery")
 		
 		// if the image hasn't already been loaded from the session
 		if ($imageData == NULL || $imageData == "") {
-			$result = mysql_query("SELECT img_data_original FROM tblImages WHERE img_id = " . $image->img_id . ";");
-			$imageData = mysql_result($result,0,0);
+			if (DATABASE_IMAGE_STOREAGE) {
+				$result = mysql_query("SELECT img_data_original FROM tblImages WHERE img_id = " . $image->img_id . ";");
+				$imageData = mysql_result($result,0,0);
+			} else {
+				$imageData = file_get_contents(PATH_IMG . $image_id . '_' . swImage::IMAGE_SIZE_ORIGINAL);
+			}
 		}
 		
 		// crop the image
