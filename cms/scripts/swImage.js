@@ -195,13 +195,13 @@ function _preloadImageThenCrop(uid,pathToImage,cropWidth,cropHeight)
 	var img = $('#img_preview' + uid);
 	var thumb = $('#img_thumb' + uid);
 	
-	var preloadImage = new Image();
-	
-	preloadImage.onload = function() {	// when the image has loaded...
-		$('#div_initializing' + uid).hide();	// hide the loading div
-		$('#div_loading' + uid).hide();		// hide the loading div
-		$('#div_edit_box' + uid).show();	// hide the loading div
-		$('#upload_form' + uid).show();			// show the crop div
+	img[0].onload = function() {		// when the image has loaded...
+		img[0].onload = null;
+		
+		$('#div_initializing' + uid).css('display','none');	// hide the loading div
+		$('#div_loading' + uid).css('display','none');		// hide the loading div
+		$('#div_edit_box' + uid).css('display','block');	// hide the loading div
+		$('#upload_form' + uid).css('display','block');			// show the crop div
 		
 		var originalWidth = this.width;
 		var originalHeight = this.height;
@@ -213,7 +213,6 @@ function _preloadImageThenCrop(uid,pathToImage,cropWidth,cropHeight)
 	img.removeAttr('width').removeAttr('height')	// remove any previous dimentions
 	   .attr('src', pathToImage);				// set the preview image first
 	thumb.attr('src', pathToImage);				// set the thumb image next
-	preloadImage.src = pathToImage;				// now we can start the pre-load
 }
 
 function _resizePreview(img,originalWidth,originalHeight)		// resize the preview so it can fit on the page
@@ -262,7 +261,6 @@ function _startCrop(uid,cropWidth,cropHeight,originalWidth,originalHeight)	// in
 	var x2 = x1 + initCropWidth;							// set the initial selected area position
 	var y2 = y1 + initCropHeight;							// set the initial selected area position
 	
-	img.imgAreaSelect({remove: true});		// remove any previous AreaSelect plugins
 	img.imgAreaSelect({aspectRatio: _reduceRatio(cropWidth,cropHeight),	// fix the ratio (based on the crop width/height)
 					   handles: true,									// puts square handles on the corners
 					   x1: x1, y1: y1, x2: x2, y2: y2,					// sets the initial selected area
