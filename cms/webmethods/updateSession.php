@@ -286,7 +286,16 @@ if ($update_object == "swGallery")
 		// if setting a new preview image - ensure we refresh the existing 
 		// featured images when the ajax call finishes (except this one)
 		if ($imageSize == swImage::IMAGE_SIZE_PREVIEW) {
-			$gallery->setFeaturedImage($image->img_id);
+			// store the old featured image so the change can be commited/undone later
+			$old_featured_img = $gallery->getFeaturedImage();
+			
+			$additional_update = new swSessionUpdate('set_main_image',$old_featured_img);
+			$additional_update->updateField('img_featured',false);
+			$sessionUpdate->addAdditionalUpdate($additional_update);
+			
+			$additional_update = new swSessionUpdate('set_main_image',$image);
+			$additional_update->updateField('img_featured',true);
+			$sessionUpdate->addAdditionalUpdate($additional_update);
 			
 			echo "<script type=\"text/javascript\">
 					swImage_refreshFeaturedImages($('#div_gallery" . $gallery->getUID() . "'),'" . $image->img_id . "');

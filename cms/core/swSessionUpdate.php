@@ -193,6 +193,8 @@ class swSessionUpdate
 				break;
 			
 			// swGallery updates
+			case "set_main_image":
+				$this->undoField('img_featured');
 			case "update_image":
 				foreach ($this->old_value as $key => $value) {
 					$this->undoField($key);
@@ -310,6 +312,11 @@ class swSessionUpdate
 		$log->log_fk_user_id = $sessionObject->user->user_id;
 		$log->saveAsNew();
 		
+		foreach ($this->additional_updates as $additional_update)
+		{
+			$additional_update->undo($sessionObject);
+		}  
+		
 		return $undoResponse;
 	}
 	
@@ -331,6 +338,8 @@ class swSessionUpdate
 				break;
 			
 			// swGallery updates
+			case "set_main_image":
+				return 'Image Updated "' . $this->update_object->img_name . '"';
 			case "update_image":
 				return 'Image updated "' . $this->update_object->img_name . '"';
 				break;
